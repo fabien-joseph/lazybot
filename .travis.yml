@@ -5,5 +5,8 @@ jdk:
 
 sudo: required
 
+before_script:
+  - cd lazybot-microservices
+
 script:
   - mvn test
