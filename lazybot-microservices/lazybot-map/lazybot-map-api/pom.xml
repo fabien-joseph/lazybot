@@ -9,6 +9,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springfox-version>2.7.0</springfox-version>
+        <netty-socketio.version>1.7.17</netty-socketio.version>
     </properties>
     <parent>
         <groupId>com.lazybot.microservices.map</groupId>
@@ -94,6 +95,11 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.corundumstudio.socketio</groupId>
+            <artifactId>netty-socketio</artifactId>
+            <version>${netty-socketio.version}</version>
         </dependency>
     </dependencies>
 
