@@ -8,6 +8,8 @@ import com.corundumstudio.socketio.listener.DataListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MapSocket {
     private final SocketIONamespace namespace;
@@ -15,10 +17,10 @@ public class MapSocket {
     @Autowired
     public MapSocket(SocketIOServer server) {
         this.namespace = server.addNamespace("/");
-        server.addEventListener("loadChunk", String.class, new DataListener<String>() {
+        server.addEventListener("loadChunk", List.class, new DataListener<List>() {
             @Override
-            public void onData(SocketIOClient client, String data, AckRequest ackSender) throws Exception {
-                System.out.println("yes");
+            public void onData(SocketIOClient client, List data, AckRequest ackSender) throws Exception {
+                System.out.println(data.size());
             }
         });
     }
