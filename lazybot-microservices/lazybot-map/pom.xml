@@ -5,6 +5,7 @@
 	<modules>
 		<module>lazybot-map-business</module>
 		<module>lazybot-map-api</module>
+		<module>lazybot-map-model</module>
 	</modules>
 	<parent>
 		<groupId>com.lazybot.microservices</groupId>
