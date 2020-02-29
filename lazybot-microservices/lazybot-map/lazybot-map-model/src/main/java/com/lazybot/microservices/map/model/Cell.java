@@ -1,29 +1,29 @@
 package com.lazybot.microservices.map.model;
 
 public class Cell {
-    Integer fCost;
+
+    // Distance from starting node
     Integer gCost;
+
+    // Distance from end node
     Integer hCost;
-    int x;
-    int z;
+
+    // gCost + hCost
+    Integer fCost;
+
+    Position position;
+
+    int idBlock;
 
     public Cell() {
     }
 
-    public Cell(Integer fCost, Integer gCost, Integer hCost, int x, int z) {
-        this.fCost = fCost;
+    public Cell(Integer gCost, Integer hCost, Integer fCost, Position position, int idBlock) {
         this.gCost = gCost;
         this.hCost = hCost;
-        this.x = x;
-        this.z = z;
-    }
-
-    public Integer getfCost() {
-        return fCost;
-    }
-
-    public void setfCost(Integer fCost) {
         this.fCost = fCost;
+        this.position = position;
+        this.idBlock = idBlock;
     }
 
     public Integer getgCost() {
@@ -42,30 +42,38 @@ public class Cell {
         this.hCost = hCost;
     }
 
-    public int getX() {
-        return x;
+    public Integer getfCost() {
+        return fCost;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setfCost(Integer fCost) {
+        this.fCost = fCost;
     }
 
-    public int getZ() {
-        return z;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setZ(int z) {
-        this.z = z;
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public int getIdBlock() {
+        return idBlock;
+    }
+
+    public void setIdBlock(int idBlock) {
+        this.idBlock = idBlock;
     }
 
     @Override
     public String toString() {
         return "Cell{" +
-                "fCost=" + fCost +
-                ", gCost=" + gCost +
+                "gCost=" + gCost +
                 ", hCost=" + hCost +
-                ", x=" + x +
-                ", z=" + z +
+                ", fCost=" + fCost +
+                ", position=" + position +
+                ", idBlock=" + idBlock +
                 '}';
     }
 }
