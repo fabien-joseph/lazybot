@@ -17,11 +17,11 @@ public class MapSocket {
     @Autowired
     public MapSocket(SocketIOServer server) {
         this.namespace = server.addNamespace("/");
-        server.addEventListener("loadChunk", List.class, new DataListener<List>() {
-            @Override
-            public void onData(SocketIOClient client, List data, AckRequest ackSender) throws Exception {
-                System.out.println(data.size());
-            }
-        });
+
+        server.addEventListener("loadChunk", List.class, this::myMethod);
+    }
+
+    public void myMethod (SocketIOClient client, List<Integer> data, AckRequest ackSender) throws Exception {
+        System.out.println(data.size());
     }
 }

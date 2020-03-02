@@ -8,7 +8,7 @@ var bot = mybot.connect(process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
 bot.on('chat', function(username, message) {
     if (username === bot.username) return;
     if (message === 'chunk') {
-        ioClient.emit('loadChunk', mybot.loadChunkArround(bot, 1));
+        ioClient.emit('loadChunk', mybot.loadChunkArround(bot, 2));
         return;
     }
     bot.chat(message);
