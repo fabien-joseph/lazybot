@@ -2,6 +2,7 @@ package com.lazybot.microservices.map.business;
 
 import static org.junit.Assert.assertTrue;
 
+import com.lazybot.microservices.map.model.Cell;
 import com.lazybot.microservices.map.model.Position;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,6 +63,7 @@ public class AppTest
         Assert.assertEquals(0, manager.findPosition(4, 2).getZ());
         Assert.assertEquals(0, manager.findPosition(0, 2).getZ());
     }
+
     @Test
     public void testFindPositionWithBigMap() {
         //TEST X
@@ -77,6 +79,25 @@ public class AppTest
         Assert.assertEquals(3, manager.findPosition(29, 4).getZ());
         Assert.assertEquals(0, manager.findPosition(8, 4).getZ());
         Assert.assertEquals(0, manager.findPosition(0, 4).getZ());
+    }
+
+    @Test
+    public void testCalculCosts() {
+        Cell cell = new Cell();
+        Position start = new Position(0, 0);
+        Position target = new Position(3, 4);
+
+        cell.setPosition(new Position(-1, 0));
+        cell = manager.calculCosts(cell, start, target);
+        Assert.assertEquals(java.util.Optional.of(8).get(), cell.gethCost());
+        Assert.assertEquals(java.util.Optional.of(1).get(), cell.getgCost());
+        Assert.assertEquals(java.util.Optional.of(9).get(), cell.getfCost());
+
+        cell.setPosition(new Position(0, 0));
+        cell = manager.calculCosts(cell, start, target);
+        Assert.assertEquals(java.util.Optional.of(7).get(), cell.gethCost());
+        Assert.assertEquals(java.util.Optional.of(0).get(), cell.getgCost());
+        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getfCost());
 
 
     }

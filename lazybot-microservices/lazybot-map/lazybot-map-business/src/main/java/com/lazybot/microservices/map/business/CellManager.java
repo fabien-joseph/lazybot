@@ -2,15 +2,39 @@ package com.lazybot.microservices.map.business;
 
 import com.lazybot.microservices.map.model.Cell;
 import com.lazybot.microservices.map.model.Position;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CellManager {
+
+    /*
+    Convertion array of int to list of cells
+     */
+    public List<Cell> convertBlocksToCellList(int[] blocks, int ray) {
+        List<Cell> cells = new ArrayList<>();
+        for (int i = 0; i < blocks.length; i++) {
+            cells.add(convertBlockToCell(blocks[i], i, ray));
+        }
+        return cells;
+    }
+
+    /*
+    Convertion block to cell
+    call findPosition method to find the position of a cell
+     */
     public Cell convertBlockToCell(int block, int position, int ray) {
         Cell cell = new Cell();
         cell.setIdBlock(block / 16);
-
+        cell.setPosition(findPosition(position, ray));
         return cell;
     }
 
+
+    /*
+    Find the position of a cell
+     */
     public Position findPosition(int positionBlock, int ray) {
         Position pos = new Position();
         int dimension = ray * 2 + 1;
@@ -32,5 +56,28 @@ public class CellManager {
             }
         }
         return pos;
+    }
+
+    /*
+    Check if a path can be find to go to a target
+     */
+    public boolean isReachable(List<Cell> cells, Position start, Position target) {
+
+        return false;
+    }
+
+    /*
+    Calcul the gCost, hCost and fCost of a cell
+     */
+    public Cell calculCosts(Cell cell, Position start, Position target) {
+        cell.setgCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
+                (Math.abs(start.getX()) + Math.abs(start.getZ())));
+
+        cell.sethCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
+                (Math.abs(target.getX()) + Math.abs(target.getZ())));
+
+        cell.setfCost(cell.getgCost() + cell.gethCost());
+
+        return cell;
     }
 }
