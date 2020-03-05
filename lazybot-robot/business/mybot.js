@@ -18,22 +18,27 @@ exports.connect = function (username, password) {
     });
 };
 
-exports.loadChunkArround = function (bot, ray) {
+exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
     let blocks = [];
-    let xMin = -1 * Number.parseInt(ray);
-    let zMin = -1 * Number.parseInt(ray);
+    let xMin = -1 * Number.parseInt(ray) + (offsetX == null ? 0 : offsetX);
+    let zMin = -1 * Number.parseInt(ray) + (offsetZ == null ? 0 : offsetZ);
     let x = xMin;
     let z = zMin;
 
-    while (x <= ray && z <= ray) {
+    console.log("=== Rayon : " + ray + ", xMin = " + xMin + ", zMin = " + zMin +" ===");
+    let i = 0;
+    while (z <= ray + offsetZ) {
         block = bot.blockAt(bot.entity.position.offset(x, -1, z));
         blockString = block.type * 16 + block.metadata;
+        console.log(i + ".\t" + x + " ; " + z + "\t: " + block.type);
         blocks.push(blockString);
         x++;
-        if (x === ray + 1) {
+        i++;
+        if (x === ray + 1 + offsetX) {
             x = xMin;
             z++;
         }
     }
+    console.log('Nombre de blocks : ' + blocks.length);
     return blocks;
 };
