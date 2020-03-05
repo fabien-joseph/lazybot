@@ -18,22 +18,22 @@ exports.connect = function (username, password) {
     });
 };
 
-exports.loadChunkArround = function(bot, ray) {
+exports.loadChunkArround = function (bot, ray) {
     let blocks = [];
     let xMin = -1 * Number.parseInt(ray);
     let zMin = -1 * Number.parseInt(ray);
     let x = xMin;
     let z = zMin;
 
-    while (x <= ray) {
-        while (z <= ray) {
-            block = bot.blockAt(bot.entity.position.offset(x, -1, z));
-            blockString = block.type * 16 + block.metadata;
-            blocks.push(blockString);
+    while (x <= ray && z <= ray) {
+        block = bot.blockAt(bot.entity.position.offset(x, -1, z));
+        blockString = block.type * 16 + block.metadata;
+        blocks.push(blockString);
+        x++;
+        if (x === ray + 1) {
+            x = xMin;
             z++;
         }
-        z = xMin;
-        x++;
     }
     return blocks;
 };
