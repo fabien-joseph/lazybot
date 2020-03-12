@@ -2,13 +2,12 @@ package com.lazybot.microservices.map.business;
 
 import com.lazybot.microservices.map.model.Cell;
 import com.lazybot.microservices.map.model.Position;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CellManager {
-
     /*
     Convertion array of int to list of cells
      */
@@ -30,7 +29,6 @@ public class CellManager {
         cell.setPosition(findPosition(position, ray));
         return cell;
     }
-
 
     /*
     Find the position of a cell

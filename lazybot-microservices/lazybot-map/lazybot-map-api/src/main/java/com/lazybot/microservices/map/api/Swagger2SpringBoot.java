@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.swagger", "com.lazybot.microservices.map.api" ,"com.lazybot.microservices.map.api.api" , "com.lazybot.microservices.map.api.configuration", "com.lazybot.microservices.map.api.socket"})
+@ComponentScan(basePackages = { "io.swagger","com.lazybot.microservices.map.*" ,"com.lazybot.microservices.map.api" ,"com.lazybot.microservices.map.api.api" , "com.lazybot.microservices.map.api.configuration", "com.lazybot.microservices.map.api.socket"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Value("${rt-server.host}")

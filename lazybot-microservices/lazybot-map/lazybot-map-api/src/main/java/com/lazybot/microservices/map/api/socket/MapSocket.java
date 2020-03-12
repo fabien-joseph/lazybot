@@ -3,26 +3,17 @@ package com.lazybot.microservices.map.api.socket;
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIONamespace;
-import com.corundumstudio.socketio.listener.DataListener;
 import com.lazybot.microservices.map.business.CellManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Component
+@Service
 public class MapSocket {
-    private final SocketIONamespace namespace;
+    private final CellManager cellManager;
 
-    private CellManager cellManager;
-
-    @Autowired
-    public MapSocket(SocketIOServer server) {
-        this.namespace = server.addNamespace("/");
-        this.cellManager = new CellManager();
-
+    public MapSocket(SocketIOServer server, CellManager cellManager) {
         server.addEventListener("loadChunk", List.class, this::myMethod);
+        this.cellManager = cellManager;
     }
 
     public void myMethod (SocketIOClient client, List<Integer> data, AckRequest ackSender) throws Exception {

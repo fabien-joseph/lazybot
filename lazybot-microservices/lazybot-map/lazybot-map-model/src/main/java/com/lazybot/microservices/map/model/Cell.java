@@ -1,7 +1,6 @@
 package com.lazybot.microservices.map.model;
 
 public class Cell {
-
     // Distance from starting node
     Integer gCost;
 
@@ -15,15 +14,18 @@ public class Cell {
 
     int idBlock;
 
+    int metaData;
+
     public Cell() {
     }
 
-    public Cell(Integer gCost, Integer hCost, Integer fCost, Position position, int idBlock) {
+    public Cell(Integer gCost, Integer hCost, Integer fCost, Position position, int idBlock, int metaData) {
         this.gCost = gCost;
         this.hCost = hCost;
         this.fCost = fCost;
         this.position = position;
         this.idBlock = idBlock;
+        this.metaData = metaData;
     }
 
     public Integer getgCost() {
@@ -66,6 +68,14 @@ public class Cell {
         this.idBlock = idBlock;
     }
 
+    public int getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(int metaData) {
+        this.metaData = metaData;
+    }
+
     @Override
     public String toString() {
         return "Cell{" +
@@ -74,6 +84,7 @@ public class Cell {
                 ", fCost=" + fCost +
                 ", position=" + position +
                 ", idBlock=" + idBlock +
+                ", metaData=" + metaData +
                 '}';
     }
 }
