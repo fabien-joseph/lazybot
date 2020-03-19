@@ -89,15 +89,15 @@ public class AppTest
 
         cell.setPosition(new Position(-1, 0));
         cell = manager.calculCosts(cell, start, target);
-        Assert.assertEquals(java.util.Optional.of(8).get(), cell.gethCost());
-        Assert.assertEquals(java.util.Optional.of(1).get(), cell.getgCost());
-        Assert.assertEquals(java.util.Optional.of(9).get(), cell.getfCost());
+        Assert.assertEquals(java.util.Optional.of(8).get(), cell.getHCost());
+        Assert.assertEquals(java.util.Optional.of(1).get(), cell.getGCost());
+        Assert.assertEquals(java.util.Optional.of(9).get(), cell.getFCost());
 
         cell.setPosition(new Position(0, 0));
         cell = manager.calculCosts(cell, start, target);
-        Assert.assertEquals(java.util.Optional.of(7).get(), cell.gethCost());
-        Assert.assertEquals(java.util.Optional.of(0).get(), cell.getgCost());
-        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getfCost());
+        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getHCost());
+        Assert.assertEquals(java.util.Optional.of(0).get(), cell.getGCost());
+        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getFCost());
 
 
     }

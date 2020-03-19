@@ -68,13 +68,13 @@ public class CellManager {
     Calcul the gCost, hCost and fCost of a cell
      */
     public Cell calculCosts(Cell cell, Position start, Position target) {
-        cell.setgCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
+        cell.setGCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
                 (Math.abs(start.getX()) + Math.abs(start.getZ())));
 
-        cell.sethCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
+        cell.setHCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
                 (Math.abs(target.getX()) + Math.abs(target.getZ())));
 
-        cell.setfCost(cell.getgCost() + cell.gethCost());
+        cell.setFCost(cell.getGCost() + cell.getHCost());
 
         return cell;
     }

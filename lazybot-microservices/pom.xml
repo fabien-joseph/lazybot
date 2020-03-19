@@ -41,6 +41,13 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

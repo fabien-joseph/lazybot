@@ -1,5 +1,11 @@
 package com.lazybot.microservices.map.model;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
 public class Cell {
     // Distance from starting node
     Integer gCost;
@@ -26,65 +32,5 @@ public class Cell {
         this.position = position;
         this.idBlock = idBlock;
         this.metaData = metaData;
-    }
-
-    public Integer getgCost() {
-        return gCost;
-    }
-
-    public void setgCost(Integer gCost) {
-        this.gCost = gCost;
-    }
-
-    public Integer gethCost() {
-        return hCost;
-    }
-
-    public void sethCost(Integer hCost) {
-        this.hCost = hCost;
-    }
-
-    public Integer getfCost() {
-        return fCost;
-    }
-
-    public void setfCost(Integer fCost) {
-        this.fCost = fCost;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public int getIdBlock() {
-        return idBlock;
-    }
-
-    public void setIdBlock(int idBlock) {
-        this.idBlock = idBlock;
-    }
-
-    public int getMetaData() {
-        return metaData;
-    }
-
-    public void setMetaData(int metaData) {
-        this.metaData = metaData;
-    }
-
-    @Override
-    public String toString() {
-        return "Cell{" +
-                "gCost=" + gCost +
-                ", hCost=" + hCost +
-                ", fCost=" + fCost +
-                ", position=" + position +
-                ", idBlock=" + idBlock +
-                ", metaData=" + metaData +
-                '}';
     }
 }
