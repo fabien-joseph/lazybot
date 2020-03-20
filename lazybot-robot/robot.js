@@ -3,7 +3,7 @@ const io = require("socket.io-client"),
 
 var mybot = require('./business/mybot');
 var mineflayer = require('mineflayer');
-var bot = mybot.connect(process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
+var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
 
 bot.on('chat', function(username, message) {
     if (username === bot.username) return;
