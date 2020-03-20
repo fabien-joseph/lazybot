@@ -1,4 +1,4 @@
-package com.lazybot.microservices.mission.api.lazybotmissionapi;
+package com.lazybot.microservices.mission.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

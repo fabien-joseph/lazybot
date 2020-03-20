@@ -1,4 +1,4 @@
-package com.lazybot.microservices.mission.api.lazybotmissionapi;
+package com.lazybot.microservices.mission.api;
 
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
