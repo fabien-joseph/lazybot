@@ -11,10 +11,15 @@ import java.util.List;
 public class MissionSocket {
 
     public MissionSocket(SocketIOServer server) {
-        server.addEventListener("doFight", List.class, this::myMethod);
+        server.addEventListener("connectABot", String.class, this::connectABot);
     }
 
-    public void myMethod (SocketIOClient client, List<Integer> data, AckRequest ackSender) throws Exception {
-        System.out.println(data.size());
+    public void connectABot(SocketIOClient client, String infoConnection, AckRequest ackSender) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder("node", "C:\\Users\\Fabien\\IdeaProjects\\lazybot\\lazybot-robot\\robot.js", "--username=Bot");
+        pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+        pb.redirectError(ProcessBuilder.Redirect.INHERIT);
+        Process p = pb.start();
+        Thread.sleep(5000);
+        p.destroy();
     }
 }

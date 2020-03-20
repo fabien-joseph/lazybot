@@ -19,6 +19,7 @@
     <modules>
         <module>lazybot-mission-api</module>
         <module>lazybot-mission-business</module>
+        <module>lazybot-mission-model</module>
     </modules>
 
     <properties>

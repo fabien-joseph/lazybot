@@ -4,17 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.lazybot.microservices.mission</groupId>
-    <artifactId>lazybot-mission</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-
-  <groupId>com.lazybot.microservices.mission.business</groupId>
-  <artifactId>lazybot-mission-business</artifactId>
+  <groupId>com.lazybot.microservices.mission.model</groupId>
+  <artifactId>lazybot-mission-model</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>lazybot-mission-business</name>
+  <name>lazybot-mission-model</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
