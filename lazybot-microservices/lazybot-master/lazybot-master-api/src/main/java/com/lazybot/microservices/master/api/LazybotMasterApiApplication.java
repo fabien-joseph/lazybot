@@ -46,3 +46,4 @@ public class LazybotMasterApiApplication implements CommandLineRunner {
 
 	}
 }
+

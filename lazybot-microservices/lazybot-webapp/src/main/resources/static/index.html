@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel bots</title>
+</head>
+<body>
+<h1>Panel bots</h1>
+<p>Coucou</p>
+
+<form class="well form-inline" onsubmit="return false;">
+    <button type="button" onClick="sendMessage()" class="btn" id="send">Send</button>
+</form>
+<script src="../js/socket.io-2.2.0.js"></script>
+<script>
+    var ioClient = io.connect('http://localhost:8090/');
+
+    function sendMessage() {
+        ioClient.emit('chat', "Salut, je te contacte ! :D");
+    }
+</script>
+
+</body>
+</html>
