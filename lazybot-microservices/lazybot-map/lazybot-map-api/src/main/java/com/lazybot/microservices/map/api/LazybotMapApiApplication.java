@@ -2,7 +2,6 @@ package com.lazybot.microservices.map.api;
 
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -16,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan(basePackages = { "io.swagger","com.lazybot.microservices.map.*" ,"com.lazybot.microservices.map.api" ,"com.lazybot.microservices.map.api.api" , "com.lazybot.microservices.map.api.configuration", "com.lazybot.microservices.map.api.socket"})
-public class Swagger2SpringBoot implements CommandLineRunner {
+public class LazybotMapApiApplication implements CommandLineRunner {
 
     @Value("${rt-server.host}")
     private String host;
@@ -40,7 +39,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringApplication(Swagger2SpringBoot.class).run(args);
+        new SpringApplication(LazybotMapApiApplication.class).run(args);
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {

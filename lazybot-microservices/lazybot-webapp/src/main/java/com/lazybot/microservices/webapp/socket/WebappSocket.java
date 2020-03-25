@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
 
 @Service
-public class MainSocket {
-    private static final Logger log = LoggerFactory.getLogger(MainSocket.class);
-    private Socket socket;
+public class WebappSocket {
+    private static final Logger log = LoggerFactory.getLogger(WebappSocket.class);
+    private Socket socketMaster;
 
-    public MainSocket(SocketIOServer server) throws URISyntaxException {
-        this.socket = IO.socket("http://localhost:9093");
-        this.socket.connect();
+    public WebappSocket(SocketIOServer server) throws URISyntaxException {
+        this.socketMaster = IO.socket("http://localhost:9090");
+        this.socketMaster.connect();
         server.addConnectListener(onConnected());
-        server.addEventListener("chat", String.class, this::chat);
+        server.addEventListener("getChunk", Integer.class, this::getChunk);
     }
 
     private ConnectListener onConnected() {
@@ -33,8 +33,8 @@ public class MainSocket {
         };
     }
 
-    public void chat(SocketIOClient client, String message, AckRequest ackSender) throws Exception {
-        socket.emit("test");
-        System.out.println(message);
+    public void getChunk(SocketIOClient client, Integer ray, AckRequest ackSender) {
+        socketMaster.emit("getChunk", ray);
+        System.out.println("Rayon = " + ray);
     }
 }

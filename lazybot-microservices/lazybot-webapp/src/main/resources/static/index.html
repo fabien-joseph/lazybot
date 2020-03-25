@@ -9,14 +9,14 @@
 <p>Coucou</p>
 
 <form class="well form-inline" onsubmit="return false;">
-    <button type="button" onClick="sendMessage()" class="btn" id="send">Send</button>
+    <button type="button" onClick="sendMessage()" class="btn" id="send">Récupérer le chunk</button>
 </form>
 <script src="../js/socket.io-2.2.0.js"></script>
 <script>
     var ioClient = io.connect('http://localhost:8090/');
 
     function sendMessage() {
-        ioClient.emit('chat', "Salut, je te contacte ! :D");
+        ioClient.emit('getChunk', 5);
     }
 </script>
 
