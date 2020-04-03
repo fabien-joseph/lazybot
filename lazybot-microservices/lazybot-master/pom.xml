@@ -21,6 +21,7 @@
     <modules>
         <module>lazybot-master-api</module>
         <module>lazybot-master-model</module>
+        <module>lazybot-master-business</module>
     </modules>
 
     <properties>

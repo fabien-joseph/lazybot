@@ -137,14 +137,14 @@
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">10/10</p>
-                            <p class="subtitle">Life</p>
+                            <p class="title"><span id="healthValue">20</span>/20</p>
+                            <p class="subtitle">Health</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">Alive</p>
-                            <p class="subtitle">Status</p>
+                            <p class="title">20/20</p>
+                            <p class="subtitle">Food</p>
                         </article>
                     </div>
                 </div>
@@ -309,6 +309,10 @@
         document.getElementById("yPos").value = '';
         document.getElementById("zPos").value = '';
     }
+
+    ioClient.on("updateHealth", function (health) {
+        document.getElementById("healthValue").innerHTML = health;
+    })
 </script>
 </body>
 

@@ -8,8 +8,10 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = { "com.lazybot.microservices.master.*"})
 public class LazybotMasterApiApplication implements CommandLineRunner {
 	@Value("${rt-server.host}")
 	private String host;
@@ -36,7 +38,7 @@ public class LazybotMasterApiApplication implements CommandLineRunner {
 		SpringApplication.run(LazybotMasterApiApplication.class, args);
 	}
 
-	class ExitException extends RuntimeException implements ExitCodeGenerator {
+	static class ExitException extends RuntimeException implements ExitCodeGenerator {
 		private static final long serialVersionUID = 1L;
 
 		@Override

@@ -1,18 +1,16 @@
 const io = require("socket.io-client"),
-    ioMaster = io.connect("http://localhost:9090"),
-    //ioMission = io.connect("http://localhost:9091"),
-    ioMap = io.connect("http://localhost:9092");
+    ioMaster = io.connect("http://localhost:9090");
 
 var botId;
 var mybot = require('./business/mybot');
 var mineflayer = require('mineflayer');
 var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
+connection();
 
-bot.on('login', function () {
+function connection () {
     botId = Math.floor(Math.random() * (999999 - 100000) + 100000);
-    ioMap.emit('connectBot', botId);
     ioMaster.emit('connectBot', botId);
-});
+}
 
 bot.on('end', function () {
     ioMaster.emit('disconnect', botId);
@@ -28,8 +26,14 @@ bot.on('chat', function(username, message) {
     bot.chat(message);
 });
 
+bot.on('health', function () {
+    ioMaster.emit("healthChange", bot.health);
+});
 
-ioMap.on('test', function (ray, offsetX, offsetZ) {
-    console.log("Test reçu")
-    bot.chat("Recu");
+ioMaster.on('test', function () {
+    console.log("J'ai reçu le retour");
+});
+
+ioMaster.on('sendMessage', function (message) {
+    bot.chat(message);
 });

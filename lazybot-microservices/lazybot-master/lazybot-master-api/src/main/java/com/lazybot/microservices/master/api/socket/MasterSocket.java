@@ -3,8 +3,9 @@ package com.lazybot.microservices.master.api.socket;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.lazybot.microservices.master.business.ConnectManager;
+import com.lazybot.microservices.master.model.Position;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
@@ -14,39 +15,46 @@ import java.util.Map;
 
 @Service
 public class MasterSocket {
-    private Socket clientMission;
-    private Socket clientMap;
     private Map<String, SocketIOClient> bots;
-    public MasterSocket(SocketIOServer server) throws URISyntaxException {
+    private SocketIOServer server;
+    private Socket socketWebapp;
+
+    private final ConnectManager connectManager;
+
+    public MasterSocket(SocketIOServer serverMaster, ConnectManager connectManager) throws URISyntaxException {
+        this.socketWebapp = IO.socket("http://localhost:8090");
+        this.socketWebapp.connect();
+        this.server = serverMaster;
         bots = new HashMap<>();
-        this.clientMission = IO.socket("http://localhost:9091");
-        this.clientMap = IO.socket("http://localhost:9092");
-        this.clientMission.connect();
-        this.clientMap.connect();
-
-        server.addEventListener("disconnectBot", String.class, this::disconnectBot);
-        server.addEventListener("connectBot", String.class, this::connectBot);
-        server.addEventListener("test", String.class, this::testPassClient);
-        server.addEventListener("getChunk", Integer.class, this::getChunk);
+        this.server.addEventListener("chat", String.class, this::chat);
+        this.server.addEventListener("connectBot", String.class, this::connectBot);
+        this.server.addEventListener("sendMessage", String.class, this::sendMessage);
+        this.server.addEventListener("goToPos", Position.class, this::goToPos);
+        this.server.addEventListener("healthChange", Integer.class, this::healthChange);
+        this.connectManager = connectManager;
     }
 
-    private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) throws InterruptedException {
-        System.out.println("CONNEXION de " + id );
+    private void healthChange(SocketIOClient socketIOClient, Integer health, AckRequest ackRequest) {
+        socketWebapp.emit("healthChange", health);
+    }
+
+    private void goToPos(SocketIOClient socketIOClient, Position pos, AckRequest ackRequest) throws MismatchedInputException {
+        System.out.println("x = " + pos.getX() + ", y = " + pos.getY() + ", z = " + pos.getZ());
+    }
+
+    private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
+        System.out.println("SessionId : " + socketIOClient.getSessionId() + ", Message : " + message);
+        server.getBroadcastOperations().sendEvent("sendMessage", message);
+    }
+
+    private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+        System.out.println("Ajout d'un bot...");
         bots.put(id, socketIOClient);
-    }
-    private void disconnectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        System.out.println("Déconnexion de " + id);
-        bots.remove(id.toString());
+        server.getBroadcastOperations().sendEvent("test", "Salut", "Resalut");
+        System.out.println("Le bot id " + id + " a été ajouté. Nombre de bots totaux : " + bots.size());
     }
 
-    private void testPassClient(SocketIOClient socketIOClient, String test, AckRequest ackRequest)
-    {
-        System.out.println("TEST DE PASSAGE");
-        //clientMap.emit("callClient", socketIOClient);
-    }
+    private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
 
-    public void getChunk(SocketIOClient client, Integer ray, AckRequest ackSender) throws Exception {
-        clientMap.emit("getChunk", ray);
-        System.out.println("Test reçu sur lazybot-master !");
     }
 }
