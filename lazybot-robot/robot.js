@@ -22,6 +22,9 @@ bot.on('chat', function(username, message) {
         let blocks = mybot.loadChunkArround(bot, 10, 0, 0);
         //ioMaster.emit('loadChunk', mybot.loadChunkArround(bot, 1));
         return;
+    } else if (message === 'pos') {
+        console.log(bot.entity.position);
+        return;
     }
     bot.chat(message);
 });

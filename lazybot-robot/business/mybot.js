@@ -52,6 +52,10 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
     return blocks;
 };
 
+exports.jsonBot = function (bot) {
+    return {username: bot.username, };
+};
+
 function parseArgName(arg) {
     if (arg == null) {
         throw new Error('The given argument is null');

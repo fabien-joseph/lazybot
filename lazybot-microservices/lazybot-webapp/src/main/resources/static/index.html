@@ -286,6 +286,7 @@
 <script src="../js/socket.io-2.2.0.js"></script>
 <script>
     var ioClient = io.connect('http://localhost:8090/');
+    let lastHealthValue = 20;
 
     function getChunk() {
         ioClient.emit('getChunk', 5);
@@ -312,6 +313,15 @@
 
     ioClient.on("updateHealth", function (health) {
         document.getElementById("healthValue").innerHTML = health;
+        if (lastHealthValue > health) {
+            document.getElementById("healthValue").style.color = "#ff0000";
+        }
+        if (lastHealthValue > health) {
+            setTimeout(function () {
+                document.getElementById("healthValue").style.color = "#000000";
+            }, 500);
+        }
+        lastHealthValue = health;
     })
 </script>
 </body>
