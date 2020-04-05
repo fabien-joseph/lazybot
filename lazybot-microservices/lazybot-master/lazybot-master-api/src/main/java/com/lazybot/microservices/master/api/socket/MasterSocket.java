@@ -4,6 +4,7 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.google.gson.Gson;
 import com.lazybot.microservices.master.business.ConnectManager;
 import com.lazybot.microservices.master.model.Position;
 import io.socket.client.IO;
@@ -29,7 +30,7 @@ public class MasterSocket {
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
-        this.server.addEventListener("goToPos", Position.class, this::goToPos);
+        this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("healthChange", Integer.class, this::healthChange);
         this.connectManager = connectManager;
     }
@@ -38,8 +39,9 @@ public class MasterSocket {
         socketWebapp.emit("healthChange", health);
     }
 
-    private void goToPos(SocketIOClient socketIOClient, Position pos, AckRequest ackRequest) throws MismatchedInputException {
-        System.out.println("x = " + pos.getX() + ", y = " + pos.getY() + ", z = " + pos.getZ());
+    private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {
+        Position position = new Gson().fromJson(pos, Position.class);
+        System.out.println("x = " + position.getX() + ", y = " + position.getY() + ", z = " + position.getZ());
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {

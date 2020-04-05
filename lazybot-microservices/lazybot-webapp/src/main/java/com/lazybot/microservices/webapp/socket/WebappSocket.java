@@ -5,6 +5,7 @@ import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
+import com.google.gson.Gson;
 import com.lazybot.microservices.webapp.model.Position;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -37,7 +38,7 @@ public class WebappSocket {
 
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
         System.out.println(position);
-        socketMaster.emit("goToPos", position);
+        socketMaster.emit("goToPos", new Gson().toJson(position));
     }
 
     private ConnectListener onConnected() {

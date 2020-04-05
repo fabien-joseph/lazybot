@@ -12,6 +12,8 @@ function connection () {
     ioMaster.emit('connectBot', botId);
 }
 
+
+
 bot.on('end', function () {
     ioMaster.emit('disconnect', botId);
 });
