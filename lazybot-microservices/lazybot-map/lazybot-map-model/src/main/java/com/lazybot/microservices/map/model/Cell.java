@@ -1,4 +1,5 @@
 package com.lazybot.microservices.map.model;
+import com.lazybot.microservices.commons.model.Position;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

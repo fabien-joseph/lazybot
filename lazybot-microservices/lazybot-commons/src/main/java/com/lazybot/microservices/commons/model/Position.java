@@ -1,4 +1,4 @@
-package com.lazybot.microservices.map.model;
+package com.lazybot.microservices.commons.model;
 
 import lombok.Getter;
 import lombok.Setter;

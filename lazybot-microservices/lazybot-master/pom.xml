@@ -29,6 +29,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <version.lazybot-commons>1.0-SNAPSHOT</version.lazybot-commons>
     </properties>
 
     <dependencies>
@@ -56,6 +57,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lazybot.microservices.commons</groupId>
+            <artifactId>lazybot-commons</artifactId>
+            <version>${version.lazybot-commons}</version>
         </dependency>
     </dependencies>
 

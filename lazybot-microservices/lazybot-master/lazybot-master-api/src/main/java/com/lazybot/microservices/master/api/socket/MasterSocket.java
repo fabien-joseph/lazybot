@@ -5,8 +5,8 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
+import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
-import com.lazybot.microservices.master.model.Position;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class MasterSocket {
 
     private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {
         Position position = new Gson().fromJson(pos, Position.class);
-        System.out.println("x = " + position.getX() + ", y = " + position.getY() + ", z = " + position.getZ());
+        System.out.println("x = " + position.getX() + ", z = " + position.getZ());
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
