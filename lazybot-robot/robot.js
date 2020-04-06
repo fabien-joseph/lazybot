@@ -27,12 +27,15 @@ bot.on('chat', function(username, message) {
     } else if (message === 'pos') {
         console.log(bot.entity.position);
         return;
+    } else if (message === 'inv') {
+        console.log(bot.inventory);
+        return;
     }
     bot.chat(message);
 });
 
 bot.on('health', function () {
-    ioMaster.emit("healthChange", bot.health);
+    ioMaster.emit("healthChange", mybot.jsonBot(botId, bot));
 });
 
 ioMaster.on('test', function () {

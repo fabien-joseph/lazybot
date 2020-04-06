@@ -125,7 +125,7 @@
                 <div class="tile is-ancestor has-text-centered">
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">eadzzda</p>
+                            <p class="title"><span id="botXPos">0</span> ; <span id="botZPos">0</span></p>
                             <p class="subtitle">Position</p>
                         </article>
                     </div>
@@ -143,7 +143,7 @@
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">20/20</p>
+                            <p class="title"><span id="foodValue">20</span>/20</p>
                             <p class="subtitle">Food</p>
                         </article>
                     </div>
@@ -311,18 +311,25 @@
         document.getElementById("zPos").value = '';
     }
 
-    ioClient.on("updateHealth", function (health) {
-        document.getElementById("healthValue").innerHTML = health;
-        if (lastHealthValue > health) {
+    ioClient.on("updateBot", function (bot) {
+        document.getElementById("healthValue").innerHTML = bot.health;
+        document.getElementById("foodValue").innerHTML = bot.food;
+        document.getElementById("botXPos").innerHTML = bot.position.x;
+        document.getElementById("botZPos").innerHTML = bot.position.z;
+        colorizeHealth(lastHealthValue, bot.health);
+        lastHealthValue = bot.health;
+    })
+
+    function colorizeHealth(lastHealth, health) {
+        if (lastHealthValue > bot.health) {
             document.getElementById("healthValue").style.color = "#ff0000";
         }
-        if (lastHealthValue > health) {
+        if (lastHealthValue > bot.health) {
             setTimeout(function () {
                 document.getElementById("healthValue").style.color = "#000000";
             }, 500);
         }
-        lastHealthValue = health;
-    })
+    }
 </script>
 </body>
 

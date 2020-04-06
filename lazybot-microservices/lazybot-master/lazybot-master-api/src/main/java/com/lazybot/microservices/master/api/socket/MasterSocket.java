@@ -5,6 +5,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
+import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
@@ -31,12 +32,12 @@ public class MasterSocket {
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
-        this.server.addEventListener("healthChange", Integer.class, this::healthChange);
+        this.server.addEventListener("healthChange", Bot.class, this::healthChange);
         this.connectManager = connectManager;
     }
 
-    private void healthChange(SocketIOClient socketIOClient, Integer health, AckRequest ackRequest) {
-        socketWebapp.emit("healthChange", health);
+    private void healthChange(SocketIOClient socketIOClient, Bot bot, AckRequest ackRequest) {
+        socketWebapp.emit("healthChange", new Gson().toJson(bot));
     }
 
     private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {

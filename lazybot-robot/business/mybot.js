@@ -52,8 +52,14 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
     return blocks;
 };
 
-exports.jsonBot = function (bot) {
-    return {username: bot.username, };
+exports.jsonBot = function (id, bot) {
+    return {
+        "id": id,
+        "username": bot.username,
+        "position": {x: bot.entity.position.x, z: bot.entity.position.z},
+        "health": bot.health,
+        "food": bot.food
+    };
 };
 
 function parseArgName(arg) {
@@ -65,7 +71,7 @@ function parseArgName(arg) {
     if (words[0] === '' || words[0] == null) {
         throw new Error('The argument as no name');
     }
-    return  words[0].replace('--', '');
+    return words[0].replace('--', '');
 }
 
 function parseArgValue(arg) {

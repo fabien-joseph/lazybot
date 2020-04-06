@@ -6,13 +6,15 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.google.gson.Gson;
-import com.lazybot.microservices.webapp.model.Position;
+import com.lazybot.microservices.commons.model.Bot;
+import com.lazybot.microservices.commons.model.Position;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.net.URISyntaxException;
 
 @Service
@@ -28,12 +30,13 @@ public class WebappSocket {
         server.addConnectListener(onConnected());
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
-        server.addEventListener("healthChange", Integer.class, this::healthChange);
+        server.addEventListener("healthChange", String.class, this::healthChange);
     }
 
-    private void healthChange(SocketIOClient socketIOClient, Integer health, AckRequest ackRequest) {
-        System.out.println("Health = " + health);
-        server.getBroadcastOperations().sendEvent("updateHealth", health);
+    private void healthChange(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        System.out.println(bot);
+        server.getBroadcastOperations().sendEvent("updateBot", bot);
     }
 
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
