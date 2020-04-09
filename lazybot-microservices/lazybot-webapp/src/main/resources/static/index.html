@@ -318,13 +318,13 @@
         document.getElementById("botZPos").innerHTML = bot.position.z;
         colorizeHealth(lastHealthValue, bot.health);
         lastHealthValue = bot.health;
-    })
+    });
 
     function colorizeHealth(lastHealth, health) {
-        if (lastHealthValue > bot.health) {
+        if (lastHealthValue > health) {
             document.getElementById("healthValue").style.color = "#ff0000";
         }
-        if (lastHealthValue > bot.health) {
+        if (lastHealthValue > health) {
             setTimeout(function () {
                 document.getElementById("healthValue").style.color = "#000000";
             }, 500);
