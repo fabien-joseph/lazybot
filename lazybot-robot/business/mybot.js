@@ -1,7 +1,16 @@
 var mineflayer = require('mineflayer');
 
-exports.connect = function (username, password) {
-    if (password == null || password === 'undefined')
+exports.connect = function (argv) {
+    let username = '';
+    let password = '';
+
+    if (parseArgName(argv[2]) !== 'username' && parseArgName(argv[3]) !== 'password') {
+        throw new Error('The given arguments seems incorrect. Are they realy name \'username\' and \'password\' ?');
+    }
+
+    username = parseArgValue(argv[2]);
+    password = parseArgValue(argv [3]);
+    if (password == null || password === 'undefined' || password === '')
         return mineflayer.createBot({
             host: "localhost", // optional
             port: 25565,       // optional
@@ -25,12 +34,12 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
     let x = xMin;
     let z = zMin;
 
-    console.log("=== Rayon : " + ray + ", xMin = " + xMin + ", zMin = " + zMin +" ===");
+    //console.log("=== Rayon : " + ray + ", xMin = " + xMin + ", zMin = " + zMin +" ===");
     let i = 0;
     while (z <= ray + offsetZ) {
         block = bot.blockAt(bot.entity.position.offset(x, -1, z));
         blockString = block.type * 16 + block.metadata;
-        console.log(i + ".\t" + x + " ; " + z + "\t: " + block.type);
+        //console.log(i + ".\t" + x + " ; " + z + "\t: " + block.type);
         blocks.push(blockString);
         x++;
         i++;
@@ -39,6 +48,36 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
             z++;
         }
     }
-    console.log('Nombre de blocks : ' + blocks.length);
+    //console.log('Nombre de blocks : ' + blocks.length);
     return blocks;
 };
+
+exports.jsonBot = function (id, bot) {
+    return {
+        "id": id,
+        "username": bot.username,
+        "position": {x: bot.entity.position.x, z: bot.entity.position.z},
+        "health": bot.health,
+        "food": bot.food
+    };
+};
+
+function parseArgName(arg) {
+    if (arg == null) {
+        throw new Error('The given argument is null');
+    }
+    const words = arg.split("=");
+
+    if (words[0] === '' || words[0] == null) {
+        throw new Error('The argument as no name');
+    }
+    return words[0].replace('--', '');
+}
+
+function parseArgValue(arg) {
+    if (arg == null) {
+        throw new Error('The given argument is null');
+    }
+    const words = arg.split("=");
+    return words[1];
+}

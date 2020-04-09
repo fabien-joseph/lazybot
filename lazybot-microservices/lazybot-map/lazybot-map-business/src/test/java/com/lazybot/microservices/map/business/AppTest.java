@@ -2,8 +2,8 @@ package com.lazybot.microservices.map.business;
 
 import static org.junit.Assert.assertTrue;
 
+import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.map.model.Cell;
-import com.lazybot.microservices.map.model.Position;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

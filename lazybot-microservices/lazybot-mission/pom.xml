@@ -5,16 +5,22 @@
     <parent>
         <artifactId>lazybot-microservices</artifactId>
         <groupId>com.lazybot.microservices</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lazybot.microservices.mission</groupId>
     <artifactId>lazybot-mission</artifactId>
+    <packaging>pom</packaging>
 
     <name>lazybot-mission</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
+    <modules>
+        <module>lazybot-mission-api</module>
+        <module>lazybot-mission-business</module>
+        <module>lazybot-mission-model</module>
+    </modules>
 
     <properties>
         <java.version>1.8</java.version>
