@@ -20,6 +20,8 @@ public class MasterSocket {
     private Map<String, SocketIOClient> bots;
     private SocketIOServer server;
     private Socket socketWebapp;
+    private SocketIOClient socketMap;
+    private SocketIOClient socketMission;
 
     private final ConnectManager connectManager;
 
@@ -27,13 +29,20 @@ public class MasterSocket {
         this.socketWebapp = IO.socket("http://localhost:8090");
         this.socketWebapp.connect();
         this.server = serverMaster;
+        this.server.addEventListener("connectMap", String.class, this::connectMap);
+        this.server.addEventListener("connectMission", String.class, this::connectMission);
         bots = new HashMap<>();
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("healthChange", Bot.class, this::healthChange);
+        this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.connectManager = connectManager;
+    }
+
+    private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
+        socketMap.sendEvent("loadMap", ray);
     }
 
     private void healthChange(SocketIOClient socketIOClient, Bot bot, AckRequest ackRequest) {
@@ -50,14 +59,22 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("sendMessage", message);
     }
 
+    private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+    }
+
     private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
         System.out.println("Ajout d'un bot...");
         bots.put(id, socketIOClient);
         server.getBroadcastOperations().sendEvent("test", "Salut", "Resalut");
         System.out.println("Le bot id " + id + " a été ajouté. Nombre de bots totaux : " + bots.size());
     }
-
-    private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-
+    private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+        System.out.println("Socket MAP connecté");
+        this.socketMap = socketIOClient;
     }
+    private void connectMission(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+        System.out.println("Socket MISSION connecté");
+        this.socketMission = socketIOClient;
+    }
+
 }

@@ -3,16 +3,16 @@ const io = require("socket.io-client"),
 
 var botId;
 var mybot = require('./business/mybot');
-var mineflayer = require('mineflayer');
+const mineflayer = require('mineflayer');
+const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
+navigatePlugin(bot);
 connection();
 
 function connection () {
     botId = Math.floor(Math.random() * (999999 - 100000) + 100000);
     ioMaster.emit('connectBot', botId);
 }
-
-
 
 bot.on('end', function () {
     ioMaster.emit('disconnect', botId);
@@ -30,6 +30,8 @@ bot.on('chat', function(username, message) {
     } else if (message === 'inv') {
         console.log(bot.inventory);
         return;
+    } else if (message === 'spawn') {
+        bot.navigate.to(bot.players['Styleure'].entity.position);
     }
     bot.chat(message);
 });
