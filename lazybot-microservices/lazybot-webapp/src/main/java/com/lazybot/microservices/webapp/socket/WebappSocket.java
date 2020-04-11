@@ -40,8 +40,8 @@ public class WebappSocket {
         server.getBroadcastOperations().sendEvent("updateBot", bot);
     }
 
-    private void loadMap(SocketIOClient socketIOClient, Integer string, AckRequest ackRequest) {
-        socketMaster.emit("loadMap");
+    private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
+        socketMaster.emit("loadMap", ray);
     }
 
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {

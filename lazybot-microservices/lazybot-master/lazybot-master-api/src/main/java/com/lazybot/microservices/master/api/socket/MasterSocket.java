@@ -12,7 +12,9 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,20 +31,34 @@ public class MasterSocket {
         this.socketWebapp = IO.socket("http://localhost:8090");
         this.socketWebapp.connect();
         this.server = serverMaster;
+        bots = new HashMap<>();
+
+        // CONNECTIONS
         this.server.addEventListener("connectMap", String.class, this::connectMap);
         this.server.addEventListener("connectMission", String.class, this::connectMission);
-        bots = new HashMap<>();
+
+        // FROM WEBAPP
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("healthChange", Bot.class, this::healthChange);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
+
+        // FROM BOTS
+        this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
+
         this.connectManager = connectManager;
     }
 
+    private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
+        System.out.println("Size = " + map.size());
+        //socketMap.sendEvent("loadMap", ray);
+    }
+
     private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
-        socketMap.sendEvent("loadMap", ray);
+        System.out.println("Rayon = " + ray);
+        server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
     private void healthChange(SocketIOClient socketIOClient, Bot bot, AckRequest ackRequest) {

@@ -14,10 +14,6 @@ function connection () {
     ioMaster.emit('connectBot', botId);
 }
 
-bot.on('end', function () {
-    ioMaster.emit('disconnect', botId);
-});
-
 bot.on('chat', function(username, message) {
     if (username === bot.username) return;
     if (message === 'chunk') {
@@ -38,6 +34,11 @@ bot.on('chat', function(username, message) {
 
 bot.on('health', function () {
     ioMaster.emit("healthChange", mybot.jsonBot(botId, bot));
+});
+
+ioMaster.on('getLoadMap', function (ray) {
+    let blocks = mybot.loadChunkArround(bot, ray, 0, 0);
+    ioMaster.emit("returnLoadMap", blocks);
 });
 
 ioMaster.on('test', function () {

@@ -3,11 +3,30 @@ package com.lazybot.microservices.map.business;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.map.model.Cell;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CellManager {
+    /*
+    Convert a list of cells to a map with two lists to represent X and Z;
+     */
+    public List<ArrayList<Cell>> convertListTo2DMap(List<Cell> cells, int ray) {
+        List<ArrayList<Cell>> map = new ArrayList<>();
+        int dimension = ray * 2 + 1;
+
+        int cursor = 0;
+        for (int i = 0; i < dimension; i++) {
+            map.add(new ArrayList<>());
+            for (int j = 0; j < dimension; j++) {
+                map.get(i).add(cells.get(cursor));
+                    cursor++;
+            }
+        }
+        return map;
+    }
+
     /*
     Convertion array of int to list of cells
      */

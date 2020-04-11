@@ -205,12 +205,21 @@
                         </header>
                         <div class="card-content">
                             <div class="content">
-                                <div class="control">
-                                    <button type="button" onclick="loadMap()" class="button is-large is-gray">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <label for="myMessage">
+                                            <input class="input is-large" type="text" placeholder="Rayon de chargement"
+                                                   id="rayonLoadMap">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="loadMap()" class="button is-large is-gray">
                                             <span class="icon is-medium is-left">
                       <i class="fas fa-layer-group"></i>
                     </span>
-                                    </button>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +319,9 @@
     }
 
     function loadMap() {
-        ioClient.emit('loadMap');
+        let rayon = parseInt(document.getElementById("rayonLoadMap").value);
+        ioClient.emit('loadMap', rayon);
+        document.getElementById("rayonLoadMap").value = '';
     }
 
     ioClient.on("updateBot", function (bot) {

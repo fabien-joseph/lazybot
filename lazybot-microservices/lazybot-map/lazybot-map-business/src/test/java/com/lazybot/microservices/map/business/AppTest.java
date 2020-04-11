@@ -8,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Unit test for simple App.
  */
@@ -23,11 +26,11 @@ public class AppTest
         manager = new CellManager();
 
         this.blocks = new int[]{
-                2, 2, 2, 2, 2,
-                2, 2, 2, 2, 2,
-                2, 1, 2, 2, 2,
-                2, 1, 1, 2, 2,
-                2, 2, 2, 2, 2};
+                32, 32, 32, 32, 32,
+                32, 32, 32, 32, 32,
+                32, 48, 32, 32, 32,
+                32, 16, 16, 32, 32,
+                32, 32, 32, 32, 32};
 
         this.ray = 5;
     }
@@ -98,8 +101,22 @@ public class AppTest
         Assert.assertEquals(java.util.Optional.of(7).get(), cell.getHCost());
         Assert.assertEquals(java.util.Optional.of(0).get(), cell.getGCost());
         Assert.assertEquals(java.util.Optional.of(7).get(), cell.getFCost());
+    }
 
+    @Test
+    public void testConvertListTo2DMap() {
+        List<Cell> cells = manager.convertBlocksToCellList(blocks, 2);
+        List<ArrayList<Cell>> map = manager.convertListTo2DMap(cells, 2);
 
+        Assert.assertEquals(2, map.get(0).get(0).getIdBlock());
+        Assert.assertEquals(2, map.get(0).get(2).getIdBlock());
+        Assert.assertEquals(2, map.get(1).get(0).getIdBlock());
+        Assert.assertEquals(2, map.get(1).get(4).getIdBlock());
+        Assert.assertEquals(2, map.get(2).get(0).getIdBlock());
+        Assert.assertEquals(3, map.get(2).get(1).getIdBlock());
+        Assert.assertEquals(1, map.get(3).get(1).getIdBlock());
+        Assert.assertEquals(1, map.get(3).get(2).getIdBlock());
+        Assert.assertEquals(2, map.get(3).get(3).getIdBlock());
     }
 
 }
