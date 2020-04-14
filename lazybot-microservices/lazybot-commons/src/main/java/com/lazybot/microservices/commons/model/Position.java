@@ -12,6 +12,7 @@ public class Position {
     int z;
 
     public Position() {
+
     }
 
     public Position(int x, int z) {

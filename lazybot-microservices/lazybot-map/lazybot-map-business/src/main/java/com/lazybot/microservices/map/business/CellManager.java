@@ -1,14 +1,25 @@
 package com.lazybot.microservices.map.business;
 
+import com.lazybot.microservices.commons.exceptions.EmptyMapException;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.map.model.Cell;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 @Component
 public class CellManager {
+    public List<Position> findPath(List<ArrayList<Cell>> map, Position start, Position end) throws EmptyMapException {
+        if (map == null || map.isEmpty())
+            throw new EmptyMapException();
+
+        map = calculListCosts(map, start, end);
+
+        return null;
+    }
+
     /*
     Convert a list of cells to a map with two lists to represent X and Z;
      */
@@ -21,7 +32,7 @@ public class CellManager {
             map.add(new ArrayList<>());
             for (int j = 0; j < dimension; j++) {
                 map.get(i).add(cells.get(cursor));
-                    cursor++;
+                cursor++;
             }
         }
         return map;
@@ -76,22 +87,34 @@ public class CellManager {
     }
 
     /*
-    Check if a path can be find to go to a target
+    Check if a path can be find to go to a end
      */
-    public boolean isReachable(List<Cell> cells, Position start, Position target) {
+    public boolean isReachable(List<Cell> cells, Position start, Position end) {
 
         return false;
+    }
+
+    public List<ArrayList<Cell>> calculListCosts(List<ArrayList<Cell>> map, Position start, Position end) throws NullPointerException {
+        if (map.isEmpty())
+            return null;
+        for (int i = 0; i < map.size(); i++) {
+            for (int j = 0; j < map.get(i).size(); j++) {
+                map.get(i).set(j, calculCosts(map.get(i).get(j), start, end));
+            }
+        }
+        return map;
     }
 
     /*
     Calcul the gCost, hCost and fCost of a cell
      */
-    public Cell calculCosts(Cell cell, Position start, Position target) {
+    public Cell calculCosts(Cell cell, Position start, Position end) {
         cell.setGCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
                 (Math.abs(start.getX()) + Math.abs(start.getZ())));
 
-        cell.setHCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
-                (Math.abs(target.getX()) + Math.abs(target.getZ())));
+        cell.setHCost(
+                (Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
+                        (Math.abs(end.getX()) + Math.abs(end.getZ())));
 
         cell.setFCost(cell.getGCost() + cell.getHCost());
 

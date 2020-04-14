@@ -2,6 +2,7 @@ package com.lazybot.microservices.map.business;
 
 import static org.junit.Assert.assertTrue;
 
+import com.lazybot.microservices.commons.exceptions.EmptyMapException;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.map.model.Cell;
 import org.junit.Assert;
@@ -119,4 +120,8 @@ public class AppTest
         Assert.assertEquals(2, map.get(3).get(3).getIdBlock());
     }
 
+    @Test(expected = EmptyMapException.class)
+    public void testFindPath() throws EmptyMapException {
+        manager.findPath(null, new Position(0, 0), new Position(0, 0));
+    }
 }
