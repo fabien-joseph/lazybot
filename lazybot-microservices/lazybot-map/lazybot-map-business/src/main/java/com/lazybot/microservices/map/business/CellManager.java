@@ -6,7 +6,6 @@ import com.lazybot.microservices.map.model.Cell;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 
 @Component
@@ -15,9 +14,12 @@ public class CellManager {
         if (map == null || map.isEmpty())
             throw new EmptyMapException();
 
-        map = calculListCosts(map, start, end);
+        map = calculMapCosts(map, start, end);
 
-        return null;
+        List<Position> paths = new ArrayList<>();
+
+
+        return paths;
     }
 
     /*
@@ -94,7 +96,7 @@ public class CellManager {
         return false;
     }
 
-    public List<ArrayList<Cell>> calculListCosts(List<ArrayList<Cell>> map, Position start, Position end) throws NullPointerException {
+    public List<ArrayList<Cell>> calculMapCosts(List<ArrayList<Cell>> map, Position start, Position end) throws NullPointerException {
         if (map.isEmpty())
             return null;
         for (int i = 0; i < map.size(); i++) {
@@ -109,12 +111,15 @@ public class CellManager {
     Calcul the gCost, hCost and fCost of a cell
      */
     public Cell calculCosts(Cell cell, Position start, Position end) {
-        cell.setGCost((Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
-                (Math.abs(start.getX()) + Math.abs(start.getZ())));
+        cell.setGCost(Math.sqrt(
+                Math.pow(cell.getPosition().getX() - start.getX(), 2) +
+                        Math.pow(cell.getPosition().getZ() - start.getZ(), 2)
+        ));
 
-        cell.setHCost(
-                (Math.abs(cell.getPosition().getX()) + Math.abs(cell.getPosition().getZ())) +
-                        (Math.abs(end.getX()) + Math.abs(end.getZ())));
+        cell.setHCost(Math.sqrt(
+                Math.pow(cell.getPosition().getX() - end.getX(), 2) +
+                        Math.pow(cell.getPosition().getZ() - end.getZ(), 2)
+        ));
 
         cell.setFCost(cell.getGCost() + cell.getHCost());
 

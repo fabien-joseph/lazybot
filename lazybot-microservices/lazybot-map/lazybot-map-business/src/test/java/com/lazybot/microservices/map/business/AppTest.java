@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import com.lazybot.microservices.commons.exceptions.EmptyMapException;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.map.model.Cell;
+import javafx.geometry.Pos;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,69 +40,63 @@ public class AppTest
     @Test
     public void testFindPositionWithSmallMap() {
         //TEST X
-        Assert.assertEquals(2, manager.findPosition(8, 1).getX());
-        Assert.assertEquals(1, manager.findPosition(4, 1).getX());
-        Assert.assertEquals(0, manager.findPosition(0, 1).getX());
+        Assert.assertEquals(2, manager.findPosition(8, 1).getX(), 0.1);
+        Assert.assertEquals(1, manager.findPosition(4, 1).getX(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 1).getX(), 0.1);
 
         //TEST Z
-        Assert.assertEquals(2, manager.findPosition(8, 1).getZ());
-        Assert.assertEquals(1, manager.findPosition(5, 1).getZ());
-        Assert.assertEquals(0, manager.findPosition(0, 1).getZ());
+        Assert.assertEquals(2, manager.findPosition(8, 1).getZ(), 0.1);
+        Assert.assertEquals(1, manager.findPosition(5, 1).getZ(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 1).getZ(), 0.1);
     }
 
     @Test
     public void testFindPositionWithMediumMap() {
         //TEST X
-        Assert.assertEquals(4, manager.findPosition(24, 2).getX());
-        Assert.assertEquals(2, manager.findPosition(22, 2).getX());
-        Assert.assertEquals(0, manager.findPosition(20, 2).getX());
-        Assert.assertEquals(0, manager.findPosition(10, 2).getX());
-        Assert.assertEquals(4, manager.findPosition(4, 2).getX());
-        Assert.assertEquals(0, manager.findPosition(0, 2).getX());
+        Assert.assertEquals(4, manager.findPosition(24, 2).getX(), 0.1);
+        Assert.assertEquals(2, manager.findPosition(22, 2).getX(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(20, 2).getX(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(10, 2).getX(), 0.1);
+        Assert.assertEquals(4, manager.findPosition(4, 2).getX(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 2).getX(), 0.1);
 
         //TEST Z
-        Assert.assertEquals(4, manager.findPosition(24, 2).getZ());
-        Assert.assertEquals(4, manager.findPosition(22, 2).getZ());
-        Assert.assertEquals(4, manager.findPosition(20, 2).getZ());
-        Assert.assertEquals(2, manager.findPosition(10, 2).getZ());
-        Assert.assertEquals(0, manager.findPosition(4, 2).getZ());
-        Assert.assertEquals(0, manager.findPosition(0, 2).getZ());
+        Assert.assertEquals(4, manager.findPosition(24, 2).getZ(), 0.1);
+        Assert.assertEquals(4, manager.findPosition(22, 2).getZ(), 0.1);
+        Assert.assertEquals(4, manager.findPosition(20, 2).getZ(), 0.1);
+        Assert.assertEquals(2, manager.findPosition(10, 2).getZ(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(4, 2).getZ(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 2).getZ(), 0.1);
     }
 
     @Test
     public void testFindPositionWithBigMap() {
         //TEST X
-        Assert.assertEquals(8, manager.findPosition(80, 4).getX());
-        Assert.assertEquals(4, manager.findPosition(40, 4).getX());
-        Assert.assertEquals(2, manager.findPosition(29, 4).getX());
-        Assert.assertEquals(8, manager.findPosition(8, 4).getX());
-        Assert.assertEquals(0, manager.findPosition(0, 4).getX());
+        Assert.assertEquals(8, manager.findPosition(80, 4).getX(), 0.1);
+        Assert.assertEquals(4, manager.findPosition(40, 4).getX(), 0.1);
+        Assert.assertEquals(2, manager.findPosition(29, 4).getX(), 0.1);
+        Assert.assertEquals(8, manager.findPosition(8, 4).getX(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 4).getX(), 0.1);
 
         //TEST Z
-        Assert.assertEquals(8, manager.findPosition(80, 4).getZ());
-        Assert.assertEquals(8, manager.findPosition(72, 4).getZ());
-        Assert.assertEquals(3, manager.findPosition(29, 4).getZ());
-        Assert.assertEquals(0, manager.findPosition(8, 4).getZ());
-        Assert.assertEquals(0, manager.findPosition(0, 4).getZ());
+        Assert.assertEquals(8, manager.findPosition(80, 4).getZ(), 0.1);
+        Assert.assertEquals(8, manager.findPosition(72, 4).getZ(), 0.1);
+        Assert.assertEquals(3, manager.findPosition(29, 4).getZ(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(8, 4).getZ(), 0.1);
+        Assert.assertEquals(0, manager.findPosition(0, 4).getZ(), 0.1);
     }
 
     @Test
     public void testCalculCosts() {
         Cell cell = new Cell();
-        Position start = new Position(0, 0);
-        Position target = new Position(3, 4);
 
-        cell.setPosition(new Position(-1, 0));
+        Position start = new Position(2, 2);
+        Position target = new Position(3, 3);
+        cell.setPosition(new Position(4, 0));
         cell = manager.calculCosts(cell, start, target);
-        Assert.assertEquals(java.util.Optional.of(8).get(), cell.getHCost());
-        Assert.assertEquals(java.util.Optional.of(1).get(), cell.getGCost());
-        Assert.assertEquals(java.util.Optional.of(9).get(), cell.getFCost());
-
-        cell.setPosition(new Position(0, 0));
-        cell = manager.calculCosts(cell, start, target);
-        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getHCost());
-        Assert.assertEquals(java.util.Optional.of(0).get(), cell.getGCost());
-        Assert.assertEquals(java.util.Optional.of(7).get(), cell.getFCost());
+        Assert.assertEquals(2.8, cell.getGCost(), 0.1);
+        Assert.assertEquals(3.1, cell.getHCost(), 0.1);
+        Assert.assertEquals(5.9, cell.getFCost(), 0.1);
     }
 
     @Test
@@ -118,6 +113,19 @@ public class AppTest
         Assert.assertEquals(1, map.get(3).get(1).getIdBlock());
         Assert.assertEquals(1, map.get(3).get(2).getIdBlock());
         Assert.assertEquals(2, map.get(3).get(3).getIdBlock());
+    }
+
+    @Test
+    public void testCalculListCosts() {
+        List<Cell> list = manager.convertBlocksToCellList(blocks, 2);
+        List<ArrayList<Cell>> map = manager.convertListTo2DMap(list, 2);
+
+        map = manager.calculMapCosts(map, new Position(0, 0), new Position(3, 0));
+        for (int i = 0; i < map.size(); i++) {
+            for (int j = 0; j < map.get(i).size(); j++) {
+                System.out.println(map.get(i).get(j));
+            }
+        }
     }
 
     @Test(expected = EmptyMapException.class)

@@ -327,8 +327,8 @@
     ioClient.on("updateBot", function (bot) {
         document.getElementById("healthValue").innerHTML = bot.health;
         document.getElementById("foodValue").innerHTML = bot.food;
-        document.getElementById("botXPos").innerHTML = bot.position.x;
-        document.getElementById("botZPos").innerHTML = bot.position.z;
+        document.getElementById("botXPos").innerHTML = Math.round(bot.position.x);
+        document.getElementById("botZPos").innerHTML = Math.round(bot.position.z);
         colorizeHealth(lastHealthValue, bot.health);
         lastHealthValue = bot.health;
     });
