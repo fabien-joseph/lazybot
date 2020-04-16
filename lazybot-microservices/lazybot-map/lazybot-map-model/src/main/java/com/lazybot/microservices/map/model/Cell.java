@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString
 public class Cell {
     // Distance from starting node
-    double gCost;
+    Double gCost;
 
     // Distance from end node
-    double hCost;
+    Double hCost;
 
     // gCost + hCost
-    double fCost;
+    Double fCost;
 
     Position position;
 
@@ -26,7 +26,7 @@ public class Cell {
     public Cell() {
     }
 
-    public Cell(double gCost, double hCost, double fCost, Position position, int idBlock, int metaData) {
+    public Cell(Double gCost, Double hCost, Double fCost, Position position, int idBlock, int metaData) {
         this.gCost = gCost;
         this.hCost = hCost;
         this.fCost = fCost;

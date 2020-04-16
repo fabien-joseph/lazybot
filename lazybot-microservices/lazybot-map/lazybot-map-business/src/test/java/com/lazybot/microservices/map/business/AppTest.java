@@ -120,7 +120,7 @@ public class AppTest
         List<Cell> list = manager.convertBlocksToCellList(blocks, 2);
         List<ArrayList<Cell>> map = manager.convertListTo2DMap(list, 2);
 
-        map = manager.calculMapCosts(map, new Position(0, 0), new Position(3, 0));
+        map = manager.calculMapCosts(map, new Position(1, 1), new Position(3, 4));
         for (int i = 0; i < map.size(); i++) {
             for (int j = 0; j < map.get(i).size(); j++) {
                 System.out.println(map.get(i).get(j));
@@ -131,5 +131,16 @@ public class AppTest
     @Test(expected = EmptyMapException.class)
     public void testFindPath() throws EmptyMapException {
         manager.findPath(null, new Position(0, 0), new Position(0, 0));
+    }
+
+    @Test
+    public void testFindBestCell() {
+        List<Cell> list = manager.convertBlocksToCellList(blocks, 2);
+        List<ArrayList<Cell>> map = manager.convertListTo2DMap(list, 2);
+        map = manager.calculMapCosts(map, new Position(0, 0), new Position(3, 4));
+
+        Assert.assertEquals(map.get(1).get(1), manager.findBestCell(map, map.get(0).get(0)));
+        Assert.assertEquals(map.get(2).get(2), manager.findBestCell(map, map.get(1).get(1)));
+        Assert.assertEquals(map.get(3).get(2), manager.findBestCell(map, map.get(2).get(2)));
     }
 }
