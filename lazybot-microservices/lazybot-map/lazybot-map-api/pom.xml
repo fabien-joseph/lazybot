@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>com.lazybot.microservices.map</groupId>
 		<artifactId>lazybot-map</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 	<groupId>com.lazybot.microservices.map.api</groupId>
 	<artifactId>lazybot-map-api</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<name>lazybot-map-api</name>
 	<description>Lazybot map api</description>
 

@@ -3,20 +3,17 @@ const io = require("socket.io-client"),
 
 var botId;
 var mybot = require('./business/mybot');
-var mineflayer = require('mineflayer');
+const mineflayer = require('mineflayer');
+const v = require('vec3');
+const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
+navigatePlugin(bot);
 connection();
 
 function connection () {
     botId = Math.floor(Math.random() * (999999 - 100000) + 100000);
     ioMaster.emit('connectBot', botId);
 }
-
-
-
-bot.on('end', function () {
-    ioMaster.emit('disconnect', botId);
-});
 
 bot.on('chat', function(username, message) {
     if (username === bot.username) return;
@@ -30,6 +27,9 @@ bot.on('chat', function(username, message) {
     } else if (message === 'inv') {
         console.log(bot.inventory);
         return;
+    } else if (message === 'spawn') {
+        bot.navigate.to(bot.players['Styleure'].entity.position);
+        console.log(bot.players['Styleure'].entity.position);
     }
     bot.chat(message);
 });
@@ -38,10 +38,21 @@ bot.on('health', function () {
     ioMaster.emit("healthChange", mybot.jsonBot(botId, bot));
 });
 
+ioMaster.on('getLoadMap', function (ray) {
+    let blocks = mybot.loadChunkArround(bot, ray, 0, 0);
+    ioMaster.emit("returnLoadMap", blocks);
+});
+
 ioMaster.on('test', function () {
     console.log("J'ai reçu le retour");
 });
 
 ioMaster.on('sendMessage', function (message) {
     bot.chat(message);
+});
+
+ioMaster.on('goToPos', function (x, y, z) {
+    let positionToGo = v(x, y, z);
+    console.log(positionToGo);
+    bot.navigate.to(positionToGo);
 });

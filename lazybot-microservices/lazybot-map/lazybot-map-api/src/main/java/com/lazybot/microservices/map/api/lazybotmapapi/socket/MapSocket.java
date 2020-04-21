@@ -14,10 +14,15 @@ public class MapSocket {
     public MapSocket() throws URISyntaxException {
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
+        registrateToMaster();
         this.socketMaster.on("test", this::testMethod);
     }
 
     private void testMethod(Object... args) {
         System.out.println(args.length);
+    }
+
+    private void registrateToMaster() {
+        socketMaster.emit("connectMap");
     }
 }

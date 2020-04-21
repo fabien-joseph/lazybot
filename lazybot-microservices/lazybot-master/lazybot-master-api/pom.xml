@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.lazybot.microservices.master</groupId>
         <artifactId>lazybot-master</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
     <groupId>com.lazybot.microservices.master.api</groupId>
     <artifactId>lazybot-master-api</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <name>lazybot-master-api</name>
     <description>Demo project for Spring Boot</description>
 
@@ -55,12 +55,12 @@
         <dependency>
             <groupId>com.lazybot.microservices.master.model</groupId>
             <artifactId>lazybot-master-model</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.lazybot.microservices.master.business</groupId>
             <artifactId>lazybot-master-business</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

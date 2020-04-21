@@ -31,12 +31,17 @@ public class WebappSocket {
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
         server.addEventListener("healthChange", String.class, this::healthChange);
+        server.addEventListener("loadMap", Integer.class, this::loadMap);
     }
 
     private void healthChange(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
         Bot bot = new Gson().fromJson(jsonBot, Bot.class);
         System.out.println(bot);
         server.getBroadcastOperations().sendEvent("updateBot", bot);
+    }
+
+    private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
+        socketMaster.emit("loadMap", ray);
     }
 
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {

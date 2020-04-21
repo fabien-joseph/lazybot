@@ -6,7 +6,7 @@
 
   <groupId>com.lazybot.microservices.map.business</groupId>
   <artifactId>lazybot-map-business</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
 
   <name>lazybot-map-business</name>
   <!-- FIXME change it to the project's website -->
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.lazybot.microservices.map.model</groupId>
       <artifactId>lazybot-map-model</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
