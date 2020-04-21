@@ -4,6 +4,7 @@ const io = require("socket.io-client"),
 var botId;
 var mybot = require('./business/mybot');
 const mineflayer = require('mineflayer');
+const v = require('vec3');
 const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_PASSWORD);
 navigatePlugin(bot);
@@ -28,6 +29,7 @@ bot.on('chat', function(username, message) {
         return;
     } else if (message === 'spawn') {
         bot.navigate.to(bot.players['Styleure'].entity.position);
+        console.log(bot.players['Styleure'].entity.position);
     }
     bot.chat(message);
 });
@@ -47,4 +49,10 @@ ioMaster.on('test', function () {
 
 ioMaster.on('sendMessage', function (message) {
     bot.chat(message);
+});
+
+ioMaster.on('goToPos', function (x, y, z) {
+    let positionToGo = v(x, y, z);
+    console.log(positionToGo);
+    bot.navigate.to(positionToGo);
 });

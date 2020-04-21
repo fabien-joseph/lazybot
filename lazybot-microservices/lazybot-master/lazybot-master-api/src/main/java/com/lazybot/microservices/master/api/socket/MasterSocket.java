@@ -67,7 +67,8 @@ public class MasterSocket {
 
     private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {
         Position position = new Gson().fromJson(pos, Position.class);
-        System.out.println("x = " + position.getX() + ", z = " + position.getZ());
+        System.out.println(position);
+        server.getRoomOperations("bots").sendEvent("goToPos", position.getX(), position.getY(), position.getZ());
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
@@ -81,6 +82,7 @@ public class MasterSocket {
     private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
         System.out.println("Ajout d'un bot...");
         bots.put(id, socketIOClient);
+        socketIOClient.joinRoom("bots");
         server.getBroadcastOperations().sendEvent("test", "Salut", "Resalut");
         System.out.println("Le bot id " + id + " a été ajouté. Nombre de bots totaux : " + bots.size());
     }
