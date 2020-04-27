@@ -55,13 +55,38 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
 };
 
 exports.jsonBot = function (id, bot) {
+    let jsonObject;
     return {
         "id": id,
         "username": bot.username,
-        "position": {x: bot.entity.position.x, z: bot.entity.position.z},
+        "position": {x: bot.entity.position.x, y:bot.entity.position.y, z: bot.entity.position.z},
         "health": bot.health,
-        "food": bot.food
+        "food": bot.food,
+        "inventory": bot.inventory
     };
+};
+
+/*
+{id: bot.inventory.id,
+            type: bot.inventory.type,
+            title: bot.inventory.title,
+            selectedItem: bot.inventory.selectedItem,
+            slots: {
+                type: bot.inventory.slots.type,
+                count: bot.inventory.slots.count,
+                metadata: bot.inventory.slots.metadata,
+                nbt: bot.inventory.slots.nbt,
+                name: bot.inventory.slots.name,
+                displayName: bot.inventory.slots.displayName,
+                stackSize: bot.inventory.slots.stackSize,
+                slot: bot.inventory.slots.slot
+            }
+ */
+
+exports.jsonInventory = function (bot) {
+    return {
+        "inventory": bot.inventory
+    }
 };
 
 function parseArgName(arg) {

@@ -10,12 +10,12 @@ var bot = mybot.connect(process.argv, process.env.BOT_USERNAME, process.env.BOT_
 navigatePlugin(bot);
 connection();
 
-function connection () {
+function connection() {
     botId = Math.floor(Math.random() * (999999 - 100000) + 100000);
     ioMaster.emit('connectBot', botId);
 }
 
-bot.on('chat', function(username, message) {
+bot.on('chat', function (username, message) {
     if (username === bot.username) return;
     if (message === 'chunk') {
         let blocks = mybot.loadChunkArround(bot, 10, 0, 0);
@@ -28,14 +28,17 @@ bot.on('chat', function(username, message) {
         console.log(bot.inventory);
         return;
     } else if (message === 'spawn') {
-        bot.navigate.to(bot.players['Styleure'].entity.position);
+        const pos = bot.players['Styleure'].entity.position;
+        bot.navigate.to(pos);
+
         console.log(bot.players['Styleure'].entity.position);
     }
     bot.chat(message);
 });
 
 bot.on('health', function () {
-    ioMaster.emit("healthChange", mybot.jsonBot(botId, bot));
+    //console.log(JSON.stringify(mybot.jsonBot(botId, bot)));
+    ioMaster.emit("healthChange", JSON.stringify(mybot.jsonBot(botId, bot)));
 });
 
 ioMaster.on('getLoadMap', function (ray) {
@@ -55,4 +58,12 @@ ioMaster.on('goToPos', function (x, y, z) {
     let positionToGo = v(x, y, z);
     console.log(positionToGo);
     bot.navigate.to(positionToGo);
+});
+
+bot.navigate.on('arrived', function () {
+    bot.chat('Je suis arrivé');
+});
+
+ioMaster.on('exchange', function (botToExchange, items) {
+    bot.navigate.to(botToExchange.entity.position);
 });

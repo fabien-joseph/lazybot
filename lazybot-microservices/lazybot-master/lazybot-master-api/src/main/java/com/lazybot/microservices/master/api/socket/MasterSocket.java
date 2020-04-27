@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
 import com.lazybot.microservices.commons.model.Bot;
+import com.lazybot.microservices.commons.model.Inventory;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
@@ -37,18 +38,27 @@ public class MasterSocket {
         this.server.addEventListener("connectMap", String.class, this::connectMap);
         this.server.addEventListener("connectMission", String.class, this::connectMission);
 
-        // FROM WEBAPP
+        // WEBAPP
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
-        this.server.addEventListener("healthChange", Bot.class, this::healthChange);
+        this.server.addEventListener("healthChange", String.class, this::healthChange);
+        this.server.addEventListener("updateInventory", Inventory.class, this::updateInventory);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
+        this.server.addEventListener("exchange", String.class, this::exchange);
 
         // FROM BOTS
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
-
         this.connectManager = connectManager;
+    }
+
+    private void updateInventory(SocketIOClient socketIOClient, Inventory inventory, AckRequest ackRequest) {
+        System.out.println(inventory);
+    }
+
+    private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
+
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
@@ -61,7 +71,8 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void healthChange(SocketIOClient socketIOClient, Bot bot, AckRequest ackRequest) {
+    private void healthChange(SocketIOClient socketIOClient, String Jsonbot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(Jsonbot, Bot.class);
         socketWebapp.emit("healthChange", new Gson().toJson(bot));
     }
 
