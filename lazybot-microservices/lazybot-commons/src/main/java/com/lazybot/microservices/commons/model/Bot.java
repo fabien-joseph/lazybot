@@ -13,15 +13,17 @@ public class Bot {
     Position position;
     int health;
     int food;
+    Inventory inventory;
 
     public Bot() {
     }
 
-    public Bot(int id, String username, Position position, int health, int food) {
+    public Bot(int id, String username, Position position, int health, int food, Inventory inventory) {
         this.id = id;
         this.username = username;
         this.position = position;
         this.health = health;
         this.food = food;
+        this.inventory = inventory;
     }
 }

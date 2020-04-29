@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Panel bots</title>
+    <title>index</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <!-- Bulma Version 0.8.x-->
     <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/admin.css">
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
     <!-- Place your kit's code here -->
     <script src="https://kit.fontawesome.com/66080bc632.js" crossorigin="anonymous"></script>
     <link href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all"
@@ -103,9 +106,9 @@
         <div class="column is-9">
             <nav class="breadcrumb" aria-label="breadcrumbs">
                 <ul>
-                    <li><a href="../">Bulma</a></li>
-                    <li><a href="../">Templates</a></li>
-                    <li><a href="../">Examples</a></li>
+                    <li><a href="..">Bulma</a></li>
+                    <li><a href="..">Templates</a></li>
+                    <li><a href="..">Examples</a></li>
                     <li class="is-active"><a href="#" aria-current="page">Admin</a></li>
                 </ul>
             </nav>
@@ -288,9 +291,9 @@
         </div>
     </div>
 </div>
-<script async type="text/javascript" src="../js/bulma.js"></script>
+<script async type="text/javascript" src="js/bulma.js"></script>
 
-<script src="../js/socket.io-2.2.0.js"></script>
+<script src="js/socket.io-2.2.0.js"></script>
 <script>
     var ioClient = io.connect('http://localhost:8090/');
     let lastHealthValue = 20;
