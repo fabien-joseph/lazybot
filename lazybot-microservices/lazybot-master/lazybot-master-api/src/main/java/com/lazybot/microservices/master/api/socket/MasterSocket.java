@@ -71,8 +71,8 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void healthChange(SocketIOClient socketIOClient, String Jsonbot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(Jsonbot, Bot.class);
+    private void healthChange(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonbot, Bot.class);
         socketWebapp.emit("healthChange", new Gson().toJson(bot));
     }
 

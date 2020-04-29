@@ -8,15 +8,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Position {
-    int x;
-    int y;
-    int z;
+    double x;
+    double y;
+    double z;
 
     public Position() {
 
     }
 
-    public Position(int x, int y, int z) {
+    public Position(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -36,7 +36,6 @@ public class WebappSocket {
 
     private void healthChange(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
         Bot bot = new Gson().fromJson(jsonBot, Bot.class);
-        System.out.println(bot);
         server.getBroadcastOperations().sendEvent("updateBot", bot);
     }
 
