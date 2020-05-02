@@ -66,23 +66,6 @@ exports.jsonBot = function (id, bot) {
     };
 };
 
-/*
-{id: bot.inventory.id,
-            type: bot.inventory.type,
-            title: bot.inventory.title,
-            selectedItem: bot.inventory.selectedItem,
-            slots: {
-                type: bot.inventory.slots.type,
-                count: bot.inventory.slots.count,
-                metadata: bot.inventory.slots.metadata,
-                nbt: bot.inventory.slots.nbt,
-                name: bot.inventory.slots.name,
-                displayName: bot.inventory.slots.displayName,
-                stackSize: bot.inventory.slots.stackSize,
-                slot: bot.inventory.slots.slot
-            }
- */
-
 exports.jsonInventory = function (bot) {
     return {
         "inventory": bot.inventory

@@ -7,12 +7,12 @@
   <parent>
     <groupId>com.lazybot.microservices.mission</groupId>
     <artifactId>lazybot-mission</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
   </parent>
 
   <groupId>com.lazybot.microservices.mission.business</groupId>
   <artifactId>lazybot-mission-business</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.3-SNAPSHOT</version>
 
   <name>lazybot-mission-business</name>
   <!-- FIXME change it to the project's website -->

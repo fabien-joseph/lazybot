@@ -25,7 +25,7 @@ bot.on('chat', function (username, message) {
         console.log(bot.entity.position);
         return;
     } else if (message === 'inv') {
-        console.log(bot.inventory);
+        console.log(bot.inventory.slots[36].nbt);
         return;
     } else if (message === 'spawn') {
         const pos = bot.players['Styleure'].entity.position;

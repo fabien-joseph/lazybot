@@ -275,7 +275,9 @@
                         <div class="card-content">
                             <div class="content">
                                 <div class="control has-icons-left has-icons-right">
-                                    <input class="input is-large" type="text" placeholder="">
+                                    <label>
+                                        <input class="input is-large" type="text" placeholder="">
+                                    </label>
                                     <span class="icon is-medium is-left">
                       <i class="fa fa-search"></i>
                     </span>
@@ -288,6 +290,20 @@
                     </div>
                 </div>
             </div>
+            <div class="columns">
+                <div class="column is-12">
+                    <div class="table-container" id="inventoryBot">
+
+                        <!--<table class="table is-bordered is-striped">
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>-->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -297,10 +313,6 @@
 <script>
     var ioClient = io.connect('http://localhost:8090/');
     let lastHealthValue = 20;
-
-    function getChunk() {
-        ioClient.emit('getChunk', 5);
-    }
 
     function sendMessage() {
         let message = document.getElementById("myMessage").value;
@@ -327,14 +339,69 @@
         document.getElementById("rayonLoadMap").value = '';
     }
 
-    ioClient.on("updateBot", function (bot) {
-        document.getElementById("healthValue").innerHTML = bot.health;
-        document.getElementById("foodValue").innerHTML = bot.food;
+    ioClient.on("updateBot", function (jsonBot) {
+        let bot = JSON.parse(jsonBot);
+        document.getElementById("healthValue").innerHTML = Math.round(bot.health);
+        document.getElementById("foodValue").innerHTML = Math.round(bot.food);
         document.getElementById("botXPos").innerHTML = Math.round(bot.position.x);
         document.getElementById("botZPos").innerHTML = Math.round(bot.position.z);
         colorizeHealth(lastHealthValue, bot.health);
         lastHealthValue = bot.health;
+        loadInventory(bot);
     });
+
+    function loadInventory(bot) {
+        // get the reference for the body
+        var body = document.getElementsByTagName("body")[0];
+
+        if (document.getElementById("tableInventory") != null) {
+            let tblExist = document.getElementById("tableInventory");
+            var garbage = body.removeChild(tblExist);
+        }
+
+        // creates a <table> element and a <tbody> element
+        var tbl = document.createElement("table");
+        tbl.id="tableInventory";
+        var tblBody = document.createElement("tbody");
+        tblBody.id="tbodyInventory";
+
+        let indexInventory = 0;
+
+        // creating all cells
+        for (var i = 0; i < 5; i++) {
+            // creates a table row
+            var row = document.createElement("tr");
+
+            for (var j = 0; j < 9 && indexInventory < bot.inventory.slots.length; j++) {
+
+                console.log("Index : " + indexInventory + ", type = " + bot.inventory.slots[indexInventory] !== null ?
+                    bot.inventory.slots[indexInventory] :
+                    'null');
+                /*console.log(bot.inventory.slots[indexInventory] !== null ?
+                    indexInventory + ' - ' + bot.inventory.slots[indexInventory].type :
+                    indexInventory + ' - ' + '0');*/
+                // Create a <td> element and a text node, make the text
+                // node the contents of the <td>, and put the <td> at
+                // the end of the table row
+                var cell = document.createElement("td");
+                var cellText = bot.inventory.slots[indexInventory] !== null ?
+                    document.createTextNode(bot.inventory.slots[indexInventory].type) : document.createTextNode('0');
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+                indexInventory++;
+            }
+
+            // add the row to the end of the table body
+            tblBody.appendChild(row);
+        }
+
+        // put the <tbody> in the <table>
+        tbl.appendChild(tblBody);
+        // appends <table> into <body>
+        body.appendChild(tbl);
+        // sets the border attribute of tbl to 2;
+        tbl.setAttribute("border", "2");
+    }
 
     function colorizeHealth(lastHealth, health) {
         if (lastHealthValue > health) {

@@ -4,7 +4,6 @@ public class Item {
     int type;
     int count;
     int metadata;
-    String nbt;
     String name;
     String displayName;
     int stackSize;
@@ -13,11 +12,10 @@ public class Item {
     public Item() {
     }
 
-    public Item(int type, int count, int metadata, String nbt, String name, String displayName, int stackSize, int slot) {
+    public Item(int type, int count, int metadata, String name, String displayName, int stackSize, int slot) {
         this.type = type;
         this.count = count;
         this.metadata = metadata;
-        this.nbt = nbt;
         this.name = name;
         this.displayName = displayName;
         this.stackSize = stackSize;
