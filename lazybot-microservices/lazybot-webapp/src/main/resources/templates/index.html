@@ -404,62 +404,11 @@
     });
 
     function loadInventory(bot) {
-        // get the reference for the body
-        var body = document.getElementsByTagName("body")[0];
-        var divTable = document.createElement("div");
-        divTable.classList.add("table-container");
-
-        if (document.getElementById("tableInventory") != null) {
-            let tblExist = document.getElementById("tableInventory");
-            var garbage = body.removeChild(tblExist);
+        for (let i = 0; i < bot.inventory.slots.length; i++) {
+                let idInventorySlot = "slot" + i;
+                document.getElementById(idInventorySlot).innerHTML = bot.inventory.slots[i] == null ?
+                '' : bot.inventory.slots[i].type;
         }
-
-        // creates a <table> element and a <tbody> element
-
-        var tbl = document.createElement("table");
-        tbl.classList.add("tableInventory");
-        tbl.classList.add("is-bordered");
-        tbl.classList.add("is-stripped");
-        tbl.id = "tableInventory";
-        var tblBody = document.createElement("tbody");
-        tblBody.id = "tbodyInventory";
-
-        let indexInventory = 0;
-
-        // creating all cells
-        for (var i = 0; i < 5; i++) {
-            // creates a table row
-            var row = document.createElement("tr");
-
-            for (var j = 0; j < 9 && indexInventory < bot.inventory.slots.length; j++) {
-
-                console.log("Index : " + indexInventory + ", type = " + bot.inventory.slots[indexInventory] !== null ?
-                    bot.inventory.slots[indexInventory] :
-                    'null');
-                /*console.log(bot.inventory.slots[indexInventory] !== null ?
-                    indexInventory + ' - ' + bot.inventory.slots[indexInventory].type :
-                    indexInventory + ' - ' + '0');*/
-                // Create a <td> element and a text node, make the text
-                // node the contents of the <td>, and put the <td> at
-                // the end of the table row
-                var cell = document.createElement("td");
-                var cellText = bot.inventory.slots[indexInventory] !== null ?
-                    document.createTextNode(bot.inventory.slots[indexInventory].type) : document.createTextNode('0');
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-                indexInventory++;
-            }
-
-            // add the row to the end of the table body
-            tblBody.appendChild(row);
-        }
-
-        // put the <tbody> in the <table>
-        tbl.appendChild(tblBody);
-        // appends <table> into <body>
-        body.appendChild(tbl);
-        // sets the border attribute of tbl to 2;
-        tbl.setAttribute("border", "2");
     }
 
     function colorizeHealth(lastHealth, health) {
