@@ -1,5 +1,6 @@
 const mineflayer = require('mineflayer');
 const navigatePlugin = require('mineflayer-navigate')(mineflayer);
+
 exports.connect = function (argv) {
     let username = '';
     let password = '';

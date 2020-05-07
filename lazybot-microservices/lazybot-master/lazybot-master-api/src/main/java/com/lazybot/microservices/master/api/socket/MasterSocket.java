@@ -13,7 +13,6 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,31 +33,37 @@ public class MasterSocket {
         this.server = serverMaster;
         bots = new HashMap<>();
 
-        // CONNECTIONS
+        // CONNECTIONS MS
         this.server.addEventListener("connectMap", String.class, this::connectMap);
         this.server.addEventListener("connectMission", String.class, this::connectMission);
 
         // WEBAPP
         this.server.addEventListener("chat", String.class, this::chat);
-        this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
-        this.server.addEventListener("healthChange", String.class, this::healthChange);
-        this.server.addEventListener("updateInventory", Inventory.class, this::updateInventory);
+        this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
 
         // FROM BOTS
+        this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
+        this.server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         this.connectManager = connectManager;
+
     }
 
-    private void updateInventory(SocketIOClient socketIOClient, Inventory inventory, AckRequest ackRequest) {
-        System.out.println(inventory);
+    private void updateBot(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonbot, Bot.class);
+        socketWebapp.emit("updateBot", new Gson().toJson(bot));
+    }
+
+    private void disconnectBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
+        bots.remove(botId);
+        System.out.println("Nombre de bots connectés : " + bots.size());
     }
 
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
-
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
@@ -71,11 +76,6 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void healthChange(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonbot, Bot.class);
-        socketWebapp.emit("healthChange", new Gson().toJson(bot));
-    }
-
     private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {
         Position position = new Gson().fromJson(pos, Position.class);
         System.out.println(position);
@@ -83,7 +83,6 @@ public class MasterSocket {
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
-        System.out.println("SessionId : " + socketIOClient.getSessionId() + ", Message : " + message);
         server.getBroadcastOperations().sendEvent("sendMessage", message);
     }
 
@@ -91,19 +90,13 @@ public class MasterSocket {
     }
 
     private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        System.out.println("Ajout d'un bot...");
         bots.put(id, socketIOClient);
         socketIOClient.joinRoom("bots");
-        server.getBroadcastOperations().sendEvent("test", "Salut", "Resalut");
-        System.out.println("Le bot id " + id + " a été ajouté. Nombre de bots totaux : " + bots.size());
     }
     private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        System.out.println("Socket MAP connecté");
         this.socketMap = socketIOClient;
     }
     private void connectMission(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        System.out.println("Socket MISSION connecté");
         this.socketMission = socketIOClient;
     }
-
 }

@@ -30,11 +30,16 @@ public class WebappSocket {
         server.addConnectListener(onConnected());
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
-        server.addEventListener("healthChange", String.class, this::healthChange);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
+        server.addEventListener("updateBot", String.class, this::updateBot);
+        server.addEventListener("exitBot", Integer.class, this::exitBot);
     }
 
-    private void healthChange(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+    private void exitBot(SocketIOClient socketIOClient, Integer botId, AckRequest ackRequest) {
+        socketMaster.emit("exitBot", botId);
+    }
+
+    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
         Bot bot = new Gson().fromJson(jsonBot, Bot.class);
         server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
     }

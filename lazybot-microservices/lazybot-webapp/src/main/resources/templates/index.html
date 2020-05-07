@@ -265,7 +265,7 @@
                     <div class="card">
                         <header class="card-header">
                             <p class="card-header-title">
-                                User Search
+                                Déconnecter
                             </p>
                             <a href="#" class="card-header-icon" aria-label="more options">
                   <span class="icon">
@@ -275,16 +275,21 @@
                         </header>
                         <div class="card-content">
                             <div class="content">
-                                <div class="control has-icons-left has-icons-right">
-                                    <label>
-                                        <input class="input is-large" type="text" placeholder="">
-                                    </label>
-                                    <span class="icon is-medium is-left">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <label for="myMessage">
+                                            <input class="input is-large" type="text" placeholder="Tapez le message..."
+                                                   id="exit">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="exitBot()" class="button is-large is-gray">
+                                            <span class="icon is-medium is-left">
                       <i class="fa fa-search"></i>
                     </span>
-                                    <span class="icon is-medium is-right">
-                      <i class="fa fa-check"></i>
-                    </span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -364,7 +369,7 @@
 
 <script th:src="@{/js/socket.io-2.2.0.js}"></script>
 <script>
-    var ioClient = io.connect('http://localhost:8090/');
+    let ioClient = io.connect('http://localhost:8090/');
     let lastHealthValue = 20;
 
     function sendMessage() {
@@ -390,6 +395,10 @@
         let rayon = parseInt(document.getElementById("rayonLoadMap").value);
         ioClient.emit('loadMap', rayon);
         document.getElementById("rayonLoadMap").value = '';
+    }
+
+    function exitBot() {
+
     }
 
     ioClient.on("updateBot", function (jsonBot) {
