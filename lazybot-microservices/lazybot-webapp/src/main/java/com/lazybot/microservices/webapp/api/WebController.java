@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
     @GetMapping("/")
     public String home(Model model) {
-        return "index";
+        return "dashboard";
     }
+
+    @GetMapping("/bot")
+    public String bot(Model model) {
+        return "botPanel";
+    }
+
 }

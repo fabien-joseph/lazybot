@@ -1,0 +1,21 @@
+<nav class="navbar is-white" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item brand-text" th:href="@{/}">
+                LAZYBOT
+            </a>
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" th:href="@{/}">
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

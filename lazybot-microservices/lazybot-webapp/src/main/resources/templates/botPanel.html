@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="fr">
+
+<head th:replace="fragments/head.html :: head">
+</head>
+
+<body>
+<!-- START NAV -->
+<div th:replace="fragments/header.html :: header"></div>
+<!-- END NAV -->
+<div class="container">
+    <div class="columns">
+        <div class="column is-3">
+            <div th:replace="fragments/navAside.html :: navAside"></div>
+        </div>
+        <div class="column is-9">
+            <section class="hero is-info welcome is-small">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            UnSuperPseudo
+                        </h1>
+                        <h2 class="subtitle">
+                            funcraft.net:25565
+                        </h2>
+                    </div>
+                </div>
+            </section>
+            <section class="info-tiles">
+                <div class="tile is-ancestor has-text-centered">
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title"><span id="botXPos">0</span> ; <span id="botZPos">0</span></p>
+                            <p class="subtitle">Position</p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title"><span id="inventorySlots">0</span>/<span id="inventorySize">46</span></p>
+                            <p class="subtitle">Inventory slots</p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title"><span id="healthValue">20</span>/20</p>
+                            <p class="subtitle">Health</p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title"><span id="foodValue">20</span>/20</p>
+                            <p class="subtitle">Food</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <div class="columns">
+                <div class="column is-6">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Se rendre à la position
+                            </p>
+                            <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                            </a>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="field has-addons">
+                                    <div class="control">
+                                        <label for="xPos">
+                                            <input class="input is-large" type="text" placeholder="X" id="xPos">
+                                        </label>
+                                    </div>
+                                    <div class="control">
+                                        <label for="yPos">
+                                            <input class="input is-large" type="text" placeholder="Y" id="yPos">
+                                        </label>
+                                    </div>
+                                    <div class="control is-expanded">
+                                        <label for="zPos">
+                                            <input class="input is-large" type="text" placeholder="Z" id="zPos">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="goToPos()" class="button is-large is-gray">
+                                            <span class="icon is-medium is-left">
+                      <i class="fas fa-running"></i>
+                    </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Load map
+                            </p>
+                            <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                            </a>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <label for="myMessage">
+                                            <input class="input is-large" type="text" placeholder="Rayon de chargement"
+                                                   id="rayonLoadMap">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="loadMap()" class="button is-large is-gray">
+                                            <span class="icon is-medium is-left">
+                      <i class="fas fa-layer-group"></i>
+                    </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Message
+                            </p>
+                            <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                            </a>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <label for="myMessage">
+                                            <input class="input is-large" type="text" placeholder="Tapez le message..."
+                                                   id="myMessage">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="sendMessage()" class="button is-large is-gray">
+                                            <span class="icon is-medium is-left">
+                      <i class="fas fa-paper-plane"></i>
+                    </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Déconnecter
+                            </p>
+                            <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                            </a>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="field has-addons">
+                                    <div class="control is-expanded">
+                                        <label for="myMessage">
+                                            <input class="input is-large" type="text" placeholder="Tapez le message..."
+                                                   id="exit">
+                                        </label>
+                                    </div>
+
+                                    <div class="control">
+                                        <button type="button" onclick="exitBot()" class="button is-large is-gray">
+                                            <span class="icon is-medium is-left">
+                      <i class="fa fa-search"></i>
+                    </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-12">
+                    <div th:replace="fragments/inventory.html :: inventory"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script async type="text/javascript" th:src="@{/js/bulma.js}"></script>
+
+<script th:src="@{/js/socket.io-2.2.0.js}"></script>
+<script th:src="@{/js/connectMs.js}"></script>
+<script th:src="@{/js/botUpdate.js}"></script>
+<script th:src="@{/js/botManager.js}"></script>
+</body>
+</html>

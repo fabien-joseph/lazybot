@@ -1,118 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      lang="fr">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>index</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <!-- Bulma Version 0.8.x-->
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
-    <!-- Place your kit's code here -->
-    <script src="https://kit.fontawesome.com/66080bc632.js" crossorigin="anonymous"></script>
-    <link href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all"
-          rel="stylesheet">
-    <link href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all"
-          rel="stylesheet">
-    <link href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<head th:replace="fragments/head.html :: head">
 </head>
 
 <body>
-
 <!-- START NAV -->
-<nav class="navbar is-white">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item brand-text" href="../index.html">
-                Panel bots
-            </a>
-            <div class="navbar-burger burger" data-target="navMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="admin.html">
-                    Home
-                </a>
-                <a class="navbar-item" href="admin.html">
-                    Orders
-                </a>
-                <a class="navbar-item" href="admin.html">
-                    Payments
-                </a>
-                <a class="navbar-item" href="admin.html">
-                    Exceptions
-                </a>
-                <a class="navbar-item" href="admin.html">
-                    Reports
-                </a>
-            </div>
-
-        </div>
-    </div>
-</nav>
+<div th:replace="fragments/header.html :: header"></div>
 <!-- END NAV -->
 <div class="container">
     <div class="columns">
         <div class="column is-3">
-            <aside class="menu is-hidden-mobile">
-                <p class="menu-label">
-                    General
-                </p>
-                <ul class="menu-list">
-                    <li><a class="is-active">Dashboard</a></li>
-                    <li><a>Customers</a></li>
-                    <li><a>Other</a></li>
-                </ul>
-                <p class="menu-label">
-                    Administration
-                </p>
-                <ul class="menu-list">
-                    <li><a>Team Settings</a></li>
-                    <li>
-                        <a>Manage Your Team</a>
-                        <ul>
-                            <li><a>Members</a></li>
-                            <li><a>Plugins</a></li>
-                            <li><a>Add a member</a></li>
-                            <li><a>Remove a member</a></li>
-                        </ul>
-                    </li>
-                    <li><a>Invitations</a></li>
-                    <li><a>Cloud Storage Environment Settings</a></li>
-                    <li><a>Authentication</a></li>
-                    <li><a>Payments</a></li>
-                </ul>
-                <p class="menu-label">
-                    Transactions
-                </p>
-                <ul class="menu-list">
-                    <li><a>Payments</a></li>
-                    <li><a>Transfers</a></li>
-                    <li><a>Balance</a></li>
-                    <li><a>Reports</a></li>
-                </ul>
-            </aside>
+            <div th:replace="fragments/navAside.html :: navAside"></div>
         </div>
         <div class="column is-9">
-            <nav class="breadcrumb" aria-label="breadcrumbs">
-                <ul>
-                    <li><a href="..">Bulma</a></li>
-                    <li><a href="..">Templates</a></li>
-                    <li><a href="..">Examples</a></li>
-                    <li class="is-active"><a href="#" aria-current="page">Admin</a></li>
-                </ul>
-            </nav>
             <section class="hero is-info welcome is-small">
                 <div class="hero-body">
                     <div class="container">
@@ -298,68 +201,8 @@
             </div>
             <div class="columns">
                 <div class="column is-12">
-                    <div class="table-container" id="inventoryBot">
-                        <table class="table is-bordered is-striped">
-                            <tbody>
-                            <tr>
-                                <td id="slot0"></td>
-                                <td id="slot1"></td>
-                                <td id="slot2"></td>
-                                <td id="slot3"></td>
-                                <td id="slot4"></td>
-                                <td id="slot5"></td>
-                                <td id="slot6"></td>
-                                <td id="slot7"></td>
-                                <td id="slot8"></td>
-                            </tr>
-                            <tr>
-                                <td id="slot9"></td>
-                                <td id="slot10"></td>
-                                <td id="slot11"></td>
-                                <td id="slot12"></td>
-                                <td id="slot13"></td>
-                                <td id="slot14"></td>
-                                <td id="slot15"></td>
-                                <td id="slot16"></td>
-                                <td id="slot17"></td>
-                            </tr>
-                            <tr>
-                                <td id="slot18"></td>
-                                <td id="slot19"></td>
-                                <td id="slot20"></td>
-                                <td id="slot21"></td>
-                                <td id="slot22"></td>
-                                <td id="slot23"></td>
-                                <td id="slot24"></td>
-                                <td id="slot25"></td>
-                                <td id="slot26"></td>
-                            </tr>
-                            <tr>
-                                <td id="slot27"></td>
-                                <td id="slot28"></td>
-                                <td id="slot29"></td>
-                                <td id="slot30"></td>
-                                <td id="slot31"></td>
-                                <td id="slot32"></td>
-                                <td id="slot33"></td>
-                                <td id="slot34"></td>
-                                <td id="slot35"></td>
-                            </tr>
-                            <tr>
-                                <td id="slot36"></td>
-                                <td id="slot37"></td>
-                                <td id="slot38"></td>
-                                <td id="slot39"></td>
-                                <td id="slot40"></td>
-                                <td id="slot41"></td>
-                                <td id="slot42"></td>
-                                <td id="slot43"></td>
-                                <td id="slot44"></td>
-                                <td id="slot45"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div th:replace="fragments/inventory.html :: inventory"></div>
+
                 </div>
             </div>
         </div>
@@ -368,69 +211,8 @@
 <script async type="text/javascript" th:src="@{/js/bulma.js}"></script>
 
 <script th:src="@{/js/socket.io-2.2.0.js}"></script>
-<script>
-    let ioClient = io.connect('http://localhost:8090/');
-    let lastHealthValue = 20;
-
-    function sendMessage() {
-        let message = document.getElementById("myMessage").value;
-        if (message !== '') {
-            ioClient.emit('sendMessage', message);
-            document.getElementById("myMessage").value = '';
-        }
-    }
-
-    function goToPos() {
-        let x = parseInt(document.getElementById("xPos").value);
-        let y = parseInt(document.getElementById("yPos").value);
-        let z = parseInt(document.getElementById("zPos").value);
-        var jsonObject = {x: x, y: y, z: z};
-        ioClient.emit('goToPos', jsonObject);
-        document.getElementById("xPos").value = '';
-        document.getElementById("yPos").value = '';
-        document.getElementById("zPos").value = '';
-    }
-
-    function loadMap() {
-        let rayon = parseInt(document.getElementById("rayonLoadMap").value);
-        ioClient.emit('loadMap', rayon);
-        document.getElementById("rayonLoadMap").value = '';
-    }
-
-    function exitBot() {
-
-    }
-
-    ioClient.on("updateBot", function (jsonBot) {
-        let bot = JSON.parse(jsonBot);
-        document.getElementById("healthValue").innerHTML = Math.round(bot.health);
-        document.getElementById("foodValue").innerHTML = Math.round(bot.food);
-        document.getElementById("botXPos").innerHTML = Math.round(bot.position.x);
-        document.getElementById("botZPos").innerHTML = Math.round(bot.position.z);
-        colorizeHealth(lastHealthValue, bot.health);
-        lastHealthValue = bot.health;
-        loadInventory(bot);
-    });
-
-    function loadInventory(bot) {
-        for (let i = 0; i < bot.inventory.slots.length; i++) {
-                let idInventorySlot = "slot" + i;
-                document.getElementById(idInventorySlot).innerHTML = bot.inventory.slots[i] == null ?
-                '' : bot.inventory.slots[i].type;
-        }
-    }
-
-    function colorizeHealth(lastHealth, health) {
-        if (lastHealthValue > health) {
-            document.getElementById("healthValue").style.color = "#ff0000";
-        }
-        if (lastHealthValue > health) {
-            setTimeout(function () {
-                document.getElementById("healthValue").style.color = "#000000";
-            }, 500);
-        }
-    }
-</script>
+<script th:src="@{/js/connectMs.js}"></script>
+<script th:src="@{/js/botUpdate.js}"></script>
+<script th:src="@{/js/botManager.js}"></script>
 </body>
-
 </html>
