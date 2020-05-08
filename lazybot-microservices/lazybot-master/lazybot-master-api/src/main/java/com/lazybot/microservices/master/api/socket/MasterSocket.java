@@ -41,26 +41,26 @@ public class MasterSocket {
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
-        this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
 
         // FROM BOTS
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
+        this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         this.connectManager = connectManager;
-
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
+        System.out.println("updateBot");
         Bot bot = new Gson().fromJson(jsonbot, Bot.class);
         socketWebapp.emit("updateBot", new Gson().toJson(bot));
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
         bots.remove(botId);
-        System.out.println("Nombre de bots connectés : " + bots.size());
+        System.out.println("Un bot a été déconnecté. Total : " + bots.size());
     }
 
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
@@ -89,9 +89,10 @@ public class MasterSocket {
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
     }
 
-    private void connectBot(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        bots.put(id, socketIOClient);
+    private void connectBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
+        bots.put(botId, socketIOClient);
         socketIOClient.joinRoom("bots");
+        System.out.println("Nouveau bot connecté, id: " + botId + ". Total : " + bots.size());
     }
     private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
         this.socketMap = socketIOClient;

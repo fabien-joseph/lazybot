@@ -1,4 +1,3 @@
-
 const io = require("socket.io-client"),
     ioMaster = io.connect("http://localhost:9090");
 
@@ -9,7 +8,6 @@ const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 const botManager = require('./business/botManager');
 const eventChat = require("./business/eventTchat");
 const eventUpdateBot = require("./business/eventUpdateBot");
-const eventTchat = require('./business/eventTchat');
 
 // === BOT INITIALIZATION ===
 let bot = botManager.connect(process.argv);
@@ -17,22 +15,25 @@ navigatePlugin(bot);
 connectionMSMaster();
 
 function connectionMSMaster() {
+    console.log(botId);
     ioMaster.emit('connectBot', botId);
 }
 
 // === CHAT CONTROL ===
 bot.on('chat', function (username, message) {
-    eventChat.chatControl(bot, username, message);
+    //eventChat.chatControl(bot, username, message);
+    eventUpdateBot.updateBot(botId, bot, ioMaster);
+    ioMaster.emit("updateBot", JSON.stringify(botManager.jsonBot(botId, bot)));
+
 });
 
 // === EVENT UPDATE THE BOT
 bot.on('health', function () {
-    eventUpdateBot.updateBot(botId, bot, ioMaster);
-});
-bot.on('move', function () {
+    console.log("health");
     eventUpdateBot.updateBot(botId, bot, ioMaster);
 });
 bot.on('playerCollect', function () {
+    console.log("collect");
     eventUpdateBot.updateBot(botId, bot, ioMaster);
 });
 

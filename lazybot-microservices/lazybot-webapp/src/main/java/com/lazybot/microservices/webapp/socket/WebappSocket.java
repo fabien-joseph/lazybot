@@ -40,7 +40,7 @@ public class WebappSocket {
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        System.out.println("updateBot");
         server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
     }
 
