@@ -6,12 +6,12 @@
 
   <groupId>com.lazybot.microservices.master.business</groupId>
   <artifactId>lazybot-master-business</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.4-SNAPSHOT</version>
 
   <parent>
     <groupId>com.lazybot.microservices.master</groupId>
     <artifactId>lazybot-master</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
   </parent>
 
   <name>lazybot-master-business</name>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.lazybot.microservices.master.model</groupId>
       <artifactId>lazybot-master-model</artifactId>
-      <version>1.3-SNAPSHOT</version>
+      <version>1.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
