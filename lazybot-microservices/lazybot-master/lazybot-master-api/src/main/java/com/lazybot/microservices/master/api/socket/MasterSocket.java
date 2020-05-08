@@ -92,6 +92,7 @@ public class MasterSocket {
     private void connectBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
         bots.put(botId, socketIOClient);
         socketIOClient.joinRoom("bots");
+        socketIOClient.sendEvent("connectionSuccess");
         System.out.println("Nouveau bot connecté, id: " + botId + ". Total : " + bots.size());
     }
     private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {

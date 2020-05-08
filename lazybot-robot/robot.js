@@ -9,6 +9,11 @@ const botManager = require('./business/botManager');
 const eventChat = require("./business/eventTchat");
 const eventUpdateBot = require("./business/eventUpdateBot");
 
+// LOCAL VARIABLES
+let lastX = 0;
+let lastZ = 0;
+let lastY = 0;
+
 // === BOT INITIALIZATION ===
 let bot = botManager.connect(process.argv);
 navigatePlugin(bot);
@@ -21,16 +26,22 @@ function connectionMSMaster() {
 
 // === CHAT CONTROL ===
 bot.on('chat', function (username, message) {
-    //eventChat.chatControl(bot, username, message);
-    eventUpdateBot.updateBot(botId, bot, ioMaster);
-    ioMaster.emit("updateBot", JSON.stringify(botManager.jsonBot(botId, bot)));
-
+    eventChat.chatControl(bot, username, message);
 });
 
 // === EVENT UPDATE THE BOT
 bot.on('health', function () {
     console.log("health");
     eventUpdateBot.updateBot(botId, bot, ioMaster);
+});
+bot.on('move', function () {
+    if (Math.floor(bot.entity.position.x) !== lastX || Math.floor(bot.entity.position.y) !== lastY || Math.floor(bot.entity.position.z) !== lastZ) {
+        console.log("move");
+        eventUpdateBot.updateBot(botId, bot, ioMaster);
+    }
+    lastX = Math.floor(bot.entity.position.x);
+    lastY = Math.floor(bot.entity.position.y);
+    lastZ = Math.floor(bot.entity.position.z);
 });
 bot.on('playerCollect', function () {
     console.log("collect");
@@ -53,9 +64,13 @@ ioMaster.on('sendMessage', function (message) {
 
 ioMaster.on('goToPos', function (x, y, z) {
     let positionToGo = v(x, y, z);
-    console.log(positionToGo);
     bot.navigate.to(positionToGo);
 });
+
+ioMaster.on('connectionSuccess', function () {
+    console.log("Connection effectuée !");
+});
+
 
 // === Events bot stops ===
 ioMaster.on('quit', function () {
