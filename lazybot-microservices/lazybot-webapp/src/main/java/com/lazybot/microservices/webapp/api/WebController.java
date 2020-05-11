@@ -16,4 +16,9 @@ public class WebController {
         return "botPanel";
     }
 
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
+    }
+
 }

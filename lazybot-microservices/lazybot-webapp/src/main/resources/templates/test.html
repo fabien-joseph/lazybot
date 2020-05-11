@@ -1,24 +1,13 @@
-<aside class="menu is-hidden-mobile" th:fragment="navAside" xmlns:th="http://www.thymeleaf.org">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/newBot.css}">
-    <p class="menu-label">
-        Manager
-    </p>
-    <ul class="menu-list">
-        <li>
-            <a>Dashboard</a>
-            <ul>
-                <li><a>UnSuperPseudo</a></li>
-                <li><a>Ronflonflon</a></li>
-                <li><a>FabMaster</a></li>
-                <li><a>WouhouVou</a></li>
-                <li><a></a></li>
-            </ul>
-        </li>
-    </ul>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
 
-
-    <button id="modalButton" class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">New bot
-    </button>
+<div class="container" id="app">
+    <button id="modalButton" class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">Launch example modal</button>
 
     <div class="modal" id="myModal">
         <div class="modal-background"></div>
@@ -34,7 +23,7 @@
                         <input class="input is-rounded" type="text" placeholder="ex: Ronflonflon">
                     </label>
                     <h1>Password</h1>
-                    <p>If you want to connect an offline account don't enter a password</p>
+                    <p>If you want to connect an offline account don't type a password</p>
                     <label>
                         <input class="input is-rounded" type="text" placeholder="ex: PlsDontHackMyAccount">
                     </label>
@@ -47,5 +36,21 @@
             </footer>
         </div>
     </div>
-    <script th:src="@{/js/newBot.js}"></script>
-</aside>
+</div>
+<script>
+    $("button").click(function () {
+        $("#myModal").addClass("is-active");
+    });
+
+    $(".modal-background").click(function () {
+        $('#myModal').removeClass("is-active");
+    });
+
+    $(".closeNewBot").click(function () {
+        $('#myModal').removeClass("is-active");
+    });
+
+
+</script>
+</body>
+</html>
