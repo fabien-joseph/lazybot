@@ -21,7 +21,7 @@ connectionMSMaster();
 
 function connectionMSMaster() {
     console.log(botId);
-    ioMaster.emit('connectBot', botId);
+    ioMaster.emit('registerBot', botId);
 }
 
 // === CHAT CONTROL ===
@@ -73,6 +73,12 @@ ioMaster.on('connectionSuccess', function () {
     console.log("Connection effectuée !");
 });
 
+ioMaster.on('exit', function () {
+    exit();
+});
+
+
+
 // === Events bot stops ===
 ioMaster.on('quit', function () {
     exit()
@@ -95,5 +101,5 @@ function exit() {
 // Function to execute when the bot stops
 process.on('exit', function () {
     console.log("Event déco");
-    ioMaster.emit("disconnectBot", botId);
+    ioMaster.emit("unregisterBot", botId);
 });

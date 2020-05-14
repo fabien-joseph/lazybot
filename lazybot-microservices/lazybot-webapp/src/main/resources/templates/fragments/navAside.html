@@ -17,8 +17,10 @@
     </ul>
 
 
-    <button id="modalButton" class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">New bot
+    <button id="connectBotModal" class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">New bot
     </button>
+    <button id="modalDisconnectButton" class="button is-danger modal-button" onclick="disconnectBot(0)"
+            data-target="#myModal" aria-haspopup="true">Disconnect</button>
 
     <div class="modal" id="myModal">
         <div class="modal-background"></div>
@@ -31,21 +33,24 @@
                 <div class="content">
                     <h1>Nickname</h1>
                     <label>
-                        <input class="input is-rounded" type="text" placeholder="ex: Ronflonflon">
+                        <input id="botNickname" class="input is-rounded" required=required
+                               type="text" placeholder="ex: xXROXORXx">
                     </label>
                     <h1>Password</h1>
                     <p>If you want to connect an offline account don't enter a password</p>
                     <label>
-                        <input class="input is-rounded" type="text" placeholder="ex: PlsDontHackMyAccount">
+                        <input id="botPassword" class="input is-rounded" type="text" placeholder="ex: PlsDontHackMyAccount">
                     </label>
 
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-success">Connect</button>
+                <button class="button is-success" onclick="connectBot()">Connect</button>
                 <button class="button closeNewBot">Cancel</button>
             </footer>
+
         </div>
     </div>
     <script th:src="@{/js/newBot.js}"></script>
+    <script th:src="@{/js/botManager.js}"></script>
 </aside>

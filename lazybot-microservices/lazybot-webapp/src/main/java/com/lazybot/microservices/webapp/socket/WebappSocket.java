@@ -6,7 +6,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.google.gson.Gson;
-import com.lazybot.microservices.commons.model.Bot;
+import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.Position;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.net.URISyntaxException;
 
 @Service
@@ -32,11 +31,17 @@ public class WebappSocket {
         server.addEventListener("goToPos", Position.class, this::goToPos);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("updateBot", String.class, this::updateBot);
-        server.addEventListener("exitBot", Integer.class, this::exitBot);
+        server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
+        server.addEventListener("connectBot", Login.class, this::connectBot);
     }
 
-    private void exitBot(SocketIOClient socketIOClient, Integer botId, AckRequest ackRequest) {
-        socketMaster.emit("exitBot", botId);
+    private void connectBot(SocketIOClient socketIOClient, Login login, AckRequest ackRequest) {
+        System.out.println(login.getNickname() + " - " + login.getPassword());
+        socketMaster.emit("connectBot", new Gson().toJson(login));
+    }
+
+    private void disconnectBot(SocketIOClient socketIOClient, Integer botId, AckRequest ackRequest) {
+        socketMaster.emit("disconnectBot", botId);
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
