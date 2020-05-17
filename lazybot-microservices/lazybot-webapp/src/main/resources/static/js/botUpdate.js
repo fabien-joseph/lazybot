@@ -18,6 +18,7 @@ function loadInventory(bot) {
         if (bot.inventory.slots[i] == null) {
             document.getElementById(idInventorySlot).innerHTML = '';
         } else {
+
             document.getElementById(idInventorySlot).innerHTML = bot.inventory.slots[i].type;
             itemsQuantity++;
         }

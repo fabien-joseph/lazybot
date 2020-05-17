@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.google.gson.Gson;
+import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.Position;
 import io.socket.client.IO;
@@ -26,6 +27,7 @@ public class WebappSocket {
         this.server = serverWebapp;
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
+
         server.addConnectListener(onConnected());
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);

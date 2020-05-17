@@ -46,7 +46,10 @@
 }
 
 .table td, .table th {
-    padding: 1.5em 1.5em;
+    width: 64px;
+    height: 64px;
+    max-width: 64px;
+    max-height: 64px;
     vertical-align: top;
     border: 5px solid #ffffff !important;
     background-color: #b0afaf;
