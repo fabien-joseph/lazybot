@@ -83,6 +83,13 @@
             <version>2.6</version>
         </dependency>
 
+        <!-- Leveinstein distance -->
+        <dependency>
+            <groupId>info.debatty</groupId>
+            <artifactId>java-string-similarity</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
     </dependencies>
 
     <build>
