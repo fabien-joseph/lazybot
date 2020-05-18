@@ -40,6 +40,7 @@ public class WebController {
 
     @GetMapping("/getMCObject/{nameObject}")
     public @ResponseBody byte[] getBlock(@PathVariable String nameObject) throws IOException {
+        System.out.println("COUCOUCOU");
         SimilaryStringManager ssm = new SimilaryStringManager();
         File folder = new File(getClass()
                 .getResource("/static/textures").getPath());

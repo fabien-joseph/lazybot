@@ -18,12 +18,15 @@ function loadInventory(bot) {
         if (bot.inventory.slots[i] == null) {
             document.getElementById(idInventorySlot).innerHTML = '';
         } else {
-
-            document.getElementById(idInventorySlot).innerHTML = bot.inventory.slots[i].type;
+            let slot = $( "#" + idInventorySlot);
+            slot.empty();
+            slot.wrapInner("<img src='/getMCObject/" + bot.inventory.slots[i].name + "' />");
             itemsQuantity++;
         }
     }
-    document.getElementById("inventorySlots").innerHTML = itemsQuantity;
+
+    console.log(document.getElementById("inventorySlots"));
+    document.getElementById("inventorySlots").innerHTML = itemsQuantity.toString();
     document.getElementById("inventorySize").innerHTML = bot.inventory.slots.length;
 }
 
