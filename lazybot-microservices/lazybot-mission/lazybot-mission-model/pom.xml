@@ -6,11 +6,11 @@
 
   <groupId>com.lazybot.microservices.mission.model</groupId>
   <artifactId>lazybot-mission-model</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
 
   <parent>
     <groupId>com.lazybot.microservices.mission</groupId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <artifactId>lazybot-mission</artifactId>
   </parent>
 

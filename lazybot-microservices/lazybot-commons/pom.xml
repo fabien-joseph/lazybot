@@ -6,7 +6,7 @@
 
   <groupId>com.lazybot.microservices.commons</groupId>
   <artifactId>lazybot-commons</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
 
   <name>lazybot-commons</name>
   <!-- FIXME change it to the project's website -->
@@ -14,7 +14,7 @@
 
   <parent>
     <groupId>com.lazybot.microservices</groupId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <artifactId>lazybot-microservices</artifactId>
   </parent>
 
