@@ -47,7 +47,7 @@ public class WebappSocket {
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        System.out.println("updateBot");
+        //System.out.println("updateBot");
         server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
     }
 
@@ -61,7 +61,7 @@ public class WebappSocket {
     }
 
     private ConnectListener onConnected() {
-        System.out.println("Un client vient de se connecter :o");
+        //System.out.println("Un client vient de se connecter :o");
         return client -> {
             HandshakeData handshakeData = client.getHandshakeData();
             log.debug("Client[{}] - Connected to chat module through '{}'", client.getSessionId().toString(), handshakeData.getUrl());
