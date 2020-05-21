@@ -6,19 +6,12 @@
     <ul class="menu-list">
         <li>
             <a>Dashboard</a>
-            <ul>
-                <li><a>UnSuperPseudo</a></li>
-                <li><a>Ronflonflon</a></li>
-                <li><a>FabMaster</a></li>
-                <li><a>WouhouVou</a></li>
-                <li><a></a></li>
+            <ul id="accountsRobot">
+                <li id="connectBotModal"><a><i class="fas fa-plus-circle"></i> New robot</a></li>
             </ul>
         </li>
     </ul>
 
-
-    <button id="connectBotModal" class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">New bot
-    </button>
     <button id="modalDisconnectButton" class="button is-danger modal-button" onclick="disconnectBot(0)"
             data-target="#myModal" aria-haspopup="true">Disconnect</button>
 
@@ -51,6 +44,4 @@
 
         </div>
     </div>
-    <script th:src="@{/js/newBot.js}"></script>
-    <script th:src="@{/js/botManager.js}"></script>
 </aside>

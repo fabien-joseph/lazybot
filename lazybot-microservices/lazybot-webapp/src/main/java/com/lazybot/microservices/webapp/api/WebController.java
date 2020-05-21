@@ -28,9 +28,9 @@ public class WebController {
         return "dashboard";
     }
 
-    @GetMapping("/bot")
-    public String bot(Model model) {
-        return "botPanel";
+    @GetMapping("/{botUsername}")
+    public String bot(Model model, @PathVariable String botUsername) {
+        return "test";
     }
 
     @GetMapping("/test")
@@ -52,15 +52,5 @@ public class WebController {
         System.out.println(nameObject + " -> " + file);
         return IOUtils.toByteArray(in);
     }
-
-/*    @GetMapping("/getMCObjectTest/{nameObject}")
-    public String getBlockTest(@PathVariable String nameObject) {
-        SimilaryStringManager ssm = new SimilaryStringManager();
-        File folder = new File(getClass()
-                .getResource("/static/textures").getPath());
-        System.out.println("BEST = " + );
-        return "kikouPetitHiboux";
-    }*/
-
 
 }

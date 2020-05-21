@@ -6,7 +6,6 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.google.gson.Gson;
-import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.Position;
 import io.socket.client.IO;
@@ -28,13 +27,17 @@ public class WebappSocket {
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
 
-        server.addConnectListener(onConnected());
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("updateBot", String.class, this::updateBot);
         server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
         server.addEventListener("connectBot", Login.class, this::connectBot);
+        server.addEventListener("registerBot", String.class, this::registerBot);
+    }
+
+    private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        server.getBroadcastOperations().sendEvent("registerBot", botUsername);
     }
 
     private void connectBot(SocketIOClient socketIOClient, Login login, AckRequest ackRequest) {
@@ -58,14 +61,6 @@ public class WebappSocket {
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
         System.out.println(position);
         socketMaster.emit("goToPos", new Gson().toJson(position));
-    }
-
-    private ConnectListener onConnected() {
-        //System.out.println("Un client vient de se connecter :o");
-        return client -> {
-            HandshakeData handshakeData = client.getHandshakeData();
-            log.debug("Client[{}] - Connected to chat module through '{}'", client.getSessionId().toString(), handshakeData.getUrl());
-        };
     }
 
     public void sendMessage(SocketIOClient client, String message, AckRequest ackSender) {

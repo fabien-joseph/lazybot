@@ -1,7 +1,6 @@
 const io = require("socket.io-client"),
     ioMaster = io.connect("http://localhost:9090");
 
-const botId = Math.floor(Math.random() * (999999 - 100000) + 100000);
 const mineflayer = require('mineflayer');
 const v = require('vec3');
 const navigatePlugin = require('mineflayer-navigate')(mineflayer);
@@ -20,8 +19,8 @@ navigatePlugin(bot);
 connectionMSMaster();
 
 function connectionMSMaster() {
-    console.log(botId);
-    ioMaster.emit('registerBot', botId);
+    console.log(bot.username);
+    ioMaster.emit('registerBot', bot.username);
 }
 
 // === CHAT CONTROL ===
@@ -32,13 +31,13 @@ bot.on('chat', function (username, message) {
 // === EVENT UPDATE THE BOT
 bot.on('health', function () {
     console.log("health");
-    eventUpdateBot.updateBot(botId, bot, ioMaster);
+    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
 });
 
 bot.on('move', function () {
     if (Math.floor(bot.entity.position.x) !== lastX || Math.floor(bot.entity.position.y) !== lastY || Math.floor(bot.entity.position.z) !== lastZ) {
         console.log("move");
-        eventUpdateBot.updateBot(botId, bot, ioMaster);
+        eventUpdateBot.updateBot(bot.username, bot, ioMaster);
     }
     lastX = Math.floor(bot.entity.position.x);
     lastY = Math.floor(bot.entity.position.y);
@@ -47,7 +46,7 @@ bot.on('move', function () {
 
 bot.on('playerCollect', function () {
     console.log("collect");
-    eventUpdateBot.updateBot(botId, bot, ioMaster);
+    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
 });
 
 // === MASTER MS REQUESTS
@@ -101,5 +100,5 @@ function exit() {
 // Function to execute when the bot stops
 process.on('exit', function () {
     console.log("Event déco");
-    ioMaster.emit("unregisterBot", botId);
+    ioMaster.emit("unregisterBot", bot.username);
 });

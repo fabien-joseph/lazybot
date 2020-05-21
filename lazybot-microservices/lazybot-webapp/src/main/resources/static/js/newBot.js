@@ -29,3 +29,7 @@ function disconnectBot(botId) {
     ioClient.emit('disconnectBot', botId);
 }
 
+ioClient.on("registerBot", function (botUsername) {
+    alert(botUsername);
+    $("#accountsRobot").prepend("<li><a href='/" + botUsername + "'>" + botUsername + "</a></li>");
+});

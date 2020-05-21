@@ -75,8 +75,8 @@ public class MasterSocket {
         socketWebapp.emit("updateBot", new Gson().toJson(bot));
     }
 
-    private void unregisterBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
-        bots.remove(botId);
+    private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        bots.remove(botUsername);
         System.out.println("Un bot a été déconnecté. Total : " + bots.size());
     }
 
@@ -106,11 +106,12 @@ public class MasterSocket {
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
     }
 
-    private void registerBot(SocketIOClient socketIOClient, String botId, AckRequest ackRequest) {
-        bots.put(botId, socketIOClient);
+    private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        bots.put(botUsername, socketIOClient);
         socketIOClient.joinRoom("bots");
+        socketWebapp.emit("registerBot", botUsername);
         socketIOClient.sendEvent("connectionSuccess");
-        System.out.println("Nouveau bot connecté, id: " + botId + ". Total : " + bots.size());
+        System.out.println("Nouveau bot connecté, id: " + botUsername + ". Total : " + bots.size());
     }
 
     private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
