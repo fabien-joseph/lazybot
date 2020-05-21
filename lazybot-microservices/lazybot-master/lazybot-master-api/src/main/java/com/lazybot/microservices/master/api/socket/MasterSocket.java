@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class MasterSocket {
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
+        this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
 
@@ -54,6 +56,10 @@ public class MasterSocket {
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
         this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.connectManager = connectManager;
+    }
+
+    private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, Integer bot, AckRequest ackRequest) {
@@ -77,6 +83,7 @@ public class MasterSocket {
 
     private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         bots.remove(botUsername);
+        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
         System.out.println("Un bot a été déconnecté. Total : " + bots.size());
     }
 
@@ -109,7 +116,7 @@ public class MasterSocket {
     private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         bots.put(botUsername, socketIOClient);
         socketIOClient.joinRoom("bots");
-        socketWebapp.emit("registerBot", botUsername);
+        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
         socketIOClient.sendEvent("connectionSuccess");
         System.out.println("Nouveau bot connecté, id: " + botUsername + ". Total : " + bots.size());
     }

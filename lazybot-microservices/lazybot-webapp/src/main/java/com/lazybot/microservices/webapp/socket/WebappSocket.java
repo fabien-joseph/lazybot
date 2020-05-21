@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class WebappSocket {
@@ -33,11 +35,16 @@ public class WebappSocket {
         server.addEventListener("updateBot", String.class, this::updateBot);
         server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
         server.addEventListener("connectBot", Login.class, this::connectBot);
-        server.addEventListener("registerBot", String.class, this::registerBot);
+        server.addEventListener("allBotConnected", String.class, this::registerBot);
+        server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
     }
 
-    private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
-        server.getBroadcastOperations().sendEvent("registerBot", botUsername);
+    private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketMaster.emit("getAllBotConnected");
+    }
+
+    private void registerBot(SocketIOClient socketIOClient, String botUsernames, AckRequest ackRequest) {
+        server.getBroadcastOperations().sendEvent("allBotConnected", botUsernames);
     }
 
     private void connectBot(SocketIOClient socketIOClient, Login login, AckRequest ackRequest) {

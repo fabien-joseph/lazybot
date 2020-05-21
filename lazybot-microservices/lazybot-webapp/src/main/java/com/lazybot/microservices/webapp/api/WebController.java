@@ -33,11 +33,6 @@ public class WebController {
         return "test";
     }
 
-    @GetMapping("/test")
-    public String test(Model model) {
-        return "test";
-    }
-
     @GetMapping("/getMCObject/{nameObject}")
     public @ResponseBody byte[] getBlock(@PathVariable String nameObject) throws IOException {
         System.out.println("=========");
@@ -52,5 +47,4 @@ public class WebController {
         System.out.println(nameObject + " -> " + file);
         return IOUtils.toByteArray(in);
     }
-
 }

@@ -1,3 +1,5 @@
+getAllBotConnected();
+
 $("#connectBotModal").click(function () {
     $("#myModal").addClass("is-active");
 });
@@ -29,7 +31,21 @@ function disconnectBot(botId) {
     ioClient.emit('disconnectBot', botId);
 }
 
-ioClient.on("registerBot", function (botUsername) {
-    alert(botUsername);
-    $("#accountsRobot").prepend("<li><a href='/" + botUsername + "'>" + botUsername + "</a></li>");
+function getAllBotConnected () {
+    ioClient.emit("getAllBotConnected");
+}
+
+ioClient.on('allBotConnected', function (botUsernamesJson) {
+    let botUsernames = JSON.parse(botUsernamesJson);
+    console.log("BEFORE : " + botUsernames);
+    botUsernames.sort();
+    console.log("AFTER : " + botUsernames);
+    $('.botNav').remove();
+   for (let i = 0; i < botUsernames.length; i++) {
+       addBotConnected(botUsernames[i]);
+   }
 });
+
+function addBotConnected(botUsername) {
+    $("#accountsRobot").prepend("<li class='botNav'><a href='/" + botUsername + "'>" + botUsername + "</a></li>");
+}
