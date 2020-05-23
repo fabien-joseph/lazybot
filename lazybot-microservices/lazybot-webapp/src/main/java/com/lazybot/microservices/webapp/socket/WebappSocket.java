@@ -1,10 +1,8 @@
 package com.lazybot.microservices.webapp.socket;
 
 import com.corundumstudio.socketio.AckRequest;
-import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ConnectListener;
 import com.google.gson.Gson;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.Position;
@@ -13,10 +11,7 @@ import io.socket.client.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class WebappSocket {
@@ -29,49 +24,89 @@ public class WebappSocket {
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
 
+        // === FROM MASTER MS ===
+        server.addEventListener("allBotConnected", String.class, this::allBotConnected);
+        server.addEventListener("updateBot", String.class, this::updateBot);
+
+        // === FROM WEBAPP ===
+        server.addEventListener("connectBot", Login.class, this::connectBot);
+        server.addEventListener("disconnectBot", String.class, this::disconnectBot);
+        server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
+        server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("sendMessage", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
-        server.addEventListener("loadMap", Integer.class, this::loadMap);
-        server.addEventListener("updateBot", String.class, this::updateBot);
-        server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
-        server.addEventListener("connectBot", Login.class, this::connectBot);
-        server.addEventListener("allBotConnected", String.class, this::registerBot);
-        server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
     }
 
+    /**
+    From master MS, give all the names of the bots connected.
+     @param socketIOClient socket client of master MS.
+     @param botUsernames array of strings with all the names of the bots.
+    */
+    private void allBotConnected(SocketIOClient socketIOClient, String botUsernames, AckRequest ackRequest) {
+        server.getBroadcastOperations().sendEvent("allBotConnected", botUsernames);
+    }
+
+    /**
+    From master MS. Update a bot (life, food, inventory, etc...).
+     @param socketIOClient socket client of master MS.
+     @param jsonBot bot updated.
+    */
+    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
+    }
+
+    /**
+    From webapp. Ask to master MS to execute a new bot
+     @param socketIOClient socket client of master MS.
+     @param login informations of login (username and password if premium)
+     */
+    private void connectBot(SocketIOClient socketIOClient, Login login, AckRequest ackRequest) {
+        socketMaster.emit("connectBot", new Gson().toJson(login));
+    }
+
+    /**
+   From webapp. Ask to master MS to stop all the bots
+     @param socketIOClient socket client of master MS.
+     @param botUsername name of the bot to disconnect.
+     */
+    private void disconnectBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        socketMaster.emit("disconnectBot", botUsername);
+    }
+
+    /**
+    From webapp. Ask to master MS all the nicknames of the bots connected
+     @param socketIOClient socket client of master MS.
+     @param t useless variable.
+     */
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         socketMaster.emit("getAllBotConnected");
     }
 
-    private void registerBot(SocketIOClient socketIOClient, String botUsernames, AckRequest ackRequest) {
-        server.getBroadcastOperations().sendEvent("allBotConnected", botUsernames);
-    }
-
-    private void connectBot(SocketIOClient socketIOClient, Login login, AckRequest ackRequest) {
-        System.out.println(login.getNickname() + " - " + login.getPassword());
-        socketMaster.emit("connectBot", new Gson().toJson(login));
-    }
-
-    private void disconnectBot(SocketIOClient socketIOClient, Integer botId, AckRequest ackRequest) {
-        socketMaster.emit("disconnectBot", botId);
-    }
-
-    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        //System.out.println("updateBot");
-        server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
-    }
-
+    /**
+   From webapp. Ask to master to load a map around all the bots.
+     @param socketIOClient socket client of master MS.
+     @param ray ray of the blocs to load.
+     */
     private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
         socketMaster.emit("loadMap", ray);
     }
 
+    /**
+    From webapp. Ask to master MS to order all bots to send a message.
+     @param socketIOClient socket client of master MS.
+     @param message message to send.
+     */
+    public void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackSender) {
+        socketMaster.emit("sendMessage", message);
+    }
+
+    /**
+    From webapp. Ask to master MS to order all bots to go to a position.
+     @param socketIOClient socket client of master MS.
+     @param position position to go.
+    */
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
-        System.out.println(position);
         socketMaster.emit("goToPos", new Gson().toJson(position));
     }
 
-    public void sendMessage(SocketIOClient client, String message, AckRequest ackSender) {
-        socketMaster.emit("sendMessage", message);
-        System.out.println("Rayon = " + message);
-    }
 }

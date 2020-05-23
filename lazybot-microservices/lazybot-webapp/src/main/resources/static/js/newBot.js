@@ -19,10 +19,12 @@ function closeModalNewBot() {
 function connectBot() {
     let nickname = document.getElementById("botNickname").value;
     let password = document.getElementById("botPassword").value;
+    let server = document.getElementById("serverAdress").value;
     if (nickname !== '') {
-        ioClient.emit('connectBot', {nickname: nickname, password: password});
+        ioClient.emit('connectBot', {nickname: nickname, password: password, server: server});
         document.getElementById("botNickname").value = '';
         document.getElementById("botPassword").value = '';
+        document.getElementById("serverAdress").value = '';
         $('#myModal').removeClass("is-active");
     }
 }

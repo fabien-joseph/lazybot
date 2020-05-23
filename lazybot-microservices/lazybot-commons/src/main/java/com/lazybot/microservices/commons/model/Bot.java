@@ -1,5 +1,4 @@
 package com.lazybot.microservices.commons.model;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,6 +9,7 @@ import lombok.ToString;
 public class Bot {
     String id;
     String username;
+    String host;
     Position position;
     double health;
     double food;
@@ -18,9 +18,10 @@ public class Bot {
     public Bot() {
     }
 
-    public Bot(String id, String username, Position position, double health, double food, Inventory inventory) {
+    public Bot(String id, String username, String host, Position position, double health, double food, Inventory inventory) {
         this.id = id;
         this.username = username;
+        this.host = host;
         this.position = position;
         this.health = health;
         this.food = food;

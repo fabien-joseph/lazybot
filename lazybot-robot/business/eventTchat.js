@@ -14,6 +14,8 @@ exports.chatControl = function (bot, username, message) {
         const pos = bot.players['Styleure'].entity.position;
         bot.navigate.to(pos);
         console.log(bot.players['Styleure'].entity.position);
+    } else if (message === 'username') {
+        bot.chat(bot._client.socket.remoteAddress);
     } else if (message === 'exit') {
         process.exit();
     }

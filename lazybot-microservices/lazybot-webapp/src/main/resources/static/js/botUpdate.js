@@ -2,6 +2,8 @@ let lastHealthValue = 20;
 
 ioClient.on("updateBot", function (jsonBot) {
     let bot = JSON.parse(jsonBot);
+    document.getElementById("botUsername").innerHTML = bot.username;
+    document.getElementById("botHost").innerHTML = bot.host;
     document.getElementById("healthValue").innerHTML = Math.round(bot.health);
     document.getElementById("foodValue").innerHTML = Math.round(bot.food);
     document.getElementById("botXPos").innerHTML = Math.round(bot.position.x);

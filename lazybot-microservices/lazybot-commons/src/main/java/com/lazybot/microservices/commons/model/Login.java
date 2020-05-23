@@ -10,4 +10,5 @@ import lombok.ToString;
 public class Login {
     String nickname;
     String password;
+    String server;
 }

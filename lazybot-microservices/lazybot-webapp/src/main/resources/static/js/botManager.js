@@ -1,3 +1,5 @@
+
+
 function sendMessage() {
     let message = document.getElementById("myMessage").value;
     if (message !== '') {

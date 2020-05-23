@@ -5,15 +5,15 @@
     </p>
     <ul class="menu-list">
         <li>
-            <a>Dashboard</a>
+            <a href="/">Dashboard</a>
             <ul id="accountsRobot">
-                <li id="connectBotModal"><a><i class="fas fa-plus-circle"></i> New robot</a></li>
+                <li id="connectBotModal"><a><i class="fas fa-plus-circle"></i> New bot</a></li>
             </ul>
         </li>
     </ul>
 
     <button id="modalDisconnectButton" class="button is-danger modal-button" onclick="disconnectBot(0)"
-            data-target="#myModal" aria-haspopup="true">Disconnect</button>
+            data-target="#myModal" aria-haspopup="true"><i class="fas fa-power-off"></i>&nbsp;STOP ALL</button>
 
     <div class="modal" id="myModal">
         <div class="modal-background"></div>
@@ -24,7 +24,12 @@
             </header>
             <section class="modal-card-body">
                 <div class="content">
-                    <h1>Nickname</h1>
+                    <h1>Server adress</h1>
+                    <label>
+                        <input id="serverAdress" class="input is-rounded" required=required
+                               type="text" placeholder="ex: localhost:25565">
+                    </label>
+                    <h1>Username</h1>
                     <label>
                         <input id="botNickname" class="input is-rounded" required=required
                                type="text" placeholder="ex: xXROXORXx">
@@ -32,7 +37,7 @@
                     <h1>Password</h1>
                     <p>If you want to connect an offline account don't enter a password</p>
                     <label>
-                        <input id="botPassword" class="input is-rounded" type="text" placeholder="ex: PlsDontHackMyAccount">
+                        <input id="botPassword" class="input is-rounded" type="password" placeholder="ex: PlsDontHackMyAccount">
                     </label>
 
                 </div>

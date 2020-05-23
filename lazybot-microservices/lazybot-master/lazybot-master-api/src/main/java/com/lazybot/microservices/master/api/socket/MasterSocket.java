@@ -12,10 +12,8 @@ import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,14 +68,15 @@ public class MasterSocket {
         Login loginBot = new Gson().fromJson(login, Login.class);
         String command = "node C:/Users/Fabien/IdeaProjects/lazybot/lazybot-robot/robot.js";
         command += " --username=" + loginBot.getNickname();
-        if (loginBot.getPassword() != null)
-            command += " --password=" + loginBot.getPassword();
+        command += " --password=" + loginBot.getPassword();
+        command += " --server=" + loginBot.getServer();
         Runtime.getRuntime().exec(command);
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
-        System.out.println("updateBot");
         Bot bot = new Gson().fromJson(jsonbot, Bot.class);
+        System.out.println("updateBot de " + bot.getUsername());
+        socketIOClient.sendEvent("sendMessage", "RETOUR UPDATE");
         socketWebapp.emit("updateBot", new Gson().toJson(bot));
     }
 
@@ -107,7 +106,10 @@ public class MasterSocket {
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
-        server.getBroadcastOperations().sendEvent("sendMessage", message);
+        //List<SocketIOClient> list = new ArrayList<SocketIOClient>(bots.values());
+        //broadcastOperation(list, "sendMessage", message);
+        bots.get("Ronflonflon").sendEvent("sendMessage", "Bonjour");
+        //server.getRoomOperations("bots").sendEvent("sendMessage", message);
     }
 
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
@@ -127,5 +129,11 @@ public class MasterSocket {
 
     private void connectMission(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
         this.socketMission = socketIOClient;
+    }
+
+    private void broadcastOperation(List<SocketIOClient> clients, String event, Object data) {
+        for (SocketIOClient client : clients) {
+            client.sendEvent(event, new Gson().toJson(data));
+        }
     }
 }

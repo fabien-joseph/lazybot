@@ -4,23 +4,28 @@ const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 exports.connect = function (argv) {
     let username = '';
     let password = '';
+    let server = '';
 
-    if (parseArgName(argv[2]) !== 'username' && parseArgName(argv[3]) !== 'password') {
+    if (parseArgName(argv[2]) !== 'username' && parseArgName(argv[3]) !== 'password' && parseArgName(argv[4]) !== 'server') {
         throw new Error('The given arguments seems incorrect. Are they realy name \'username\' and \'password\' ?');
     }
 
     username = parseArgValue(argv[2]);
-    password = parseArgValue(argv [3]);
+    password = parseArgValue(argv[3]);
+    server = parseArgValue(argv[4]);
+
+    // === If it's an offline account
     if (password == null || password === 'undefined' || password === '')
         return mineflayer.createBot({
-            host: "localhost", // optional
+            host: server, // optional
             port: 25565,       // optional
             username: username, // email and password are required only for
             version: false                 // false corresponds to auto version detection (that's the default), put for example "1.8.8" if you need a specific version
         });
 
+    // === If it's a premium account
     let bot = mineflayer.createBot({
-        host: "localhost", // optional
+        host: server, // optional
         port: 25565,       // optional
         username: username, // email and password are required only for
         password: password, // email and password are required only for
@@ -60,6 +65,7 @@ exports.jsonBot = function (id, bot) {
     return {
         "id": id,
         "username": bot.username,
+        "host": bot._client.socket.remoteAddress,
         "position": {x: bot.entity.position.x, y:bot.entity.position.y, z: bot.entity.position.z},
         "health": bot.health,
         "food": bot.food,
