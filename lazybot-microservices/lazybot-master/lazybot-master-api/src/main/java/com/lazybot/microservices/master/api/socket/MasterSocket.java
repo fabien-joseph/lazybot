@@ -76,8 +76,8 @@ public class MasterSocket {
     private void updateBot(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
         Bot bot = new Gson().fromJson(jsonbot, Bot.class);
         System.out.println("updateBot de " + bot.getUsername());
-        socketIOClient.sendEvent("sendMessage", "RETOUR UPDATE");
-        socketWebapp.emit("updateBot", new Gson().toJson(bot));
+        //socketIOClient.sendEvent("sendMessage", "RETOUR UPDATE");
+        socketWebapp.emit("updateBotTest", new Gson().toJson(bot));
     }
 
     private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
@@ -106,10 +106,8 @@ public class MasterSocket {
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
-        //List<SocketIOClient> list = new ArrayList<SocketIOClient>(bots.values());
-        //broadcastOperation(list, "sendMessage", message);
-        bots.get("Ronflonflon").sendEvent("sendMessage", "Bonjour");
-        //server.getRoomOperations("bots").sendEvent("sendMessage", message);
+        System.out.println("Message : " + message);
+        server.getRoomOperations("bots").sendEvent("sendMessage", message);
     }
 
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {

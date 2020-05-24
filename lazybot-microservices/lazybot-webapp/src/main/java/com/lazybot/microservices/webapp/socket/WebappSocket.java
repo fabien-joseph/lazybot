@@ -26,14 +26,14 @@ public class WebappSocket {
 
         // === FROM MASTER MS ===
         server.addEventListener("allBotConnected", String.class, this::allBotConnected);
-        server.addEventListener("updateBot", String.class, this::updateBot);
+        server.addEventListener("updateBotTest", String.class, this::updateBot);
 
         // === FROM WEBAPP ===
         server.addEventListener("connectBot", Login.class, this::connectBot);
         server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
-        server.addEventListener("sendMessage", String.class, this::sendMessage);
+        server.addEventListener("sendMessageTest", String.class, this::sendMessage);
         server.addEventListener("goToPos", Position.class, this::goToPos);
     }
 
@@ -97,6 +97,7 @@ public class WebappSocket {
      @param message message to send.
      */
     public void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackSender) {
+        System.out.println("Message : " + message);
         socketMaster.emit("sendMessage", message);
     }
 
@@ -108,5 +109,4 @@ public class WebappSocket {
     private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
         socketMaster.emit("goToPos", new Gson().toJson(position));
     }
-
 }

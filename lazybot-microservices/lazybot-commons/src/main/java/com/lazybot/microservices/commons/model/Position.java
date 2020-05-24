@@ -8,9 +8,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Position {
-    double x;
-    double y;
-    double z;
+    private double x;
+    private double y;
+    private double z;
 
     public Position() {
 

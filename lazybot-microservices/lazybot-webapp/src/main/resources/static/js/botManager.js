@@ -1,9 +1,8 @@
-
-
 function sendMessage() {
     let message = document.getElementById("myMessage").value;
+    alert(message);
     if (message !== '') {
-        ioClient.emit('sendMessage', message);
+        ioClient.emit('sendMessageTest', message);
         document.getElementById("myMessage").value = '';
     }
 }

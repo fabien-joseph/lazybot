@@ -10,11 +10,11 @@ import java.util.List;
 @Setter
 @ToString
 public class Inventory {
-    int id;
-    String type;
-    String title;
-    Item selectedItem;
-    List<Item> slots;
+    private int id;
+    private String type;
+    private String title;
+    private Item selectedItem;
+    private List<Item> slots;
 
     public Inventory() {
     }

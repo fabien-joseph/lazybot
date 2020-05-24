@@ -8,7 +8,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Login {
-    String nickname;
-    String password;
-    String server;
+    private String nickname;
+    private String password;
+    private String server;
+
+    public Login() {
+    }
+
+    public Login(String nickname, String password, String server) {
+        this.nickname = nickname;
+        this.password = password;
+        this.server = server;
+    }
 }

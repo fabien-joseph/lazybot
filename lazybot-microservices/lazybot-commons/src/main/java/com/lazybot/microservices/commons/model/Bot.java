@@ -7,13 +7,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Bot {
-    String id;
-    String username;
-    String host;
-    Position position;
-    double health;
-    double food;
-    Inventory inventory;
+    private String id;
+    private String username;
+    private String host;
+    private Position position;
+    private double health;
+    private double food;
+    private Inventory inventory;
 
     public Bot() {
     }

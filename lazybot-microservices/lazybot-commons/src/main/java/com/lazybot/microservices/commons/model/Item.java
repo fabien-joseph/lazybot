@@ -8,13 +8,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Item {
-    int type;
-    int count;
-    int metadata;
-    String name;
-    String displayName;
-    int stackSize;
-    int slot;
+    private int type;
+    private int count;
+    private int metadata;
+    private String name;
+    private String displayName;
+    private int stackSize;
+    private int slot;
 
     public Item() {
     }

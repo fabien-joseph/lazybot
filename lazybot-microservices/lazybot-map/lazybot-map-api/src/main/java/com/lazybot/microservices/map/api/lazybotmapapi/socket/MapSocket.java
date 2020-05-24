@@ -3,7 +3,6 @@ package com.lazybot.microservices.map.api.lazybotmapapi.socket;
 import io.socket.client.IO;
 import org.springframework.stereotype.Service;
 import io.socket.client.Socket;
-
 import java.net.URISyntaxException;
 
 @Service
