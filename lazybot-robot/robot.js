@@ -60,7 +60,7 @@ ioMaster.on('test', function () {
 });
 
 ioMaster.on('sendMessage', function (message) {
-    bot.chat(message);
+    bot.chat(JSON.parse(message));
 });
 
 ioMaster.on('goToPos', function (x, y, z) {

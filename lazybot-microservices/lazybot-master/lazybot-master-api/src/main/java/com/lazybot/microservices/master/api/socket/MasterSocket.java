@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MasterSocket {
@@ -123,9 +121,7 @@ public class MasterSocket {
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
-        Order<String> orderMessage = new Gson().fromJson(orderMessageJson, Order.class);
-        System.out.println("Message : " + orderMessage);
-        bots.get(orderMessage.getBotUsername()).sendEvent("sendMessage", orderMessage.getData());
+        broadcastOperation("sendMessage", orderMessageJson);
     }
 
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
@@ -147,9 +143,20 @@ public class MasterSocket {
         this.socketMission = socketIOClient;
     }
 
-    private void broadcastOperation(List<SocketIOClient> clients, String event, Object data) {
-        for (SocketIOClient client : clients) {
-            client.sendEvent(event, new Gson().toJson(data));
+    private void broadcastOperation(String event, String orderJson) {
+        Order<String> order = new Gson().fromJson(orderJson, Order.class);
+        System.out.println("Message : " + order);
+        List<SocketIOClient> clients;
+        if (order.getBotUsername().equals("*")) {
+            clients = new ArrayList<>(bots.values());
+        } else {
+            clients = new ArrayList<>();
+            clients.add(bots.get(order.getBotUsername()));
         }
+
+        for (SocketIOClient client : clients) {
+            client.sendEvent(event, new Gson().toJson(order.getData()));
+        }
+
     }
 }
