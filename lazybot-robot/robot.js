@@ -63,8 +63,9 @@ ioMaster.on('sendMessage', function (message) {
     bot.chat(JSON.parse(message));
 });
 
-ioMaster.on('goToPos', function (x, y, z) {
-    let positionToGo = v(x, y, z);
+ioMaster.on('goToPos', function (positionJson) {
+    let position = (JSON.parse(positionJson));
+    let positionToGo = v(position.x, position.y, position.z);
     bot.navigate.to(positionToGo);
 });
 

@@ -2,7 +2,7 @@
 function sendMessage() {
     let message = document.getElementById("myMessage").value;
     if (message !== '') {
-        emitMessage();
+        emitMessage(message);
     }
 }
 
@@ -11,12 +11,12 @@ $("#myMessage").keypress(function (event) {
     if (keycode === 13) {
         let message = document.getElementById("myMessage").value;
         if (message !== '') {
-            emitMessage();
+            emitMessage(message);
         }
     }
 });
 
-function emitMessage() {
+function emitMessage(message) {
     ioClient.emit('sendMessageTest', {botUsername: getBotUsername(), data: message});
     document.getElementById("myMessage").value = '';
 }
@@ -37,7 +37,7 @@ function emitGoToPos() {
     let x = parseInt(document.getElementById("xPos").value);
     let y = parseInt(document.getElementById("yPos").value);
     let z = parseInt(document.getElementById("zPos").value);
-    ioClient.emit('goToPos', JSON.stringify({botUsername: window.location.pathname, data: {x: x, y: y, z: z}}));
+    ioClient.emit('goToPos', JSON.stringify({botUsername: getBotUsername(), data: {x: x, y: y, z: z}}));
     document.getElementById("xPos").value = '';
     document.getElementById("yPos").value = '';
     document.getElementById("zPos").value = '';

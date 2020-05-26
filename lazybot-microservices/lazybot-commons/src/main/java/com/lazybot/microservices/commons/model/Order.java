@@ -18,4 +18,8 @@ public class Order<T> {
         this.botUsername = botUsername;
         this.data = data;
     }
+
+    public Class<?> getTypeData() {
+        return data.getClass();
+    }
 }

@@ -110,8 +110,6 @@ public class WebappSocket {
      @param orderMessage message to send.
      */
     public void sendMessage(SocketIOClient socketIOClient, Order<String> orderMessage, AckRequest ackSender) {
-        System.out.println("Target : " + orderMessage.getBotUsername() + " Message : " + orderMessage.getData());
-        orderMessage.setBotUsername(toolsBotManager.correctBotUsername(orderMessage.getBotUsername()));
         socketMaster.emit("sendMessage", new Gson().toJson(orderMessage));
     }
 

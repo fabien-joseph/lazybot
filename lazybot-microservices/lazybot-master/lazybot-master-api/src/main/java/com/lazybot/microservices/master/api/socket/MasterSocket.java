@@ -107,8 +107,9 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) throws MismatchedInputException {
-        Type typePosition = new TypeToken<Order<Position>>() {
+    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
+        broadcastOperation("goToPos", orderPositionJson, Position.class);
+/*        Type typePosition = new TypeToken<Order<Position>>() {
         }.getType();
         Order<Position> position = new Gson().fromJson(orderPositionJson, typePosition);
         if (toolsBotManager.isBeginningWithWrongChar(position.getBotUsername()))
@@ -117,11 +118,11 @@ public class MasterSocket {
         bots.get(position.getBotUsername()).sendEvent("goToPos",
                 position.getData().getX(),
                 position.getData().getY(),
-                position.getData().getZ());
+                position.getData().getZ());*/
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
-        broadcastOperation("sendMessage", orderMessageJson);
+        broadcastOperation("sendMessage", orderMessageJson, String.class);
     }
 
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
@@ -143,8 +144,12 @@ public class MasterSocket {
         this.socketMission = socketIOClient;
     }
 
-    private void broadcastOperation(String event, String orderJson) {
-        Order<String> order = new Gson().fromJson(orderJson, Order.class);
+    private <T> void broadcastOperation(String event, String orderJson, Class<T> classOfData) {
+        Type typePosition = new TypeToken<Order<T>>() {
+        }.getType();
+        Order<T> order = new Gson().fromJson(orderJson, typePosition);
+        if (toolsBotManager.isBeginningWithWrongChar(order.getBotUsername()))
+            order.setBotUsername(toolsBotManager.correctBotUsername(order.getBotUsername()));
         System.out.println("Message : " + order);
         List<SocketIOClient> clients;
         if (order.getBotUsername().equals("*")) {
