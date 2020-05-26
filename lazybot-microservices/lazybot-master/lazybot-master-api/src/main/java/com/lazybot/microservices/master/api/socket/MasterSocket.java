@@ -79,11 +79,8 @@ public class MasterSocket {
         Runtime.getRuntime().exec(command);
     }
 
-    private void updateBot(SocketIOClient socketIOClient, String jsonbot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonbot, Bot.class);
-        System.out.println("updateBot de " + bot.getUsername());
-        //socketIOClient.sendEvent("sendMessage", "RETOUR UPDATE");
-        socketWebapp.emit("updateBotTest", new Gson().toJson(bot));
+    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        socketWebapp.emit("updateBotTest", jsonBot);
     }
 
     private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
