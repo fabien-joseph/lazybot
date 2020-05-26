@@ -4,8 +4,9 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
+import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Login;
-import com.lazybot.microservices.commons.model.Position;
+import com.lazybot.microservices.commons.model.Order;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.slf4j.Logger;
@@ -18,11 +19,13 @@ public class WebappSocket {
     private static final Logger log = LoggerFactory.getLogger(WebappSocket.class);
     private SocketIOServer server;
     private Socket socketMaster;
+    private ToolsBotManager toolsBotManager;
 
     public WebappSocket(SocketIOServer serverWebapp) throws URISyntaxException {
         this.server = serverWebapp;
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
+        this.toolsBotManager = new ToolsBotManager();
 
         // === FROM MASTER MS ===
         server.addEventListener("allBotConnected", String.class, this::allBotConnected);
@@ -33,8 +36,8 @@ public class WebappSocket {
         server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
-        server.addEventListener("sendMessageTest", String.class, this::sendMessage);
-        server.addEventListener("goToPos", Position.class, this::goToPos);
+        server.addEventListener("sendMessageTest", Order.class, this::sendMessage);
+        server.addEventListener("goToPos", String.class, this::goToPos);
     }
 
     /**
@@ -94,19 +97,21 @@ public class WebappSocket {
     /**
     From webapp. Ask to master MS to order all bots to send a message.
      @param socketIOClient socket client of master MS.
-     @param message message to send.
+     @param orderMessage message to send.
      */
-    public void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackSender) {
-        System.out.println("Message : " + message);
-        socketMaster.emit("sendMessage", message);
+    public void sendMessage(SocketIOClient socketIOClient, Order<String> orderMessage, AckRequest ackSender) {
+        System.out.println("Target : " + orderMessage.getBotUsername() + " Message : " + orderMessage.getData());
+        orderMessage.setBotUsername(toolsBotManager.correctBotUsername(orderMessage.getBotUsername()));
+        socketMaster.emit("sendMessage", new Gson().toJson(orderMessage));
     }
 
     /**
     From webapp. Ask to master MS to order all bots to go to a position.
      @param socketIOClient socket client of master MS.
-     @param position position to go.
+     @param orderPositionJson position to go.
+     @return
     */
-    private void goToPos(SocketIOClient socketIOClient, Position position, AckRequest ackRequest) {
-        socketMaster.emit("goToPos", new Gson().toJson(position));
+    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
+        socketMaster.emit("goToPos", orderPositionJson);
     }
 }

@@ -5,14 +5,19 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Login;
+import com.lazybot.microservices.commons.model.Order;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +30,14 @@ public class MasterSocket {
     private Socket socketWebapp;
     private SocketIOClient socketMap;
     private SocketIOClient socketMission;
-
+    private ToolsBotManager toolsBotManager;
     private final ConnectManager connectManager;
 
     public MasterSocket(SocketIOServer serverMaster, ConnectManager connectManager) throws URISyntaxException {
         this.socketWebapp = IO.socket("http://localhost:8090");
         this.socketWebapp.connect();
         this.server = serverMaster;
+        this.toolsBotManager = new ToolsBotManager();
         bots = new HashMap<>();
 
         // CONNECTIONS MS
@@ -99,15 +105,23 @@ public class MasterSocket {
         server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void goToPos(SocketIOClient socketIOClient, String pos, AckRequest ackRequest) throws MismatchedInputException {
-        Position position = new Gson().fromJson(pos, Position.class);
+    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) throws MismatchedInputException {
+        Type typePosition = new TypeToken<Order<Position>>() {
+        }.getType();
+        Order<Position> position = new Gson().fromJson(orderPositionJson, typePosition);
+        if (toolsBotManager.isBeginningWithWrongChar(position.getBotUsername()))
+            position.setBotUsername(toolsBotManager.correctBotUsername(position.getBotUsername()));
         System.out.println(position);
-        server.getRoomOperations("bots").sendEvent("goToPos", position.getX(), position.getY(), position.getZ());
+        bots.get(position.getBotUsername()).sendEvent("goToPos",
+                position.getData().getX(),
+                position.getData().getY(),
+                position.getData().getZ());
     }
 
-    private void sendMessage(SocketIOClient socketIOClient, String message, AckRequest ackRequest) {
-        System.out.println("Message : " + message);
-        server.getRoomOperations("bots").sendEvent("sendMessage", message);
+    private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
+        Order<String> orderMessage = new Gson().fromJson(orderMessageJson, Order.class);
+        System.out.println("Message : " + orderMessage);
+        bots.get(orderMessage.getBotUsername()).sendEvent("sendMessage", orderMessage.getData());
     }
 
     private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {

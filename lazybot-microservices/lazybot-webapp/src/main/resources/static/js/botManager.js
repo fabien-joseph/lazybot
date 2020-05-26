@@ -1,8 +1,7 @@
 function sendMessage() {
     let message = document.getElementById("myMessage").value;
-    alert(message);
     if (message !== '') {
-        ioClient.emit('sendMessageTest', message);
+        ioClient.emit('sendMessageTest', {botUsername: window.location.pathname, data: message});
         document.getElementById("myMessage").value = '';
     }
 }
@@ -11,8 +10,7 @@ function goToPos() {
     let x = parseInt(document.getElementById("xPos").value);
     let y = parseInt(document.getElementById("yPos").value);
     let z = parseInt(document.getElementById("zPos").value);
-    var jsonObject = {x: x, y: y, z: z};
-    ioClient.emit('goToPos', jsonObject);
+    ioClient.emit('goToPos', JSON.stringify({botUsername: window.location.pathname, data:{x: x, y: y, z: z}}));
     document.getElementById("xPos").value = '';
     document.getElementById("yPos").value = '';
     document.getElementById("zPos").value = '';
