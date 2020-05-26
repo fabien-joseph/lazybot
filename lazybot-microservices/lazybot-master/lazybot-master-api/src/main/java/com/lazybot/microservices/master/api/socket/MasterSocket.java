@@ -50,6 +50,7 @@ public class MasterSocket {
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
+        this.server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
@@ -60,6 +61,12 @@ public class MasterSocket {
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
         this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.connectManager = connectManager;
+    }
+
+    private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        if (toolsBotManager.isBeginningWithWrongChar(botUsername))
+            botUsername = toolsBotManager.correctBotUsername(botUsername);
+        bots.get(botUsername).sendEvent("getUpdateBot");
     }
 
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {

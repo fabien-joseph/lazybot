@@ -68,6 +68,10 @@ ioMaster.on('goToPos', function (x, y, z) {
     bot.navigate.to(positionToGo);
 });
 
+ioMaster.on('getUpdateBot', function () {
+    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
+});
+
 ioMaster.on('connectionSuccess', function () {
     console.log("Connection effectuée !");
 });

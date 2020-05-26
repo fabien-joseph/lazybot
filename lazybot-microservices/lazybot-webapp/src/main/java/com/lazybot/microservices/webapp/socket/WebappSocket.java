@@ -35,6 +35,7 @@ public class WebappSocket {
         server.addEventListener("connectBot", Login.class, this::connectBot);
         server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
+        server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("sendMessageTest", Order.class, this::sendMessage);
         server.addEventListener("goToPos", String.class, this::goToPos);
@@ -74,6 +75,15 @@ public class WebappSocket {
      */
     private void disconnectBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         socketMaster.emit("disconnectBot", botUsername);
+    }
+
+    /**
+    From webapp. Ask to master MS to get an update of a bot.
+     @param socketIOClient socket client of master MS.
+     @param botUsername username of the bot to update.
+     */
+    private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        socketMaster.emit("getUpdateBot", botUsername);
     }
 
     /**

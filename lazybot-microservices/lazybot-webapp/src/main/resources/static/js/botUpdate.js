@@ -1,5 +1,7 @@
 let lastHealthValue = 20;
 
+getUpdateBot();
+
 ioClient.on("updateBot", function (jsonBot) {
     let bot = JSON.parse(jsonBot);
     if (window.location.pathname.includes(bot.username)) {
@@ -14,6 +16,10 @@ ioClient.on("updateBot", function (jsonBot) {
         loadInventory(bot);
     }
 });
+
+function getUpdateBot() {
+    ioClient.emit('getUpdateBot', window.location.pathname);
+}
 
 function loadInventory(bot) {
     let itemsQuantity = 0;
