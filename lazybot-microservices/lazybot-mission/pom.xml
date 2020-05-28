@@ -27,6 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <version.lazybot-commons>1.6-SNAPSHOT</version.lazybot-commons>
     </properties>
 
     <dependencies>
@@ -35,6 +36,12 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lazybot.microservices.commons</groupId>
+            <artifactId>lazybot-commons</artifactId>
+            <version>${version.lazybot-commons}</version>
         </dependency>
     </dependencies>
 

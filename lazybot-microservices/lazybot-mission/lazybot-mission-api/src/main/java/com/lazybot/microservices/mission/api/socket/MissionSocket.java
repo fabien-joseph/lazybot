@@ -3,11 +3,13 @@ package com.lazybot.microservices.mission.api.socket;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.lazybot.microservices.mission.model.Bot;
+import com.lazybot.microservices.mission.model.Exchange;
+import com.lazybot.microservices.mission.model.MissionTools;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 
 @Service
@@ -18,18 +20,12 @@ public class MissionSocket {
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
         registrateToMaster();
-        server.addEventListener("connectBot", Bot.class, this::connectBot);
-        server.addEventListener("getChunk", Integer.class, this::getChunk);
+        server.addEventListener("exchange", MissionTools.class, this::exchangeMission);
     }
 
-    public void connectBot(SocketIOClient client, Bot bot, AckRequest ackSender) throws Exception {
-        bot.start();
-        Thread.sleep(5000);
-        bot.stop();
-    }
-
-    public void getChunk(SocketIOClient client, Integer ray, AckRequest ackSender) throws Exception {
-        System.out.println("Test reçu sur lazybot-mission !");
+    private void exchangeMission(SocketIOClient socketIOClient, MissionTools mission, AckRequest ackRequest) throws NoSuchMethodException {
+        Exchange exchange = new Exchange();
+        Method m = exchange.doStep(5);
     }
 
     private void registrateToMaster() {

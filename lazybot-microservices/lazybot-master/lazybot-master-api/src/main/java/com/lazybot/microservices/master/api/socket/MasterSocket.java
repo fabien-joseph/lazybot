@@ -14,6 +14,7 @@ import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class MasterSocket {
         this.server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
-        this.server.addEventListener("disconnectBot", Integer.class, this::disconnectBot);
+        this.server.addEventListener("disconnectBot", String.class, this::disconnectBot);
 
         // FROM BOTS
         this.server.addEventListener("registerBot", String.class, this::registerBot);
@@ -71,7 +72,8 @@ public class MasterSocket {
         socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
     }
 
-    private void disconnectBot(SocketIOClient socketIOClient, Integer bot, AckRequest ackRequest) {
+    private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
+        //broadcastOperation("exit", orderJson, null);
         server.getRoomOperations("bots").sendEvent("exit");
     }
 
@@ -99,7 +101,6 @@ public class MasterSocket {
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
         System.out.println("Size = " + map.size());
-        //socketMap.sendEvent("loadMap", ray);
     }
 
     private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
@@ -109,16 +110,6 @@ public class MasterSocket {
 
     private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
         broadcastOperation("goToPos", orderPositionJson, Position.class);
-/*        Type typePosition = new TypeToken<Order<Position>>() {
-        }.getType();
-        Order<Position> position = new Gson().fromJson(orderPositionJson, typePosition);
-        if (toolsBotManager.isBeginningWithWrongChar(position.getBotUsername()))
-            position.setBotUsername(toolsBotManager.correctBotUsername(position.getBotUsername()));
-        System.out.println(position);
-        bots.get(position.getBotUsername()).sendEvent("goToPos",
-                position.getData().getX(),
-                position.getData().getY(),
-                position.getData().getZ());*/
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
