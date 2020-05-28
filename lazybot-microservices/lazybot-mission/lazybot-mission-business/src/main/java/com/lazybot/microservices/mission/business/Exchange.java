@@ -1,5 +1,7 @@
-package com.lazybot.microservices.mission.model;
+package com.lazybot.microservices.mission.business;
 
+import com.lazybot.microservices.commons.model.Mission;
+import com.lazybot.microservices.mission.model.MissionTools;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,20 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mission "Exchange" items between two bots
+ * Mission exchange items between two bots
  */
 @Getter
 @Setter
 @ToString
-public class Exchange extends MissionTools {
+public class Exchange<T> extends Mission<T> {
     private List<Method> steps;
 
     public Exchange() throws NoSuchMethodException {
         initializeSteps();
     }
 
-    public Exchange(int stepActuel) throws NoSuchMethodException {
-        super(stepActuel);
+    public Exchange(int step) throws NoSuchMethodException {
+        super.setStep(step);
         initializeSteps();
     }
 

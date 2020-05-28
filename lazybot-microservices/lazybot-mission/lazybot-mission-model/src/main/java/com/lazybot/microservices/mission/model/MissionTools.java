@@ -8,17 +8,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public abstract class MissionTools {
-    private int stepActuel;
+    private int stepActual;
     private int stepMax;
 
     public MissionTools() {
     }
 
-    public MissionTools(int stepActuel) {
-        this.stepActuel = stepActuel;
+    public MissionTools(int stepActual) {
+        this.stepActual = stepActual;
     }
-    public MissionTools(int stepActuel, int stepMax) {
-        this.stepActuel = stepActuel;
+    public MissionTools(int stepActual, int stepMax) {
+        this.stepActual = stepActual;
         this.stepMax = stepMax;
     }
 }

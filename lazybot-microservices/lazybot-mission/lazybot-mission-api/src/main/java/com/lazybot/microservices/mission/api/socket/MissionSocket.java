@@ -3,13 +3,12 @@ package com.lazybot.microservices.mission.api.socket;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.lazybot.microservices.mission.model.Exchange;
+import com.lazybot.microservices.mission.business.Exchange;
 import com.lazybot.microservices.mission.model.MissionTools;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 
 @Service
@@ -24,8 +23,8 @@ public class MissionSocket {
     }
 
     private void exchangeMission(SocketIOClient socketIOClient, MissionTools mission, AckRequest ackRequest) throws NoSuchMethodException {
-        Exchange exchange = new Exchange();
-        Method m = exchange.doStep(5);
+        Exchange exchange = new Exchange(mission.getStepActual());
+
     }
 
     private void registrateToMaster() {

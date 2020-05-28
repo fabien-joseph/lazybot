@@ -32,6 +32,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>com.lazybot.microservices.mission.model</groupId>
+          <artifactId>lazybot-mission-model</artifactId>
+          <version>1.6-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>

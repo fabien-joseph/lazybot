@@ -58,6 +58,12 @@
 			<artifactId>lazybot-mission-model</artifactId>
 			<version>1.6-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.lazybot.microservices.mission.business</groupId>
+			<artifactId>lazybot-mission-business</artifactId>
+			<version>1.6-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
