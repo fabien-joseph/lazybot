@@ -1,5 +1,8 @@
 package com.lazybot.microservices.mission.business;
 
+import com.corundumstudio.socketio.SocketIOClient;
+import com.lazybot.microservices.commons.model.Bot;
+import com.lazybot.microservices.commons.model.Item;
 import com.lazybot.microservices.commons.model.Mission;
 import com.lazybot.microservices.mission.model.MissionTools;
 import lombok.Getter;
@@ -18,13 +21,15 @@ import java.util.List;
 @ToString
 public class Exchange<T> extends Mission<T> {
     private List<Method> steps;
+    SocketIOClient socketIOClient;
 
     public Exchange() throws NoSuchMethodException {
         initializeSteps();
     }
 
-    public Exchange(int step) throws NoSuchMethodException {
+    public Exchange(SocketIOClient socketIOClient,int step) throws NoSuchMethodException {
         super.setStep(step);
+        this.socketIOClient = socketIOClient;
         initializeSteps();
     }
 
@@ -43,7 +48,8 @@ public class Exchange<T> extends Mission<T> {
         return steps.get(step);
     }
 
-    private void isBotsHasItems() {
+    private void isBotsHasItems(Bot bot1, Bot bot2, List<Item> itemsGaveByBot1, List<Item> itemsGaveByBot2) {
+
     }
 
     private void getPosOfBots() {
