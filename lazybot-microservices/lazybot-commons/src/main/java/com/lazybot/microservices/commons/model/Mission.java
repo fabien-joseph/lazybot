@@ -11,15 +11,15 @@ public class Mission<T> {
     private String missionName;
     private int step;
     private int stepMax;
-    private T data;
+    private T mainData;
 
     public Mission() {
     }
 
-    public Mission(String missionName, int step, int stepMax, T data) {
+    public Mission(String missionName, int step, int stepMax, T mainData) {
         this.missionName = missionName;
         this.step = step;
         this.stepMax = stepMax;
-        this.data = data;
+        this.mainData = mainData;
     }
 }

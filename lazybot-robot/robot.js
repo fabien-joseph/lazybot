@@ -13,6 +13,8 @@ let lastX = 0;
 let lastZ = 0;
 let lastY = 0;
 
+let actualMission = "";
+
 // === BOT INITIALIZATION ===
 let bot = botManager.connect(process.argv);
 navigatePlugin(bot);

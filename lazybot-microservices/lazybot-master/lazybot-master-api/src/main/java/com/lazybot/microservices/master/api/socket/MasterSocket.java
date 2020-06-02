@@ -3,18 +3,15 @@ package com.lazybot.microservices.master.api.socket;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
-import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.Order;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

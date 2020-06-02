@@ -1,9 +1,29 @@
 package com.lazybot.microservices.mission.business;
 
-import java.net.Socket;
+import com.corundumstudio.socketio.SocketIOClient;
+import com.lazybot.microservices.commons.exceptions.NoMissionFoundException;
+import com.lazybot.microservices.commons.model.Mission;
+import com.lazybot.microservices.mission.model.MissionTools;
 
 public class MissionManager {
-    public <T, S> void runMission(Socket masterSocket, T missionObject, int step, S data) {
 
+    /**
+     * Run all the missions
+     * @param masterSocket socket to connect with the master
+     * @param mission {@link Mission}
+     * @param <T> Type of the data to run the mission ({@link String}, {@link com.lazybot.microservices.commons.model.Position}, etc...)
+     */
+    public <T> void runMission(SocketIOClient masterSocket, Mission<T> mission) throws Exception {
+        MissionTools<T> missionRunning = getMissionClass(mission);
+        if (missionRunning == null)
+            throw new NoMissionFoundException("No mission found for missionName : " + mission.getMissionName());
+        missionRunning.getStep(mission.getStep()).invoke(masterSocket, mission.getMainData());
+    }
+
+    private <T> MissionTools<T> getMissionClass (Mission<T> mission) throws NoSuchMethodException {
+        if (mission.getMissionName().equals("exchange")) {
+            return new Exchange<T>();
+        }
+        return null;
     }
 }

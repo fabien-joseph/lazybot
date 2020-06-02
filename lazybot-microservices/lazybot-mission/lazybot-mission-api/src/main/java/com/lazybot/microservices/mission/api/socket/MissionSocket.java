@@ -25,8 +25,8 @@ public class MissionSocket {
         server.addEventListener("exchange", Mission.class, this::exchangeMission);
     }
 
-    private <T> void exchangeMission(SocketIOClient socketIOClient, Mission<T> mission, AckRequest ackRequest) {
-
+    private <T> void exchangeMission(SocketIOClient socketIOClient, Mission<T> mission, AckRequest ackRequest) throws Exception {
+        missionManager.runMission(socketIOClient, mission);
     }
 
     private void registrateToMaster() {
