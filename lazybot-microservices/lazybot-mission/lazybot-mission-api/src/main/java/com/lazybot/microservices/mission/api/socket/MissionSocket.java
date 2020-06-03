@@ -4,11 +4,15 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.model.Mission;
 import com.lazybot.microservices.mission.business.MissionManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 
 @Service
@@ -25,9 +29,15 @@ public class MissionSocket {
         server.addEventListener("mission", String.class, this::exchangeMission);
     }
 
-    private <T> void exchangeMission(SocketIOClient socketIOClient, String missionJson, AckRequest ackRequest) throws Exception {
+    private void exchangeMission(SocketIOClient socketIOClient, String missionJson, AckRequest ackRequest) throws Exception {
+        Mission<String> mission = executeMissionTest(missionJson);
         System.out.println("Exchange");
-        Mission<T> mission = new Gson().fromJson(missionJson, Mission.class);
         missionManager.runMission(socketIOClient, mission);
+    }
+
+
+    private <T> Mission<T> executeMissionTest(String missionJson) {
+        Type typePosition = new TypeToken<Mission<T>>() {}.getType();
+        return new Gson().fromJson(missionJson, typePosition);
     }
 }

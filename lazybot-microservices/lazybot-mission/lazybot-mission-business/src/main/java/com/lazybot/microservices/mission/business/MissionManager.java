@@ -1,7 +1,6 @@
 package com.lazybot.microservices.mission.business;
 
 import com.corundumstudio.socketio.SocketIOClient;
-import com.lazybot.microservices.commons.exceptions.NoMissionFoundException;
 import com.lazybot.microservices.commons.model.Mission;
 import com.lazybot.microservices.mission.model.MissionTools;
 
@@ -18,7 +17,7 @@ public class MissionManager {
      */
     public <T> void runMission(SocketIOClient masterSocket, Mission<T> mission) throws Exception {
         MissionTools<T> missionRunning = getMissionClass(mission);
-        missionRunning.getStep(mission.getStep()).invoke(masterSocket, mission.getDatas());
+        missionRunning.getStep(mission.getStep()).invoke(masterSocket, mission.getData());
     }
 
     private <T> MissionTools<T> getMissionClass (Mission<T> mission) throws NoSuchMethodException {

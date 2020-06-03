@@ -14,14 +14,14 @@ import lombok.ToString;
 public class Mission<T> {
     private String missionName;
     private int step;
-    private T datas;
+    private T data;
 
     public Mission() {
     }
 
-    public Mission(String missionName, int step, T datas) {
+    public Mission(String missionName, int step, T data) {
         this.missionName = missionName;
         this.step = step;
-        this.datas = datas;
+        this.data = data;
     }
 }

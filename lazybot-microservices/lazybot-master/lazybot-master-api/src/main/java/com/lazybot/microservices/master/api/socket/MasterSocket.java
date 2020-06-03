@@ -104,8 +104,8 @@ public class MasterSocket {
 
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
         System.out.println("Exchange");
-        Mission<String> exchange = new Mission<>("exchange", 0, "Datas bidons");
-        socketMission.emit("exchange", exchange);
+        Mission<String> exchange = new Mission<String>("exchange", 0, "Datas bidons");
+        socketMission.emit("mission", new Gson().toJson(exchange));
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
@@ -150,6 +150,7 @@ public class MasterSocket {
         Order<T> order = new Gson().fromJson(orderJson, typePosition);
         if (toolsBotManager.isBeginningWithWrongChar(order.getBotUsername()))
             order.setBotUsername(toolsBotManager.correctBotUsername(order.getBotUsername()));
+        System.out.println(orderJson);
         System.out.println("Message : " + order);
         List<SocketIOClient> clients;
         if (order.getBotUsername().equals("*")) {
@@ -162,6 +163,10 @@ public class MasterSocket {
         for (SocketIOClient client : clients) {
             client.sendEvent(event, new Gson().toJson(order.getData()));
         }
+    }
 
+    private void executeMissionTest(String missionJson) {
+        Type typePosition = new TypeToken<Mission<String>>() {}.getType();
+        Mission<String> mission = new Gson().fromJson(missionJson, typePosition);
     }
 }
