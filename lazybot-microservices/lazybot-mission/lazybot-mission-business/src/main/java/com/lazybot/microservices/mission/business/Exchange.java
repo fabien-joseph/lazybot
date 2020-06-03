@@ -37,22 +37,10 @@ public class Exchange<T> extends MissionTools<T> {
     public void initializeSteps() throws NoSuchMethodException {
         Class<Exchange> thisClass = Exchange.class;
         List<Method> list = new ArrayList<>();
-        list.add(thisClass.getDeclaredMethod("isBotsHasItems", List.class));
-        list.add(thisClass.getDeclaredMethod("botsGoToPos"));
+        list.add(thisClass.getDeclaredMethod("botsGoToPos", List.class));
         list.add(thisClass.getDeclaredMethod("botsLookEachOther"));
         list.add(thisClass.getDeclaredMethod("botsDropItems"));
         super.setSteps(list);
-    }
-
-    private void isBotsHasItems(List<Object> datas) throws Exception {
-        Bot bot1 = (Bot) datas.get(0);
-        Bot bot2 = (Bot) datas.get(1);
-        boolean bot1HasItems = checkPossessions(bot1.getInventory().getSlots(), (List<Item>) datas.get(2));
-        boolean bot2HasItems = checkPossessions(bot2.getInventory().getSlots(), (List<Item>) datas.get(3));
-
-        // Bots has items
-        if (!(bot1HasItems && bot2HasItems))
-            throw new Exception("The bots don't have items to exchange");
     }
 
     private void botsGoToPos(List<Object> datas) throws Exception {
@@ -78,5 +66,16 @@ public class Exchange<T> extends MissionTools<T> {
                 return false;
         }
         return true;
+    }
+
+    private void isBotsHasItems(List<Object> datas) throws Exception {
+        Bot bot1 = (Bot) datas.get(0);
+        Bot bot2 = (Bot) datas.get(1);
+        boolean bot1HasItems = checkPossessions(bot1.getInventory().getSlots(), (List<Item>) datas.get(2));
+        boolean bot2HasItems = checkPossessions(bot2.getInventory().getSlots(), (List<Item>) datas.get(3));
+
+        // Bots has items
+        if (!(bot1HasItems && bot2HasItems))
+            throw new Exception("The bots don't have items to exchange");
     }
 }

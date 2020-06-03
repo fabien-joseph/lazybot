@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Login;
+import com.lazybot.microservices.commons.model.Mission;
 import com.lazybot.microservices.commons.model.Order;
 import com.lazybot.microservices.commons.model.Position;
 import com.lazybot.microservices.master.business.ConnectManager;
@@ -25,20 +26,22 @@ public class MasterSocket {
     private SocketIOServer server;
     private Socket socketWebapp;
     private SocketIOClient socketMap;
-    private SocketIOClient socketMission;
+    private Socket socketMission;
     private ToolsBotManager toolsBotManager;
     private final ConnectManager connectManager;
 
     public MasterSocket(SocketIOServer serverMaster, ConnectManager connectManager) throws URISyntaxException {
         this.socketWebapp = IO.socket("http://localhost:8090");
         this.socketWebapp.connect();
+        this.socketMission = IO.socket("http://localhost:9091");
+        this.socketMission.connect();
         this.server = serverMaster;
         this.toolsBotManager = new ToolsBotManager();
         bots = new HashMap<>();
 
         // CONNECTIONS MS
         this.server.addEventListener("connectMap", String.class, this::connectMap);
-        this.server.addEventListener("connectMission", String.class, this::connectMission);
+        this.server.addEventListener("test", String.class, this::test);
 
         // WEBAPP
         this.server.addEventListener("chat", String.class, this::chat);
@@ -48,6 +51,7 @@ public class MasterSocket {
         this.server.addEventListener("exchange", String.class, this::exchange);
         this.server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
+        this.server.addEventListener("executeMission", String.class, this::executeMission);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("disconnectBot", String.class, this::disconnectBot);
 
@@ -59,6 +63,10 @@ public class MasterSocket {
         this.connectManager = connectManager;
     }
 
+    private void test(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        System.out.println("Retour de test reçu");
+    }
+
     private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         if (toolsBotManager.isBeginningWithWrongChar(botUsername))
             botUsername = toolsBotManager.correctBotUsername(botUsername);
@@ -67,6 +75,7 @@ public class MasterSocket {
 
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
+        socketMission.emit("test", "hi baby");
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
@@ -94,6 +103,9 @@ public class MasterSocket {
     }
 
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
+        System.out.println("Exchange");
+        Mission<String> exchange = new Mission<>("exchange", 0, "Datas bidons");
+        socketMission.emit("exchange", exchange);
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
@@ -124,12 +136,12 @@ public class MasterSocket {
         System.out.println("Nouveau bot connecté, id: " + botUsername + ". Total : " + bots.size());
     }
 
-    private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        this.socketMap = socketIOClient;
+    private void executeMission(SocketIOClient socketIOClient, String orderMission, AckRequest ackRequest) {
+        socketMission.emit("mission", orderMission);
     }
 
-    private void connectMission(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        this.socketMission = socketIOClient;
+    private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+        this.socketMap = socketIOClient;
     }
 
     private <T> void broadcastOperation(String event, String orderJson, Class<T> classOfData) {

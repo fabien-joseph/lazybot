@@ -39,6 +39,12 @@ public class WebappSocket {
         server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("sendMessageTest", Order.class, this::sendMessage);
         server.addEventListener("goToPos", String.class, this::goToPos);
+        server.addEventListener("exchange", String.class, this::exchange);
+    }
+
+    private void exchange(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        System.out.println("Exchange");
+        socketMaster.emit("exchange");
     }
 
     /**

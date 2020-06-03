@@ -7,6 +7,9 @@ import com.lazybot.microservices.mission.model.MissionTools;
 
 public class MissionManager {
 
+    public MissionManager() {
+    }
+
     /**
      * Run all the missions
      * @param masterSocket socket to connect with the master
@@ -15,15 +18,13 @@ public class MissionManager {
      */
     public <T> void runMission(SocketIOClient masterSocket, Mission<T> mission) throws Exception {
         MissionTools<T> missionRunning = getMissionClass(mission);
-        if (missionRunning == null)
-            throw new NoMissionFoundException("No mission found for missionName : " + mission.getMissionName());
-        missionRunning.getStep(mission.getStep()).invoke(masterSocket, mission.getMainData());
+        missionRunning.getStep(mission.getStep()).invoke(masterSocket, mission.getDatas());
     }
 
     private <T> MissionTools<T> getMissionClass (Mission<T> mission) throws NoSuchMethodException {
         if (mission.getMissionName().equals("exchange")) {
             return new Exchange<T>();
         }
-        return null;
+        throw new NoSuchMethodException();
     }
 }

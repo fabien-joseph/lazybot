@@ -29,6 +29,10 @@ function connectBot() {
     }
 }
 
+function exchange() {
+    ioClient.emit('exchange');
+}
+
 function disconnectBot(botId) {
     ioClient.emit('disconnectBot', botId);
 }
