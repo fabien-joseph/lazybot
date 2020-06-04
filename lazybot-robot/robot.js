@@ -13,7 +13,8 @@ let lastX = 0;
 let lastZ = 0;
 let lastY = 0;
 
-let actualMission = "";
+let actualMissionName = "";
+let actualMissionStep;
 
 // === BOT INITIALIZATION ===
 let bot = botManager.connect(process.argv);
@@ -33,13 +34,13 @@ bot.on('chat', function (username, message) {
 // === EVENT UPDATE THE BOT
 bot.on('health', function () {
     console.log("health");
-    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
+    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
 });
 
 bot.on('move', function () {
     if (Math.floor(bot.entity.position.x) !== lastX || Math.floor(bot.entity.position.y) !== lastY || Math.floor(bot.entity.position.z) !== lastZ) {
         console.log("move");
-        eventUpdateBot.updateBot(bot.username, bot, ioMaster);
+        eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
     }
     lastX = Math.floor(bot.entity.position.x);
     lastY = Math.floor(bot.entity.position.y);
@@ -48,7 +49,7 @@ bot.on('move', function () {
 
 bot.on('playerCollect', function () {
     console.log("collect");
-    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
+    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
 });
 
 // === MASTER MS REQUESTS
@@ -72,7 +73,7 @@ ioMaster.on('goToPos', function (positionJson) {
 });
 
 ioMaster.on('getUpdateBot', function () {
-    eventUpdateBot.updateBot(bot.username, bot, ioMaster);
+    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
 });
 
 ioMaster.on('connectionSuccess', function () {

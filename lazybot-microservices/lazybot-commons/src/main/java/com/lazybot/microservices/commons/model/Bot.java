@@ -7,7 +7,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Bot {
-    private String id;
     private String username;
     private String host;
     private Position position;
@@ -18,8 +17,7 @@ public class Bot {
     public Bot() {
     }
 
-    public Bot(String id, String username, String host, Position position, double health, double food, Inventory inventory) {
-        this.id = id;
+    public Bot(String username, String host, Position position, double health, double food, Inventory inventory) {
         this.username = username;
         this.host = host;
         this.position = position;

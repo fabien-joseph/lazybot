@@ -6,10 +6,8 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
-import com.lazybot.microservices.commons.model.Login;
-import com.lazybot.microservices.commons.model.Mission;
-import com.lazybot.microservices.commons.model.Order;
-import com.lazybot.microservices.commons.model.Position;
+import com.lazybot.microservices.commons.model.*;
+import com.lazybot.microservices.commons.model.mission.ExchangeMission;
 import com.lazybot.microservices.master.business.ConnectManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -103,9 +101,17 @@ public class MasterSocket {
     }
 
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
-        System.out.println("Exchange");
-        Mission<String> exchange = new Mission<String>("exchange", 0, "Datas bidons");
-        socketMission.emit("mission", new Gson().toJson(exchange));
+        // === Just for tests
+        ExchangeMission exchange = new ExchangeMission();
+        exchange.setStep(1);
+        exchange.setBot1(new Bot("Ronflonflon", "127.0.0.1", new Position(0, 64, 0), 20.0,
+        20.0, new Inventory(0, "inventory", "inventory", null, null)));
+        exchange.setBot2(new Bot("Brain", "127.0.0.1", new Position(0, 64, 0), 20.0,
+        20.0, new Inventory(0, "inventory", "inventory", null, null)));
+        exchange.setItemsGiveByBot1(null);
+        exchange.setItemsGiveByBot2(null);
+        // === Just for tests
+        socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
@@ -145,28 +151,23 @@ public class MasterSocket {
     }
 
     private <T> void broadcastOperation(String event, String orderJson, Class<T> classOfData) {
-        Type typePosition = new TypeToken<Order<T>>() {
+        Type typePosition = new TypeToken<OrderBot<T>>() {
         }.getType();
-        Order<T> order = new Gson().fromJson(orderJson, typePosition);
-        if (toolsBotManager.isBeginningWithWrongChar(order.getBotUsername()))
-            order.setBotUsername(toolsBotManager.correctBotUsername(order.getBotUsername()));
+        OrderBot<T> orderBot = new Gson().fromJson(orderJson, typePosition);
+        if (toolsBotManager.isBeginningWithWrongChar(orderBot.getBotUsername()))
+            orderBot.setBotUsername(toolsBotManager.correctBotUsername(orderBot.getBotUsername()));
         System.out.println(orderJson);
-        System.out.println("Message : " + order);
+        System.out.println("Message : " + orderBot);
         List<SocketIOClient> clients;
-        if (order.getBotUsername().equals("*")) {
+        if (orderBot.getBotUsername().equals("*")) {
             clients = new ArrayList<>(bots.values());
         } else {
             clients = new ArrayList<>();
-            clients.add(bots.get(order.getBotUsername()));
+            clients.add(bots.get(orderBot.getBotUsername()));
         }
 
         for (SocketIOClient client : clients) {
-            client.sendEvent(event, new Gson().toJson(order.getData()));
+            client.sendEvent(event, new Gson().toJson(orderBot.getData()));
         }
-    }
-
-    private void executeMissionTest(String missionJson) {
-        Type typePosition = new TypeToken<Mission<String>>() {}.getType();
-        Mission<String> mission = new Gson().fromJson(missionJson, typePosition);
     }
 }

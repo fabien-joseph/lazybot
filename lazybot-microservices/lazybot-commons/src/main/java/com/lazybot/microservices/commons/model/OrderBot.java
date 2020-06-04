@@ -7,21 +7,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Order<T> {
+public class OrderBot<T> {
     private String botUsername;
     private T data;
     private String missionName;
     private int step;
 
-    public Order() {
+    public OrderBot() {
     }
 
-    public Order(String botUsername, T data) {
+    public OrderBot(String botUsername, T data) {
         this.botUsername = botUsername;
         this.data = data;
     }
 
-    public Order(String botUsername, T data, String missionName, int step) {
+    public OrderBot(String botUsername, T data, String missionName, int step) {
         this.botUsername = botUsername;
         this.data = data;
         this.missionName = missionName;

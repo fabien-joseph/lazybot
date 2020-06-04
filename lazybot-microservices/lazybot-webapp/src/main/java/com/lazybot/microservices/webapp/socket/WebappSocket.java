@@ -6,7 +6,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Login;
-import com.lazybot.microservices.commons.model.Order;
+import com.lazybot.microservices.commons.model.OrderBot;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class WebappSocket {
         server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
-        server.addEventListener("sendMessageTest", Order.class, this::sendMessage);
+        server.addEventListener("sendMessageTest", OrderBot.class, this::sendMessage);
         server.addEventListener("goToPos", String.class, this::goToPos);
         server.addEventListener("exchange", String.class, this::exchange);
     }
@@ -113,10 +113,10 @@ public class WebappSocket {
     /**
     From webapp. Ask to master MS to order all bots to send a message.
      @param socketIOClient socket client of master MS.
-     @param orderMessage message to send.
+     @param orderBotMessage message to send.
      */
-    public void sendMessage(SocketIOClient socketIOClient, Order<String> orderMessage, AckRequest ackSender) {
-        socketMaster.emit("sendMessage", new Gson().toJson(orderMessage));
+    public void sendMessage(SocketIOClient socketIOClient, OrderBot<String> orderBotMessage, AckRequest ackSender) {
+        socketMaster.emit("sendMessage", new Gson().toJson(orderBotMessage));
     }
 
     /**
