@@ -1,11 +1,8 @@
 package com.lazybot.microservices.mission.business;
 
 import com.corundumstudio.socketio.SocketIOClient;
-import com.lazybot.microservices.commons.model.Bot;
-import com.lazybot.microservices.commons.model.Item;
-import com.lazybot.microservices.commons.model.Order;
-import com.lazybot.microservices.commons.model.Position;
-import com.lazybot.microservices.mission.model.MissionTools;
+import com.lazybot.microservices.commons.model.*;
+import com.lazybot.microservices.mission.model.MissionAbstract;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Exchange<T> extends MissionTools<T> {
+public class Exchange<T> extends MissionAbstract<T> {
     SocketIOClient socketIOClient;
 
     public Exchange() throws NoSuchMethodException {
@@ -43,14 +40,25 @@ public class Exchange<T> extends MissionTools<T> {
         super.setSteps(list);
     }
 
-    private void botsGoToPos(List<Object> datas) throws Exception {
-        Bot bot1 = (Bot) datas.get(0);
+    @Override
+    public void initializeMissions() throws NoSuchMethodException {
+
+    }
+
+    @Override
+    public void test() {
+        System.out.println("TEST RECU");
+    }
+
+    public void botsGoToPos(List<Object> datas) throws Exception {
+        System.out.println("Coucou");
+/*        Bot bot1 = (Bot) datas.get(0);
         Bot bot2 = (Bot) datas.get(1);
 
         isBotsHasItems(datas);
 
         Order<Position> orderBot1 = new Order<>(bot1.getUsername(), bot1.getPosition(), "exchange", super.getStepActual());
-        socketIOClient.sendEvent("goToPos", orderBot1);
+        socketIOClient.sendEvent("goToPos", orderBot1);*/
     }
 
     private void botsLookEachOther() {

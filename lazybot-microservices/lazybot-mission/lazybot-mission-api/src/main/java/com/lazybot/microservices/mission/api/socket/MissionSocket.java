@@ -4,7 +4,6 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.model.Mission;
 import com.lazybot.microservices.mission.business.MissionManager;
@@ -30,13 +29,12 @@ public class MissionSocket {
     }
 
     private void exchangeMission(SocketIOClient socketIOClient, String missionJson, AckRequest ackRequest) throws Exception {
-        Mission<String> mission = executeMissionTest(missionJson);
-        System.out.println("Exchange");
+        Mission<String> mission = createMissionObject(missionJson);
+        System.out.println("Exchange, " + mission);
         missionManager.runMission(socketIOClient, mission);
     }
 
-
-    private <T> Mission<T> executeMissionTest(String missionJson) {
+    private <T> Mission<T> createMissionObject(String missionJson) {
         Type typePosition = new TypeToken<Mission<T>>() {}.getType();
         return new Gson().fromJson(missionJson, typePosition);
     }
