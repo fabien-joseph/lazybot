@@ -13,7 +13,12 @@ exports.chatControl = function (bot, username, message) {
         console.log(bot.players['Styleure'].entity.position);
     } else if (message === 'username') {
         bot.chat(bot._client.socket.remoteAddress);
+    } else if (message === 'drop') {
+        bot.toss(1, 0, 1, null);
     } else if (message === 'exit') {
         process.exit();
     }
+    let yaw = message * 3.2 / 180;
+    let pitch = message * 3.2 / 180;
+    bot.look(0, pitch, true, null);
 };

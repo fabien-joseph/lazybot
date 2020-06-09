@@ -1,12 +1,14 @@
 package com.lazybot.microservices.mission.business;
 
 import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIOServer;
+import io.socket.client.Socket;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import java.lang.reflect.Method;
 import java.util.List;
+
 
 /**
  * Abstract class for all the managers of the missions.
@@ -15,7 +17,7 @@ import java.util.List;
 @Setter
 @ToString
 public abstract class MissionAbstractManager {
-    private SocketIOClient masterSocket;
+    private Socket masterSocket;
     private List<Method> steps;
     private List<Method> missionInitializer;
 

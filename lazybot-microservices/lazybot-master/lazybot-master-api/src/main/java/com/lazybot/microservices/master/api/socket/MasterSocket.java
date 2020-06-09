@@ -8,7 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.*;
 import com.lazybot.microservices.commons.model.mission.ExchangeMission;
+import com.lazybot.microservices.commons.model.mission.Mission;
 import com.lazybot.microservices.master.business.ConnectManager;
+import com.lazybot.microservices.master.model.BotIdentifier;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,11 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class MasterSocket {
-    private Map<String, SocketIOClient> bots;
+    private Map<String, BotIdentifier> bots;
     private SocketIOServer server;
     private Socket socketWebapp;
     private SocketIOClient socketMap;
@@ -37,9 +40,10 @@ public class MasterSocket {
         this.toolsBotManager = new ToolsBotManager();
         bots = new HashMap<>();
 
-        // CONNECTIONS MS
+        // CONNECTIONS MS - From all
         this.server.addEventListener("connectMap", String.class, this::connectMap);
         this.server.addEventListener("test", String.class, this::test);
+        this.server.addEventListener("error", String.class, this::error);
 
         // WEBAPP
         this.server.addEventListener("chat", String.class, this::chat);
@@ -47,6 +51,7 @@ public class MasterSocket {
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
+        this.server.addEventListener("missionStatus", String.class, this::missionStatus);
         this.server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
         this.server.addEventListener("executeMission", String.class, this::executeMission);
@@ -58,7 +63,13 @@ public class MasterSocket {
         this.server.addEventListener("unregisterBot", String.class, this::unregisterBot);
         this.server.addEventListener("returnLoadMap", List.class, this::returnLoadMap);
         this.server.addEventListener("updateBot", String.class, this::updateBot);
+        this.server.addEventListener("missionDone", String.class, this::missionDone);
+        this.server.addEventListener("missionFail", String.class, this::missionFail);
         this.connectManager = connectManager;
+    }
+
+    private void error(SocketIOClient socketIOClient, String error, AckRequest ackRequest) {
+        System.out.println("Error: " + error);
     }
 
     private void test(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
@@ -68,12 +79,11 @@ public class MasterSocket {
     private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         if (toolsBotManager.isBeginningWithWrongChar(botUsername))
             botUsername = toolsBotManager.correctBotUsername(botUsername);
-        bots.get(botUsername).sendEvent("getUpdateBot");
+        bots.get(botUsername).getSocketIOClient().sendEvent("getUpdateBot");
     }
 
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
-        socketMission.emit("test", "hi baby");
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
@@ -91,8 +101,23 @@ public class MasterSocket {
     }
 
     private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        bots.get(bot.getUsername()).setBot(bot);
         socketWebapp.emit("updateBotTest", jsonBot);
     }
+
+    private void missionDone(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        socketMission.emit("missionDone", bot.getActualMissionId());
+
+    }
+
+    private void missionFail(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        socketMission.emit("missionFail", bot.getActualMissionId());
+    }
+
+
 
     private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         bots.remove(botUsername);
@@ -100,17 +125,22 @@ public class MasterSocket {
         System.out.println("Un bot a été déconnecté. Total : " + bots.size());
     }
 
+    private void missionStatus(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
+        broadcastOperation("missionStatus", orderJson, Integer.class);
+    }
+
     private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
         // === Just for tests
         ExchangeMission exchange = new ExchangeMission();
-        exchange.setStep(1);
-        exchange.setBot1(new Bot("Ronflonflon", "127.0.0.1", new Position(0, 64, 0), 20.0,
-        20.0, new Inventory(0, "inventory", "inventory", null, null)));
-        exchange.setBot2(new Bot("Brain", "127.0.0.1", new Position(0, 64, 0), 20.0,
-        20.0, new Inventory(0, "inventory", "inventory", null, null)));
-        exchange.setItemsGiveByBot1(null);
-        exchange.setItemsGiveByBot2(null);
-        // === Just for tests
+        exchange.setId(generateId());
+        exchange.setStep(0);
+        exchange.setBot1(bots.get("Ronflonflon").getBot());
+        exchange.setBot2(bots.get("test").getBot());
+        List<Item> items = new ArrayList<>();
+        exchange.setItemsGiveByBot1(items);
+        items.add(new Item(1, 1, 0, "stone", "stone", 64, 36));
+        exchange.setItemsGiveByBot1(items);
+        // === Just for test ===
         socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
@@ -135,7 +165,9 @@ public class MasterSocket {
     }
 
     private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
-        bots.put(botUsername, socketIOClient);
+        BotIdentifier botIdentifier = new BotIdentifier();
+        botIdentifier.setSocketIOClient(socketIOClient);
+        bots.put(botUsername, botIdentifier);
         socketIOClient.joinRoom("bots");
         socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
         socketIOClient.sendEvent("connectionSuccess");
@@ -158,16 +190,22 @@ public class MasterSocket {
             orderBot.setBotUsername(toolsBotManager.correctBotUsername(orderBot.getBotUsername()));
         System.out.println(orderJson);
         System.out.println("Message : " + orderBot);
-        List<SocketIOClient> clients;
+        List<SocketIOClient> clients = new ArrayList<>();
         if (orderBot.getBotUsername().equals("*")) {
-            clients = new ArrayList<>(bots.values());
+            for (BotIdentifier b : bots.values()) {
+                clients.add(b.getSocketIOClient());
+            }
         } else {
-            clients = new ArrayList<>();
-            clients.add(bots.get(orderBot.getBotUsername()));
+            clients.add(bots.get(orderBot.getBotUsername()).getSocketIOClient());
         }
 
         for (SocketIOClient client : clients) {
             client.sendEvent(event, new Gson().toJson(orderBot.getData()));
         }
+    }
+
+    private int generateId() {
+        return ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
+
     }
 }

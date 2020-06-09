@@ -60,10 +60,9 @@ exports.loadChunkArround = function (bot, ray, offsetX, offsetZ) {
     return blocks;
 };
 
-exports.jsonBot = function (actualMissionName, actualMissionStep, bot) {
+exports.jsonBot = function (actualMissionId, bot) {
     return {
-        "actualMissionName": actualMissionName,
-        "actualMissionTep": actualMissionStep,
+        "actualMissionId": actualMissionId,
         "username": bot.username,
         "host": bot._client.socket.remoteAddress,
         "position": {x: bot.entity.position.x, y:bot.entity.position.y, z: bot.entity.position.z},

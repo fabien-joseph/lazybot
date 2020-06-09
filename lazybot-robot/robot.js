@@ -13,8 +13,7 @@ let lastX = 0;
 let lastZ = 0;
 let lastY = 0;
 
-let actualMissionName = "";
-let actualMissionStep;
+let actualMissionId;
 
 // === BOT INITIALIZATION ===
 let bot = botManager.connect(process.argv);
@@ -34,13 +33,18 @@ bot.on('chat', function (username, message) {
 // === EVENT UPDATE THE BOT
 bot.on('health', function () {
     console.log("health");
-    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
+    eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
 });
+
+bot.on('entityMoved', (entity) => {
+    //bot.lookAt(entity.position, true, null);
+    //console.log(bot.entity.yaw);
+})
 
 bot.on('move', function () {
     if (Math.floor(bot.entity.position.x) !== lastX || Math.floor(bot.entity.position.y) !== lastY || Math.floor(bot.entity.position.z) !== lastZ) {
         console.log("move");
-        eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
+        eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
     }
     lastX = Math.floor(bot.entity.position.x);
     lastY = Math.floor(bot.entity.position.y);
@@ -49,10 +53,34 @@ bot.on('move', function () {
 
 bot.on('playerCollect', function () {
     console.log("collect");
-    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
+    eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
 });
 
+// === Events mission done ===
+bot.navigate.on('arrived', function () {
+    console.log("MissionID envoyé : " + actualMissionId);
+    eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
+
+});
+
+// === Events mission fail ===
+bot.navigate.on('cannotFind', function () {
+    eventUpdateBot.updateBot("missionFail", actualMissionId, bot, ioMaster);
+
+});
+
+bot.navigate.on('interrupted', function () {
+    eventUpdateBot.updateBot("missionFail", actualMissionId, bot, ioMaster);
+
+});
+
+
 // === MASTER MS REQUESTS
+ioMaster.on('missionStatus', function (missionId) {
+    actualMissionId = missionId;
+    console.log("Mission ID reçu " + actualMissionId);
+})
+
 ioMaster.on('getLoadMap', function (ray) {
     let blocks = botManager.loadChunkArround(bot, ray, 0, 0);
     ioMaster.emit("returnLoadMap", blocks);
@@ -73,7 +101,7 @@ ioMaster.on('goToPos', function (positionJson) {
 });
 
 ioMaster.on('getUpdateBot', function () {
-    eventUpdateBot.updateBot(actualMissionName, actualMissionStep, bot, ioMaster);
+    eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
 });
 
 ioMaster.on('connectionSuccess', function () {
@@ -83,8 +111,6 @@ ioMaster.on('connectionSuccess', function () {
 ioMaster.on('exit', function () {
     exit();
 });
-
-
 
 // === Events bot stops ===
 ioMaster.on('quit', function () {

@@ -8,6 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderBot<T> {
+    private int missionId;
     private String botUsername;
     private T data;
     private String missionName;
@@ -21,7 +22,8 @@ public class OrderBot<T> {
         this.data = data;
     }
 
-    public OrderBot(String botUsername, T data, String missionName, int step) {
+    public OrderBot(int missionId, String botUsername, T data, String missionName, int step) {
+        this.missionId = missionId;
         this.botUsername = botUsername;
         this.data = data;
         this.missionName = missionName;

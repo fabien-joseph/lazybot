@@ -2,7 +2,6 @@ package com.lazybot.microservices.commons.model.mission;
 
 import com.lazybot.microservices.commons.model.Bot;
 import com.lazybot.microservices.commons.model.Item;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,6 +29,14 @@ public class ExchangeMission extends Mission {
 
     public ExchangeMission(int step, Bot bot1, Bot bot2, List<Item> itemsGiveByBot1, List<Item> itemsGiveByBot2) {
         super(step);
+        this.bot1 = bot1;
+        this.bot2 = bot2;
+        this.itemsGiveByBot1 = itemsGiveByBot1;
+        this.itemsGiveByBot2 = itemsGiveByBot2;
+    }
+
+    public ExchangeMission(int missionId, int step, Bot bot1, Bot bot2, List<Item> itemsGiveByBot1, List<Item> itemsGiveByBot2) {
+        super(missionId, step);
         this.bot1 = bot1;
         this.bot2 = bot2;
         this.itemsGiveByBot1 = itemsGiveByBot1;

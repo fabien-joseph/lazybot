@@ -9,6 +9,7 @@ import lombok.ToString;
 public class Bot {
     private String username;
     private String host;
+    private int actualMissionId;
     private Position position;
     private double health;
     private double food;
@@ -17,9 +18,10 @@ public class Bot {
     public Bot() {
     }
 
-    public Bot(String username, String host, Position position, double health, double food, Inventory inventory) {
+    public Bot(String username, String host, int actualMissionId, Position position, double health, double food, Inventory inventory) {
         this.username = username;
         this.host = host;
+        this.actualMissionId = actualMissionId;
         this.position = position;
         this.health = health;
         this.food = food;
