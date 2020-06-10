@@ -21,6 +21,8 @@ import java.util.Map;
 @Service
 public class MissionSocket {
     private Map<Integer, Mission> missionsRunning;
+    private int totalMissionSuccess;
+    private int totalMissionFail;
     private SocketIOServer server;
     private final Socket socketMaster;
     private final MissionManager missionManager;
@@ -30,7 +32,9 @@ public class MissionSocket {
         this.socketMaster = IO.socket("http://localhost:9090");
         this.socketMaster.connect();
         this.missionManager = new MissionManager();
-        missionsRunning = new HashMap<>();
+        this.missionsRunning = new HashMap<>();
+        this.totalMissionSuccess = 0;
+        this.totalMissionFail = 0;
 
         // === Update existing mission
         server.addEventListener("missionDone", Integer.class, this::missionDone);
@@ -43,13 +47,19 @@ public class MissionSocket {
     private void missionDone(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Mission mission = missionsRunning.get(missionId);
         mission.setStep(mission.getStep() + 1);
-        missionManager.runMission(socketMaster, mission);
-        System.out.println("Mission done ! Total : " + missionsRunning.size());
+        if (missionManager.runMission(socketMaster, mission)) {
+            missionsRunning.remove(missionId);
+            this.totalMissionSuccess++;
+            System.out.println("Mission success count : " + totalMissionSuccess);
+        }
+        System.out.println("Mission total : " + missionsRunning.size());
     }
 
     private void missionFail(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) {
-        System.out.println("Mission fail  ! Total : " + missionsRunning.size());
-
+        missionsRunning.remove(missionId);
+        this.totalMissionFail++;
+        System.out.println("Mission fail count : " + totalMissionFail);
+        System.out.println("Mission total : " + missionsRunning.size());
     }
 
 

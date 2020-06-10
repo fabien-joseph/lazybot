@@ -11,14 +11,22 @@ public class MissionManager {
     }
 
     /**
-     * Run all the missions
-     * @param masterSocket socket to connect with the master
-     * @param missionObject {@link Mission}
+     *
+     * @param masterSocket
+     * @param missionObject
+     * @return true if the mission is finished, false is it isn't
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
      */
-    public void runMission(Socket masterSocket, Mission missionObject) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public boolean runMission(Socket masterSocket, Mission missionObject) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         MissionAbstractManager mission = new ExchangeMissionManager();
-        mission.setMasterSocket(masterSocket);
-        Method m = mission.getStep(missionObject.getStep());
-        m.invoke(mission, missionObject);
+        if (missionObject.getStep() < mission.getSteps().size()) {
+            mission.setMasterSocket(masterSocket);
+            Method m = mission.getStep(missionObject.getStep());
+            m.invoke(mission, missionObject);
+            return false;
+        }
+        return true;
     }
 }
