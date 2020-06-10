@@ -100,6 +100,15 @@ ioMaster.on('goToPos', function (positionJson) {
     bot.navigate.to(positionToGo);
 });
 
+ioMaster.on('look', function (lookJson) {
+    let look = JSON.parse(lookJson);
+    let yaw = look.yaw * 3.2 / 180;
+    let pitch = look.pitch * 3.2 / 180;
+    bot.look(yaw, pitch, true, null);
+});
+
+
+
 ioMaster.on('getUpdateBot', function () {
     eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
 });

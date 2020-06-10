@@ -7,6 +7,7 @@ import com.lazybot.microservices.commons.model.mission.Mission;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,8 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         Class<ExchangeMissionManager> thisClass = ExchangeMissionManager.class;
         List<Method> list = new ArrayList<>();
         list.add(thisClass.getDeclaredMethod("botsJoinEachOthers", ExchangeMission.class));
-        list.add(thisClass.getDeclaredMethod("botsLookEachOther", Mission.class));
-        list.add(thisClass.getDeclaredMethod("botsDropItems", Mission.class));
+        list.add(thisClass.getDeclaredMethod("botsLookEachOther", ExchangeMission.class));
+        list.add(thisClass.getDeclaredMethod("botsDropItems", ExchangeMission.class));
 
         for (Method m : list) {
             m.setAccessible(true);
@@ -40,22 +41,23 @@ public class ExchangeMissionManager extends MissionAbstractManager {
 
     private void botsJoinEachOthers(ExchangeMission missionObject) {
         OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(),
-                "exchange", 0);
+                "exchange", missionObject.getStep());
         super.getMasterSocket().emit("missionStatus", new Gson().toJson(orderSetStatus));
 
         OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getBot2().getPosition(),
-                "exchange", 0);
+                "exchange", missionObject.getStep());
 
-        System.out.println("évent envoyé");
+        System.out.println("Bot 1 rejoint Bot 2");
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 
-    private void botsLookEachOther(Mission missionObject) {
-        System.out.println("Etape " + missionObject.getStep());
-
+    private void botsLookEachOther(ExchangeMission missionObject) {
+        OrderBot<Look> orderLook = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), new Look(0, -90), "exchange", missionObject.getStep());
+        System.out.println("Bot 1 regarde au sol");
+        super.getMasterSocket().emit("look", new Gson().toJson(orderLook));
     }
 
-    private void botsDropItems(Mission missionObject) {
+    private void botsDropItems(ExchangeMission missionObject) {
         System.out.println("Etape " + missionObject.getStep());
     }
 

@@ -45,10 +45,11 @@ public class MasterSocket {
         this.server.addEventListener("test", String.class, this::test);
         this.server.addEventListener("error", String.class, this::error);
 
-        // WEBAPP
+        // ORDERS / REQUEST INFOS FROM BOTS : WEBAPP - MISSION
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
+        this.server.addEventListener("look", String.class, this::look);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
         this.server.addEventListener("missionStatus", String.class, this::missionStatus);
@@ -155,6 +156,10 @@ public class MasterSocket {
 
     private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
         broadcastOperation("goToPos", orderPositionJson, Position.class);
+    }
+
+    private void look(SocketIOClient socketIOClient, String orderLookJson, AckRequest ackRequest) {
+        broadcastOperation("look", orderLookJson, Position.class);
     }
 
     private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
