@@ -31,6 +31,7 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         list.add(thisClass.getDeclaredMethod("botsJoinEachOthers", ExchangeMission.class));
         list.add(thisClass.getDeclaredMethod("botsLookEachOther", ExchangeMission.class));
         list.add(thisClass.getDeclaredMethod("botsDropItems", ExchangeMission.class));
+        list.add(thisClass.getDeclaredMethod("botsGoFarAway", ExchangeMission.class));
 
         for (Method m : list) {
             m.setAccessible(true);
@@ -44,22 +45,39 @@ public class ExchangeMissionManager extends MissionAbstractManager {
                 "exchange", missionObject.getStep());
         super.getMasterSocket().emit("missionStatus", new Gson().toJson(orderSetStatus));
 
-        OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getBot2().getPosition(),
-                "exchange", missionObject.getStep());
+        OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
+                missionObject.getBot2().getPosition(), "exchange", missionObject.getStep());
 
         System.out.println("Bot 1 rejoint Bot 2");
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 
     private void botsLookEachOther(ExchangeMission missionObject) {
-        OrderBot<Look> orderLook = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), new Look(0, -90), "exchange", missionObject.getStep());
+        OrderBot<Look> orderLook = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
+                new Look(0, -90), "exchange", missionObject.getStep());
         System.out.println("Bot 1 regarde au sol");
         super.getMasterSocket().emit("look", new Gson().toJson(orderLook));
     }
 
-    private void botsDropItems(ExchangeMission missionObject) {
-        System.out.println("Etape " + missionObject.getStep());
+    private void botsDropItems(ExchangeMission missionObject) throws InterruptedException {
+        System.out.println("Bot 1 drop les items");
+
+        OrderBot<List<Item>> orderDrop = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
+                missionObject.getItemsGiveByBot1(), "exchange", missionObject.getStep());
+        Thread.sleep(200);
+
+        super.getMasterSocket().emit("drop", new Gson().toJson(orderDrop));
     }
+
+    private void botsGoFarAway(ExchangeMission missionObject) {
+        Position posFarAway = missionObject.getBot2().getPosition();
+        posFarAway.setX(posFarAway.getX() + 3);
+        OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
+                posFarAway, "exchange", missionObject.getStep());
+        super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
+    }
+
+
 
     // === Check values ===
     private boolean checkPossessions(List<Item> botInventory, List<Item> itemsGaveByBot1) {

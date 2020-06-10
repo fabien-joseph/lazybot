@@ -37,7 +37,7 @@ bot.on('health', function () {
 });
 
 bot.on('entityMoved', (entity) => {
-    //bot.lookAt(entity.position, true, null);
+    // bot.lookAt(entity.position, true, null);
     //console.log(bot.entity.yaw);
 })
 
@@ -86,6 +86,18 @@ ioMaster.on('getLoadMap', function (ray) {
     ioMaster.emit("returnLoadMap", blocks);
 });
 
+ioMaster.on('drop', function (itemsJson) {
+
+    let items = JSON.parse(itemsJson);
+    let type = Math.round(items[0].type);
+    let metadata = Math.round(items[0].metadata);
+    let count = Math.round(items[0].count);
+    console.log(type + " - " + metadata + " - " + count)
+    bot.toss(type, metadata, count, null);
+    if (actualMissionId != null)
+        eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
+});
+
 ioMaster.on('test', function () {
     console.log("J'ai reçu le retour");
 });
@@ -105,9 +117,9 @@ ioMaster.on('look', function (lookJson) {
     let yaw = look.yaw * 3.2 / 180;
     let pitch = look.pitch * 3.2 / 180;
     bot.look(yaw, pitch, true, null);
+    if (actualMissionId !== null)
+        eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
 });
-
-
 
 ioMaster.on('getUpdateBot', function () {
     eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);

@@ -50,6 +50,7 @@ public class MasterSocket {
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
         this.server.addEventListener("look", String.class, this::look);
+        this.server.addEventListener("drop", String.class, this::drop);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
         this.server.addEventListener("missionStatus", String.class, this::missionStatus);
@@ -138,9 +139,9 @@ public class MasterSocket {
         exchange.setBot1(bots.get("Ronflonflon").getBot());
         exchange.setBot2(bots.get("test").getBot());
         List<Item> items = new ArrayList<>();
+        items.add(new Item(1, 64, 0, "stone", "stone", 64, 36));
         exchange.setItemsGiveByBot1(items);
-        items.add(new Item(1, 1, 0, "stone", "stone", 64, 36));
-        exchange.setItemsGiveByBot1(items);
+        exchange.setItemsGiveByBot2(null);
         // === Just for test ===
         socketMission.emit("exchange", new Gson().toJson(exchange));
     }
@@ -161,6 +162,11 @@ public class MasterSocket {
     private void look(SocketIOClient socketIOClient, String orderLookJson, AckRequest ackRequest) {
         broadcastOperation("look", orderLookJson, Position.class);
     }
+
+    private void drop(SocketIOClient socketIOClient, String orderDropJson, AckRequest ackRequest) {
+        broadcastOperation("drop", orderDropJson, List.class);
+    }
+
 
     private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
         broadcastOperation("sendMessage", orderMessageJson, String.class);

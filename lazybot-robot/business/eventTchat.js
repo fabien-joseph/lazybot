@@ -14,11 +14,12 @@ exports.chatControl = function (bot, username, message) {
     } else if (message === 'username') {
         bot.chat(bot._client.socket.remoteAddress);
     } else if (message === 'drop') {
+        /*console.log("==== INVENTAIRE =====");
+        for (let i = 0; i < bot.inventory.slots.length; i++) {
+            console.log(bot.inventory.slots[i]);
+        }*/
         bot.toss(1, 0, 1, null);
     } else if (message === 'exit') {
         process.exit();
     }
-    let yaw = message * 3.2 / 180;
-    let pitch = message * 3.2 / 180;
-    bot.look(0, pitch, true, null);
 };
