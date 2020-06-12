@@ -46,10 +46,11 @@
 }
 
 .table td, .table th {
-    width: 64px;
-    height: 64px;
-    max-width: 64px;
-    max-height: 64px;
+    width: 3rem;
+    height: 3rem;
+    max-width: 3rem;
+    max-height: 3rem;
+    padding: 0.4rem !important;
     vertical-align: top;
     border: 5px solid #ffffff !important;
     background-color: #b0afaf;
@@ -59,4 +60,8 @@
     margin-left: auto;
     margin-right: auto;
     background-color: #ECF0F3;
+}
+
+#openExchangeModal {
+    position: initial;
 }

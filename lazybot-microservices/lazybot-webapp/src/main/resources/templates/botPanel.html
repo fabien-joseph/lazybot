@@ -115,13 +115,12 @@
                             <div class="content">
                                 <div class="field has-addons">
                                     <div class="control is-expanded">
-                                        <button class="button is-primary is-large is-fullwidth">Mission: Exchange</button>
+                                        <a class="button is-primary is-large is-fullwidth" id="openExchangeModal">Mission: Exchange</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div th:replace="fragments/modalExchangeMission :: modalExchangeMission"></div>
                 </div>
                 <div class="column is-6">
                     <div class="card">
@@ -188,6 +187,7 @@
         </div>
     </div>
 </div>
+<div th:replace="fragments/modalExchangeMission :: modalExchangeMission"></div>
 <script async type="text/javascript" th:src="@{/js/bulma.js}"></script>
 
 <script th:src="@{/js/socket.io-2.2.0.js}"></script>
@@ -195,5 +195,6 @@
 <script th:src="@{/js/botUpdate.js}"></script>
 <script th:src="@{/js/botManager.js}"></script>
 <script th:src="@{/js/newBot.js}"></script>
+<script th:src="@{/js/exchangeMission.js}"></script>
 </body>
 </html>

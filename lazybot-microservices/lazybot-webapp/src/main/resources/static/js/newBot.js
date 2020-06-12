@@ -5,14 +5,14 @@ $("#connectBotModal").click(function () {
 });
 
 $(".modal-background").click(function () {
-    closeModalNewBot();
+    closemyModal();
 });
 
 $(".closeNewBot").click(function () {
-    closeModalNewBot();
+    closemyModal();
 });
 
-function closeModalNewBot() {
+function closemyModal() {
     $('#modalNewBot').removeClass("is-active");
 }
 

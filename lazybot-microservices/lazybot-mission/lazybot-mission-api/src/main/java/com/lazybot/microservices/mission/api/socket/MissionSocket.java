@@ -44,7 +44,7 @@ public class MissionSocket {
         server.addEventListener("exchange", String.class, this::exchangeMission);
     }
 
-    private void missionDone(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private void missionDone(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         Mission mission = missionsRunning.get(missionId);
         mission.setStep(mission.getStep() + 1);
         if (missionManager.runMission(socketMaster, mission)) {
