@@ -1,7 +1,7 @@
 getAllBotConnected();
 
 $("#connectBotModal").click(function () {
-    $("#myModal").addClass("is-active");
+    $("#modalNewBot").addClass("is-active");
 });
 
 $(".modal-background").click(function () {
@@ -13,7 +13,7 @@ $(".closeNewBot").click(function () {
 });
 
 function closeModalNewBot() {
-    $('#myModal').removeClass("is-active");
+    $('#modalNewBot').removeClass("is-active");
 }
 
 function connectBot() {
@@ -25,7 +25,7 @@ function connectBot() {
         document.getElementById("botNickname").value = '';
         document.getElementById("botPassword").value = '';
         document.getElementById("serverAdress").value = '';
-        $('#myModal').removeClass("is-active");
+        $('#modalNewBot').removeClass("is-active");
     }
 }
 

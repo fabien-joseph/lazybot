@@ -1,0 +1,42 @@
+<div class="modal is-active" id="modalExchangeMission" th:fragment="modalExchangeMission" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Mission: Exchange</p>
+            <button class="delete closeExchangeMission" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="content">
+                <div class="columns">
+                    <div class="column">
+                        <h3>Give</h3>
+                        <p>Select the items you want to drop</p>
+                        <div th:replace="fragments/inventory.html :: inventory"></div>
+
+                    </div>
+                    <div class="column is-3">
+                        <h3>Get</h3>
+                        <p>Nickname of the receiving bot</p>
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-small">
+                                    <label>
+                                        <select>
+                                            <option>Nickname</option>
+                                            <option>With options</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-success" onclick="connectBot()">Execute</button>
+            <button class="button closeNewBot">Cancel</button>
+        </footer>
+
+    </div>
+</div>
