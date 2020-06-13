@@ -43,9 +43,7 @@ function getAllBotConnected () {
 
 ioClient.on('allBotConnected', function (botUsernamesJson) {
     let botUsernames = JSON.parse(botUsernamesJson);
-    console.log("BEFORE : " + botUsernames);
     botUsernames.sort();
-    console.log("AFTER : " + botUsernames);
     $('.botNav').remove();
    for (let i = 0; i < botUsernames.length; i++) {
        addBotConnected(botUsernames[i]);

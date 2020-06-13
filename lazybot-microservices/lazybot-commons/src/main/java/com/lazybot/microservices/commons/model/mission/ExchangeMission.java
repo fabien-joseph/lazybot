@@ -14,10 +14,20 @@ import java.util.List;
 public class ExchangeMission extends Mission {
     private Bot bot1;
     private Bot bot2;
+    private String bot1Username;
+    private String bot2Username;
     private List<Item> itemsGiveByBot1;
     private List<Item> itemsGiveByBot2;
 
     public ExchangeMission() {
+    }
+
+
+
+    public ExchangeMission(String bot1Username, String bot2Username, List<Item> itemsGiveByBot1) {
+        this.bot1Username = bot1Username;
+        this.bot2Username = bot2Username;
+        this.itemsGiveByBot1 = itemsGiveByBot1;
     }
 
     public ExchangeMission(Bot bot1, Bot bot2, List<Item> itemsGiveByBot1, List<Item> itemsGiveByBot2) {

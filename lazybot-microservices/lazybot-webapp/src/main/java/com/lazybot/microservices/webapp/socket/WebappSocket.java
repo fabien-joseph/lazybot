@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.OrderBot;
+import com.lazybot.microservices.commons.model.mission.ExchangeMission;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.slf4j.Logger;
@@ -42,9 +43,9 @@ public class WebappSocket {
         server.addEventListener("exchange", String.class, this::exchange);
     }
 
-    private void exchange(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
-        System.out.println("Exchange");
-        socketMaster.emit("exchange");
+    private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
+        System.out.println("EXCHANGE : " + jsonExchange);
+        socketMaster.emit("exchange", jsonExchange);
     }
 
     /**

@@ -131,9 +131,13 @@ public class MasterSocket {
         broadcastOperation("missionStatus", orderJson, Integer.class);
     }
 
-    private void exchange(SocketIOClient socketIOClient, String name, AckRequest ackRequest) {
+    private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
+        ExchangeMission exchange = new Gson().fromJson(jsonExchange, ExchangeMission.class);
+        exchange.setBot1(bots.get(exchange.getBot1Username()).getBot());
+        exchange.setBot2(bots.get(exchange.getBot2Username()).getBot());
+        System.out.println(exchange);
         // === Just for tests
-        ExchangeMission exchange = new ExchangeMission();
+/*        ExchangeMission exchange = new ExchangeMission();
         exchange.setId(generateId());
         exchange.setStep(0);
         exchange.setBot1(bots.get("Ronflonflon").getBot());
@@ -141,9 +145,9 @@ public class MasterSocket {
         List<Item> items = new ArrayList<>();
         items.add(new Item(1, 64, 0, "stone", "stone", 64, 36));
         exchange.setItemsGiveByBot1(items);
-        exchange.setItemsGiveByBot2(null);
+        exchange.setItemsGiveByBot2(null);*/
         // === Just for test ===
-        socketMission.emit("exchange", new Gson().toJson(exchange));
+        //socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {

@@ -77,8 +77,6 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 
-
-
     // === Check values ===
     private boolean checkPossessions(List<Item> botInventory, List<Item> itemsGaveByBot1) {
         for (Item i : botInventory) {

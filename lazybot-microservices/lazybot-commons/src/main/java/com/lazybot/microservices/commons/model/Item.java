@@ -19,6 +19,12 @@ public class Item {
     public Item() {
     }
 
+    public Item(int type, int count, int metadata) {
+        this.type = type;
+        this.count = count;
+        this.metadata = metadata;
+    }
+
     public Item(int type, int count, int metadata, String name, String displayName, int stackSize, int slot) {
         this.type = type;
         this.count = count;

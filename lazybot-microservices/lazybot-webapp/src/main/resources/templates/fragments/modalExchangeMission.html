@@ -11,8 +11,7 @@
                     <div class="column">
                         <h3>Give</h3>
                         <p>Select the items you want to drop</p>
-                        <div th:replace="fragments/inventory.html :: inventory"></div>
-
+                        <div th:replace="fragments/inventoryExchange.html :: inventoryExchange"></div>
                     </div>
                     <div class="column is-3">
                         <h3>Get</h3>
@@ -21,9 +20,7 @@
                             <div class="control">
                                 <div class="select is-small">
                                     <label>
-                                        <select>
-                                            <option>Nickname</option>
-                                            <option>With options</option>
+                                        <select id="selectBotExchange">
                                         </select>
                                     </label>
                                 </div>
@@ -34,7 +31,7 @@
             </div>
         </section>
         <footer class="modal-card-foot">
-            <button class="button is-success" onclick="connectBot()">Execute</button>
+            <button class="button is-success" onclick="executeExchange()">Execute</button>
             <button class="button closeExchangeMission">Cancel</button>
         </footer>
     </div>

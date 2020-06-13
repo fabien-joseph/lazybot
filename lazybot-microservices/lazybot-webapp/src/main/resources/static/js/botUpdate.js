@@ -35,7 +35,6 @@ function loadInventory(bot) {
         }
     }
 
-    console.log(document.getElementById("inventorySlots"));
     document.getElementById("inventorySlots").innerHTML = itemsQuantity.toString();
     document.getElementById("inventorySize").innerHTML = bot.inventory.slots.length;
 }
