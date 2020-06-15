@@ -13,6 +13,7 @@ import com.lazybot.microservices.master.business.ConnectManager;
 import com.lazybot.microservices.master.model.BotIdentifier;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -89,8 +90,8 @@ public class MasterSocket {
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
-        //broadcastOperation("exit", orderJson, null);
-        server.getRoomOperations("bots").sendEvent("exit");
+        OrderBot<String> orderBot = new Gson().fromJson(orderJson, OrderBot.class);
+        broadcastOperation("exit", orderJson, String.class);
     }
 
     private void connectBot(SocketIOClient socketIOClient, String login, AckRequest ackRequest) throws IOException {

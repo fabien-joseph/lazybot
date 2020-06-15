@@ -33,8 +33,9 @@ function exchange() {
     ioClient.emit('exchange');
 }
 
-function disconnectBot(botId) {
-    ioClient.emit('disconnectBot', botId);
+function disconnectBot(target) {
+    let targetName = target != null ? target : getBotUsername();
+    ioClient.emit('disconnectBot', JSON.stringify({botUsername: targetName}));
 }
 
 function getAllBotConnected () {
