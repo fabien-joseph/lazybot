@@ -147,7 +147,7 @@ public class MasterSocket {
         exchange.setItemsGiveByBot1(items);
         exchange.setItemsGiveByBot2(null);*/
         // === Just for test ===
-        //socketMission.emit("exchange", new Gson().toJson(exchange));
+        socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
     private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {

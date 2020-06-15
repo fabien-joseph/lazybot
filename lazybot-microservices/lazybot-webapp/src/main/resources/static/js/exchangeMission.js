@@ -27,17 +27,19 @@ $('.itemExchange').click(function (event) {
 function executeExchange() {
     let datas;
     var all = $(".selected .itemImg img");
+    var allSelected = $(".selected");
 
     console.log("Datas : " + all[0].dataset);
 
     let jsonRequest = '{bot1Username:' + window.location.pathname.substring(1) + ', bot2Username:' + $('#selectBotExchange option:selected').text() +  ',';
     jsonRequest += "itemsGiveByBot1: [";
     for ( let i = 0; i < all.length; i++) {
+        allSelected.removeClass("selected");
         jsonRequest += "{type:" + all[i].dataset.itemType + ", ";
         jsonRequest += "count:" + all[i].dataset.itemCount + ", ";
         jsonRequest += "metadata:" + all[i].dataset.itemMetadata + ", ";
-        jsonRequest += "name:" + all[i].dataset.itemName + ", ";
-        jsonRequest += "displayName:" + all[i].dataset.itemDisplayname + ", ";
+        jsonRequest += "name:" + "'" + all[i].dataset.itemName + "'" + ", ";
+        jsonRequest += "displayName:" + "'" + all[i].dataset.itemDisplayname + "'" + ", ";
         jsonRequest += "stackSize:" + all[i].dataset.itemStacksize + ", ";
         jsonRequest += "slot:" + all[i].dataset.itemSlot;
         jsonRequest += "}";
@@ -45,15 +47,11 @@ function executeExchange() {
             jsonRequest += ",";
     }
     jsonRequest += "]}";
+
     console.log("Request : " + jsonRequest);
 
     ioClient.emit("exchange", jsonRequest);
-
-/*    let itemsSlots = document.getElementsByClassName("selected");
-    for(let i = 0; i < itemsSlots.length; i++) {
-        let children = itemsSlots[i].children;
-        console.log(children.attr('id'))
-    }*/
+    closemyModalExchange();
 }
 
 function closemyModalExchange() {
