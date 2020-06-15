@@ -108,8 +108,10 @@ ioMaster.on('sendMessage', function (message) {
 
 ioMaster.on('goToPos', function (positionJson) {
     let position = (JSON.parse(positionJson));
-    let positionToGo = v(position.x, position.y, position.z);
-    bot.navigate.to(positionToGo);
+    if (position.x != null && position.y != null && position.z != null) {
+        let positionToGo = v(position.x, position.y, position.z);
+        bot.navigate.to(positionToGo);
+    }
 });
 
 ioMaster.on('look', function (lookJson) {
