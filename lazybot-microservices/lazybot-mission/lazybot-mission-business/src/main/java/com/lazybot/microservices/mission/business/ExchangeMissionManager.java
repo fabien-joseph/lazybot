@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.security.auth.callback.ConfirmationCallback;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +42,17 @@ public class ExchangeMissionManager extends MissionAbstractManager {
     }
 
     private void botsJoinEachOthers(ExchangeMission missionObject) {
-        OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(),
-                "exchange", missionObject.getStep());
-        super.getMasterSocket().emit("missionStatus", new Gson().toJson(orderSetStatus));
-
-        OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
-                missionObject.getBot2().getPosition(), "exchange", missionObject.getStep());
-
-        System.out.println("Bot 1 rejoint Bot 2");
-        super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
+        if (isBotsHasItems(missionObject.getBot1(), missionObject.getItemsGiveByBot1())) {
+            OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(),
+                    "exchange", missionObject.getStep());
+            super.getMasterSocket().emit("missionStatus", new Gson().toJson(orderSetStatus));
+            OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
+                    missionObject.getBot2().getPosition(), "exchange", missionObject.getStep());
+            System.out.println("Bot 1 rejoint Bot 2");
+            super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
+        } else {
+            super.getMasterSocket().emit("missionFail", new Gson().toJson(missionObject.getId()));
+        }
     }
 
     private void botsLookEachOther(ExchangeMission missionObject) {
@@ -60,7 +63,7 @@ public class ExchangeMissionManager extends MissionAbstractManager {
     }
 
     private void botsDropItems(ExchangeMission missionObject) throws InterruptedException {
-        System.out.println("Bot 1 drop les items");
+        System.out.println("Bot 1 drop les items" + missionObject.getItemsGiveByBot1());
 
         OrderBot<List<Item>> orderDrop = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
                 missionObject.getItemsGiveByBot1(), "exchange", missionObject.getStep());
@@ -77,19 +80,16 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 
-    // === Check values ===
-    private boolean checkPossessions(List<Item> botInventory, List<Item> itemsGaveByBot1) {
-        for (Item i : botInventory) {
-            System.out.println("lol");
+    private boolean isBotsHasItems(Bot bot, List<Item> itemsGiveByBot) {
+        int itemsItHas = 0;
+
+        for (Item item : itemsGiveByBot) {
+            for (int j = 0; j < bot.getInventory().getSlots().size(); j++) {
+                if (bot.getInventory().getSlots().get(j) != null)
+                    if (item.getType() == bot.getInventory().getSlots().get(j).getType())
+                        itemsItHas++;
+            }
         }
-        return true;
-    }
-
-    private boolean isBotsHasItems(Bot bot1, Bot bot2, List<Item> itemsGiveByBot1, List<Item> itemsGiveByBot2) {
-        boolean bot1HasItems = checkPossessions(bot1.getInventory().getSlots(), itemsGiveByBot1);
-        boolean bot2HasItems = checkPossessions(bot2.getInventory().getSlots(), itemsGiveByBot2);
-
-        // Bots has items ?
-        return bot1HasItems && bot2HasItems;
+        return itemsGiveByBot.size() <= itemsItHas;
     }
 }

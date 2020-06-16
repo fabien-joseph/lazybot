@@ -109,18 +109,16 @@ public class MasterSocket {
         socketWebapp.emit("updateBotTest", jsonBot);
     }
 
-    private void missionDone(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
-        socketMission.emit("missionDone", bot.getActualMissionId());
+    private void missionDone(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
+        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
+        socketMission.emit("missionDone", missionId);
 
     }
 
-    private void missionFail(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
-        socketMission.emit("missionFail", bot.getActualMissionId());
+    private void missionFail(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
+        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
+        socketMission.emit("missionFail", missionId);
     }
-
-
 
     private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         bots.remove(botUsername);

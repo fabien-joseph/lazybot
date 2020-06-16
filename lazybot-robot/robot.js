@@ -52,25 +52,24 @@ bot.on('move', function () {
 });
 
 bot.on('playerCollect', function () {
-    console.log("collect");
     eventUpdateBot.updateBot("updateBot", actualMissionId, bot, ioMaster);
 });
 
 // === Events mission done ===
 bot.navigate.on('arrived', function () {
     console.log("MissionID envoyé : " + actualMissionId);
-    eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
+    eventUpdateBot.missionDoneOrFail("missionDone", actualMissionId, ioMaster);
 
 });
 
 // === Events mission fail ===
 bot.navigate.on('cannotFind', function () {
-    eventUpdateBot.updateBot("missionFail", actualMissionId, bot, ioMaster);
+    eventUpdateBot.missionDoneOrFail("missionFail", actualMissionId, ioMaster);
 
 });
 
 bot.navigate.on('interrupted', function () {
-    eventUpdateBot.updateBot("missionFail", actualMissionId, bot, ioMaster);
+    eventUpdateBot.missionDoneOrFail("missionFail", actualMissionId, ioMaster);
 
 });
 
@@ -87,15 +86,18 @@ ioMaster.on('getLoadMap', function (ray) {
 });
 
 ioMaster.on('drop', function (itemsJson) {
-
     let items = JSON.parse(itemsJson);
-    let type = Math.round(items[0].type);
-    let metadata = Math.round(items[0].metadata);
-    let count = Math.round(items[0].count);
-    console.log(type + " - " + metadata + " - " + count)
-    bot.toss(type, metadata, count, null);
+    for (let i = 0; i < items.length; i++) {
+        let type = Math.round(items[i].type);
+        let metadata = Math.round(items[i].metadata);
+        let count = Math.round(items[i].count);
+        console.log("Bloc " + i + " : " + type);
+        sleep(200);
+        bot.toss(type, metadata, count, null);
+    }
     if (actualMissionId != null)
-        eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
+        eventUpdateBot.missionDoneOrFail("missionDone", actualMissionId, ioMaster);
+
 });
 
 ioMaster.on('test', function () {
@@ -120,7 +122,7 @@ ioMaster.on('look', function (lookJson) {
     let pitch = look.pitch * 3.2 / 180;
     bot.look(yaw, pitch, true, null);
     if (actualMissionId !== null)
-        eventUpdateBot.updateBot("missionDone", actualMissionId, bot, ioMaster);
+        eventUpdateBot.missionDoneOrFail("missionDone", actualMissionId, ioMaster);
 });
 
 ioMaster.on('getUpdateBot', function () {
@@ -159,3 +161,13 @@ process.on('exit', function () {
     console.log("Event déco");
     ioMaster.emit("unregisterBot", bot.username);
 });
+
+function sleep(milliseconds) {
+    console.log("WAIT enter");
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+    console.log("WAIT finish");
+}

@@ -14,10 +14,10 @@ exports.chatControl = function (bot, username, message) {
     } else if (message === 'username') {
         bot.chat(bot._client.socket.remoteAddress);
     } else if (message === 'drop') {
-        /*console.log("==== INVENTAIRE =====");
-        for (let i = 0; i < bot.inventory.slots.length; i++) {
-            console.log(bot.inventory.slots[i]);
-        }*/
+        let item;
+        item.itemType = 1;
+        item.metadata
+        bot.chat(bot.inventory.slots.contains())
         bot.toss(1, 0, 1, null);
     } else if (message === 'exit') {
         process.exit();
