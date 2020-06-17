@@ -27,25 +27,25 @@
                 <div class="tile is-ancestor has-text-centered">
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title"><span id="numberBotsConnected">0</span></p>
+                            <p class="title"><span id="countBotsConnected">0</span></p>
                             <p class="subtitle">Bots connected</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title"><span id="counterItems">75</span>/<span id="counterItemsMax">160</span></p>
-                            <p class="subtitle">Total items</p>
-                        </article>
-                    </div>
-                    <div class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title"><span id="counterMissionsRunning">2</span></p>
+                            <p class="title"><span id="counterMissionsRunning">0</span></p>
                             <p class="subtitle">Missions running</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title"><span id="counterMissionsSuccess">23</span></p>
+                            <p class="title"><span id="counterMissionsFail">0</span></p>
+                            <p class="subtitle">Missions fail</p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title"><span id="counterMissionsSuccess">0</span></p>
                             <p class="subtitle">Missions success</p>
                         </article>
                     </div>
@@ -139,5 +139,6 @@
 <script th:src="@{/js/connectMs.js}"></script>
 <script th:src="@{/js/botManager.js}"></script>
 <script th:src="@{/js/newBot.js}"></script>
+<script th:src="@{/js/dashboard.js}"></script>
 </body>
 </html>

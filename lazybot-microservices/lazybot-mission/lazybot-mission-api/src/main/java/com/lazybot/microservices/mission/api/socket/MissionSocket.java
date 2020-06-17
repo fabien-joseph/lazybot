@@ -36,12 +36,20 @@ public class MissionSocket {
         this.totalMissionSuccess = 0;
         this.totalMissionFail = 0;
 
+        // === FROM MASTER
+        server.addEventListener("getMissionCounts", String.class, this::getMissionCounts);
+
         // === Update existing mission
         server.addEventListener("missionDone", Integer.class, this::missionDone);
         server.addEventListener("missionFail", Integer.class, this::missionFail);
 
         // === Create a new mission
         server.addEventListener("exchange", String.class, this::exchangeMission);
+    }
+
+    private void getMissionCounts(SocketIOClient socketIOClient, String missionId, AckRequest ackRequest) {
+        returnTotalMissionFail();
+        returnTotalMissionDone();
     }
 
     private void missionDone(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
@@ -52,14 +60,16 @@ public class MissionSocket {
             this.totalMissionSuccess++;
             System.out.println("Mission success count : " + totalMissionSuccess);
         }
-        System.out.println("Mission total : " + missionsRunning.size());
+        returnTotalMissionDone();
+        System.out.println("Mission running : " + missionsRunning.size());
     }
 
     private void missionFail(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) {
         missionsRunning.remove(missionId);
         this.totalMissionFail++;
+        returnTotalMissionFail();
         System.out.println("Mission fail count : " + totalMissionFail);
-        System.out.println("Mission total : " + missionsRunning.size());
+        System.out.println("Mission running : " + missionsRunning.size());
     }
 
 
@@ -77,5 +87,13 @@ public class MissionSocket {
 
     private Mission createMissionObject(String missionJson, Type typeMission) {
         return new Gson().fromJson(missionJson, typeMission);
+    }
+
+    private void returnTotalMissionDone() {
+        socketMaster.emit("updateTotalMissionDone", totalMissionSuccess);
+    }
+
+    private void returnTotalMissionFail() {
+        socketMaster.emit("updateTotalMissionFail", totalMissionFail);
     }
 }

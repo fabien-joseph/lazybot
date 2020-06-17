@@ -59,3 +59,4 @@ function exitBot() {
 function getBotUsername() {
     return window.location.pathname !== '/' ? window.location.pathname : '/*';
 }
+

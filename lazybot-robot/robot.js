@@ -91,7 +91,6 @@ ioMaster.on('drop', function (itemsJson) {
         let type = Math.round(items[i].type);
         let metadata = Math.round(items[i].metadata);
         let count = Math.round(items[i].count);
-        console.log("Bloc " + i + " : " + type);
         sleep(200);
         bot.toss(type, metadata, count, null);
     }
@@ -158,16 +157,13 @@ function exit() {
 
 // Function to execute when the bot stops
 process.on('exit', function () {
-    console.log("Event déco");
     ioMaster.emit("unregisterBot", bot.username);
 });
 
 function sleep(milliseconds) {
-    console.log("WAIT enter");
     const date = Date.now();
     let currentDate = null;
     do {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-    console.log("WAIT finish");
 }

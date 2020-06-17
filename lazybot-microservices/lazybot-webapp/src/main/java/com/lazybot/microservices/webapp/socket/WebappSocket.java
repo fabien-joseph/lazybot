@@ -31,11 +31,14 @@ public class WebappSocket {
         // === FROM MASTER MS ===
         server.addEventListener("allBotConnected", String.class, this::allBotConnected);
         server.addEventListener("updateBotTest", String.class, this::updateBot);
+        server.addEventListener("updateTotalMissionDone", String.class, this::updateTotalMissionDone);
+        server.addEventListener("updateTotalMissionFail", String.class, this::updateTotalMissionFail);
 
         // === FROM WEBAPP ===
         server.addEventListener("connectBot", Login.class, this::connectBot);
         server.addEventListener("disconnectBot", String.class, this::disconnectBot);
         server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
+        server.addEventListener("getMissionCounts", String.class, this::getMissionCounts);
         server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         server.addEventListener("loadMap", Integer.class, this::loadMap);
         server.addEventListener("sendMessageTest", OrderBot.class, this::sendMessage);
@@ -57,6 +60,29 @@ public class WebappSocket {
         server.getBroadcastOperations().sendEvent("allBotConnected", botUsernames);
     }
 
+
+    /**
+     From master MS. Update the number of missions done
+     @param socketIOClient socket client of master MS.
+     @param countJson bot updated.
+    */
+    private void updateTotalMissionDone(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission done : " + countJson);
+        server.getBroadcastOperations().sendEvent("updateTotalMissionDoneWebapp", countJson);
+    }
+
+    /**
+    From master MS. Update the number of missions fail
+     @param socketIOClient socket client of master MS.
+     @param countJson bot updated.
+    */
+    private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission fail : " + countJson);
+        server.getBroadcastOperations().sendEvent("updateTotalMissionFailWebapp", countJson);
+    }
+
+
+
     /**
     From master MS. Update a bot (life, food, inventory, etc...).
      @param socketIOClient socket client of master MS.
@@ -65,6 +91,8 @@ public class WebappSocket {
     private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
         server.getBroadcastOperations().sendEvent("updateBot", jsonBot);
     }
+
+
 
     /**
     From webapp. Ask to master MS to execute a new bot
@@ -100,6 +128,15 @@ public class WebappSocket {
      */
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         socketMaster.emit("getAllBotConnected");
+    }
+
+    /**
+    From webapp. Ask to master MS all the nicknames of the bots connected
+     @param socketIOClient socket client of master MS.
+     @param t useless variable.
+     */
+    private void getMissionCounts(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketMaster.emit("getMissionCounts");
     }
 
     /**

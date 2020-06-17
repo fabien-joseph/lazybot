@@ -50,16 +50,21 @@ public class MasterSocket {
         this.server.addEventListener("chat", String.class, this::chat);
         this.server.addEventListener("sendMessage", String.class, this::sendMessage);
         this.server.addEventListener("goToPos", String.class, this::goToPos);
-        this.server.addEventListener("look", String.class, this::look);
-        this.server.addEventListener("drop", String.class, this::drop);
         this.server.addEventListener("loadMap", Integer.class, this::loadMap);
         this.server.addEventListener("exchange", String.class, this::exchange);
-        this.server.addEventListener("missionStatus", String.class, this::missionStatus);
         this.server.addEventListener("getUpdateBot", String.class, this::getUpdateBot);
         this.server.addEventListener("getAllBotConnected", String.class, this::getAllBotConnected);
+        this.server.addEventListener("getMissionCounts", String.class, this::getMissionCounts);
         this.server.addEventListener("executeMission", String.class, this::executeMission);
         this.server.addEventListener("connectBot", String.class, this::connectBot);
         this.server.addEventListener("disconnectBot", String.class, this::disconnectBot);
+
+        // FROM MS MISSION
+        this.server.addEventListener("look", String.class, this::look);
+        this.server.addEventListener("drop", String.class, this::drop);
+        this.server.addEventListener("missionStatus", String.class, this::missionStatus);
+        this.server.addEventListener("updateTotalMissionDone", String.class, this::updateTotalMissionDone);
+        this.server.addEventListener("updateTotalMissionFail", String.class, this::updateTotalMissionFail);
 
         // FROM BOTS
         this.server.addEventListener("registerBot", String.class, this::registerBot);
@@ -87,6 +92,10 @@ public class MasterSocket {
 
     private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
+    }
+
+    private void getMissionCounts(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketMission.emit("getMissionCounts", new Gson().toJson(bots.keySet()));
     }
 
     private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
@@ -130,22 +139,21 @@ public class MasterSocket {
         broadcastOperation("missionStatus", orderJson, Integer.class);
     }
 
+    private void updateTotalMissionDone(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission done " + countJson);
+        socketWebapp.emit("updateTotalMissionDone", countJson);
+    }
+
+    private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission fail " + countJson);
+        socketWebapp.emit("updateTotalMissionFail", countJson);
+    }
+
     private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
         ExchangeMission exchange = new Gson().fromJson(jsonExchange, ExchangeMission.class);
         exchange.setBot1(bots.get(exchange.getBot1Username()).getBot());
         exchange.setBot2(bots.get(exchange.getBot2Username()).getBot());
         System.out.println(exchange);
-        // === Just for tests
-/*        ExchangeMission exchange = new ExchangeMission();
-        exchange.setId(generateId());
-        exchange.setStep(0);
-        exchange.setBot1(bots.get("Ronflonflon").getBot());
-        exchange.setBot2(bots.get("test").getBot());
-        List<Item> items = new ArrayList<>();
-        items.add(new Item(1, 64, 0, "stone", "stone", 64, 36));
-        exchange.setItemsGiveByBot1(items);
-        exchange.setItemsGiveByBot2(null);*/
-        // === Just for test ===
         socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
