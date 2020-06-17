@@ -48,6 +48,7 @@ public class MissionSocket {
     }
 
     private void getMissionCounts(SocketIOClient socketIOClient, String missionId, AckRequest ackRequest) {
+        returnTotalMissionRunning();
         returnTotalMissionFail();
         returnTotalMissionDone();
     }
@@ -61,6 +62,7 @@ public class MissionSocket {
             System.out.println("Mission success count : " + totalMissionSuccess);
         }
         returnTotalMissionDone();
+        returnTotalMissionRunning();
         System.out.println("Mission running : " + missionsRunning.size());
     }
 
@@ -68,10 +70,10 @@ public class MissionSocket {
         missionsRunning.remove(missionId);
         this.totalMissionFail++;
         returnTotalMissionFail();
+        returnTotalMissionRunning();
         System.out.println("Mission fail count : " + totalMissionFail);
         System.out.println("Mission running : " + missionsRunning.size());
     }
-
 
     private void exchangeMission(SocketIOClient socketIOClient, String missionJson, AckRequest ackRequest) throws Exception {
         Type typeMission = new TypeToken<ExchangeMission>() {
@@ -81,12 +83,16 @@ public class MissionSocket {
         missionsRunning.putIfAbsent(mission.getId(), mission);
 
         System.out.println("Nouvelle mission ! Total : " + missionsRunning.size());
-
+        returnTotalMissionRunning();
         missionManager.runMission(socketMaster, mission);
     }
 
     private Mission createMissionObject(String missionJson, Type typeMission) {
         return new Gson().fromJson(missionJson, typeMission);
+    }
+
+    private void returnTotalMissionRunning() {
+        socketMaster.emit("updateTotalMissionRunning", missionsRunning.size());
     }
 
     private void returnTotalMissionDone() {

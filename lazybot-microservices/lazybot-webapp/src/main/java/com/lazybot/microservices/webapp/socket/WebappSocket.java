@@ -33,6 +33,7 @@ public class WebappSocket {
         server.addEventListener("updateBotTest", String.class, this::updateBot);
         server.addEventListener("updateTotalMissionDone", String.class, this::updateTotalMissionDone);
         server.addEventListener("updateTotalMissionFail", String.class, this::updateTotalMissionFail);
+        server.addEventListener("updateTotalMissionRunning", String.class, this::updateTotalMissionRunning);
 
         // === FROM WEBAPP ===
         server.addEventListener("connectBot", Login.class, this::connectBot);
@@ -79,6 +80,16 @@ public class WebappSocket {
     private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
         System.out.println("Mission fail : " + countJson);
         server.getBroadcastOperations().sendEvent("updateTotalMissionFailWebapp", countJson);
+    }
+
+    /**
+    From master MS. Update the number of missions running
+     @param socketIOClient socket client of master MS.
+     @param countJson bot updated.
+    */
+    private void updateTotalMissionRunning(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission running : " + countJson);
+        server.getBroadcastOperations().sendEvent("updateTotalMissionRunningWebapp", countJson);
     }
 
 

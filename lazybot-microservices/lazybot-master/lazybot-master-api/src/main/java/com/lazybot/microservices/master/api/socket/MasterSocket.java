@@ -65,6 +65,7 @@ public class MasterSocket {
         this.server.addEventListener("missionStatus", String.class, this::missionStatus);
         this.server.addEventListener("updateTotalMissionDone", String.class, this::updateTotalMissionDone);
         this.server.addEventListener("updateTotalMissionFail", String.class, this::updateTotalMissionFail);
+        this.server.addEventListener("updateTotalMissionRunning", String.class, this::updateTotalMissionRunning);
 
         // FROM BOTS
         this.server.addEventListener("registerBot", String.class, this::registerBot);
@@ -148,6 +149,12 @@ public class MasterSocket {
         System.out.println("Mission fail " + countJson);
         socketWebapp.emit("updateTotalMissionFail", countJson);
     }
+
+    private void updateTotalMissionRunning(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission running " + countJson);
+        socketWebapp.emit("updateTotalMissionRunning", countJson);
+    }
+
 
     private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
         ExchangeMission exchange = new Gson().fromJson(jsonExchange, ExchangeMission.class);

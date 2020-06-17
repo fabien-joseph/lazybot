@@ -1,6 +1,11 @@
 getMissionCounts();
 showCountBotConnected();
 
+ioClient.on("updateTotalMissionRunningWebapp", function (count) {
+    console.log("running : " + count);
+    $('#counterMissionsRunning').text(count);
+});
+
 ioClient.on("updateTotalMissionDoneWebapp", function (count) {
     console.log("done : " + count);
     $('#counterMissionsSuccess').text(count);
