@@ -112,6 +112,10 @@ ioMaster.on('goToPos', function (positionJson) {
     if (position.x != null && position.y != null && position.z != null) {
         let positionToGo = v(position.x, position.y, position.z);
         bot.navigate.to(positionToGo);
+    } else {
+        if (actualMissionId != null) {
+            eventUpdateBot.missionDoneOrFail("missionFail", actualMissionId, ioMaster);
+        }
     }
 });
 

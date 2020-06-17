@@ -12,6 +12,28 @@ $(".closeNewBot").click(function () {
     closemyModal();
 });
 
+$("#serverAdress").keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode === 13) {
+        connectBot();
+    }
+});
+
+$("#botNickname").keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode === 13) {
+        connectBot();
+    }
+});
+
+$("#botPassword").keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode === 13) {
+        connectBot();
+    }
+});
+
+
 function closemyModal() {
     $('#modalNewBot').removeClass("is-active");
 }
@@ -38,7 +60,7 @@ function disconnectBot(target) {
     ioClient.emit('disconnectBot', JSON.stringify({botUsername: targetName}));
 }
 
-function getAllBotConnected () {
+function getAllBotConnected() {
     ioClient.emit("getAllBotConnected");
 }
 
@@ -46,9 +68,9 @@ ioClient.on('allBotConnected', function (botUsernamesJson) {
     let botUsernames = JSON.parse(botUsernamesJson);
     botUsernames.sort();
     $('.botNav').remove();
-   for (let i = 0; i < botUsernames.length; i++) {
-       addBotConnected(botUsernames[i]);
-   }
+    for (let i = 0; i < botUsernames.length; i++) {
+        addBotConnected(botUsernames[i]);
+    }
 });
 
 function addBotConnected(botUsername) {
