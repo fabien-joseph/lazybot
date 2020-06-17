@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class MissionSocket {
@@ -88,7 +89,13 @@ public class MissionSocket {
     }
 
     private Mission createMissionObject(String missionJson, Type typeMission) {
-        return new Gson().fromJson(missionJson, typeMission);
+        Mission mission = new Gson().fromJson(missionJson, typeMission);
+        mission.setId(generadeMissionId());
+        return mission;
+    }
+
+    private int generadeMissionId() {
+        return ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
     }
 
     private void returnTotalMissionRunning() {
