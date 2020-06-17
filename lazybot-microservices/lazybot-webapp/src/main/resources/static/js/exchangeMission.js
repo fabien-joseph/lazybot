@@ -1,8 +1,8 @@
 getUpdateBot();
 
 $("#openExchangeModal").click(function () {
-    $("#modalExchangeMission").addClass("is-active");
     getAllBotConnected();
+    $("#modalExchangeMission").addClass("is-active");
 });
 
 $(".modal-background").click(function () {
@@ -73,7 +73,6 @@ ioClient.on('allBotConnected', function (botUsernamesJson) {
     if (!window.location.pathname.includes(botUsernames[i]))
             botsList.append(new Option(botUsernames[i], botUsernames[i]));
 });
-
 
 function loadInventoryExchange(bot) {
     let itemsQuantity = 0;
