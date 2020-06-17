@@ -18,11 +18,22 @@ $('.itemExchange').click(function (event) {
     if (event.target.dataset.itemType === 'undefined' || event.target.dataset.itemType === '' || event.target.dataset.itemType == null)
         return;
     if (!$(this).hasClass("selected")) {
+        let items = $('.selected').removeClass('selected');
+        $(this).addClass("selected");
+
+    } else {
+        $(this).removeClass("selected");
+    }
+})/*
+$('.itemExchange').click(function (event) {
+    if (event.target.dataset.itemType === 'undefined' || event.target.dataset.itemType === '' || event.target.dataset.itemType == null)
+        return;
+    if (!$(this).hasClass("selected")) {
         $(this).addClass("selected");
     } else {
         $(this).removeClass("selected");
     }
-})
+})*/
 
 function executeExchange() {
     let datas;

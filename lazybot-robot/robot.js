@@ -73,7 +73,6 @@ bot.navigate.on('interrupted', function () {
 
 });
 
-
 // === MASTER MS REQUESTS
 ioMaster.on('missionStatus', function (missionId) {
     actualMissionId = missionId;
@@ -87,13 +86,10 @@ ioMaster.on('getLoadMap', function (ray) {
 
 ioMaster.on('drop', function (itemsJson) {
     let items = JSON.parse(itemsJson);
-    for (let i = 0; i < items.length; i++) {
-        let type = Math.round(items[i].type);
-        let metadata = Math.round(items[i].metadata);
-        let count = Math.round(items[i].count);
-        sleep(200);
-        bot.toss(type, metadata, count, null);
-    }
+    let type = Math.round(items[0].type);
+    let metadata = Math.round(items[0].metadata);
+    let count = Math.round(items[0].count);
+    bot.toss(type, metadata, count, null);
     if (actualMissionId != null)
         eventUpdateBot.missionDoneOrFail("missionDone", actualMissionId, ioMaster);
 

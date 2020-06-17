@@ -74,5 +74,5 @@ ioClient.on('allBotConnected', function (botUsernamesJson) {
 });
 
 function addBotConnected(botUsername) {
-    $("#accountsRobot").prepend("<li class='botNav'><a href='/" + botUsername + "'>" + botUsername + "</a></li>");
+    $("#accountsRobot").append("<li class='botNav'><a href='/" + botUsername + "'>" + botUsername + "</a></li>");
 }
