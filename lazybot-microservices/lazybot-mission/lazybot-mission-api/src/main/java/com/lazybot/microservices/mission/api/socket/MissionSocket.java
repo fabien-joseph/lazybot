@@ -48,12 +48,26 @@ public class MissionSocket {
         server.addEventListener("exchange", String.class, this::exchangeMission);
     }
 
-    private void getMissionCounts(SocketIOClient socketIOClient, String missionId, AckRequest ackRequest) {
+    // === From Master MS
+
+    /**
+     * Return all the counts of the missions
+     * @param socketIOClient Socket client
+     * @param t unused parameter
+     * @param ackRequest request informations
+     */
+    private void getMissionCounts(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         returnTotalMissionRunning();
         returnTotalMissionFail();
         returnTotalMissionDone();
     }
 
+    /**
+     * Event receved when a step of a mission is ended. If there is a next step (mission can continue) do it, else if the mission is finished (don't have next step) remove the mission from {@link MissionSocket#missionsRunning}
+     * @param socketIOClient Socket client
+     * @param missionId id of the mission to update
+     * @param ackRequest request informations
+     */
     private void missionDone(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         Mission mission = missionsRunning.get(missionId);
         mission.setStep(mission.getStep() + 1);
@@ -67,6 +81,12 @@ public class MissionSocket {
         System.out.println("Mission running : " + missionsRunning.size());
     }
 
+    /**
+     * Event receved when a step of a mission fail. Delete the mission from {@link MissionSocket#missionsRunning}, increment the counter {@link MissionSocket#totalMissionFail} and send the new counters to the master
+     * @param socketIOClient Socket client
+     * @param missionId id of the mission to update
+     * @param ackRequest request informations
+     */
     private void missionFail(SocketIOClient socketIOClient, Integer missionId, AckRequest ackRequest) {
         missionsRunning.remove(missionId);
         this.totalMissionFail++;
@@ -76,6 +96,12 @@ public class MissionSocket {
         System.out.println("Mission running : " + missionsRunning.size());
     }
 
+    /**
+     * Execute the exchange mission
+     * @param socketIOClient Socket client
+     * @param missionJson {@link ExchangeMission} in JSON
+     * @param ackRequest request informations
+     */
     private void exchangeMission(SocketIOClient socketIOClient, String missionJson, AckRequest ackRequest) throws Exception {
         Type typeMission = new TypeToken<ExchangeMission>() {
         }.getType();
@@ -83,30 +109,48 @@ public class MissionSocket {
 
         missionsRunning.putIfAbsent(mission.getId(), mission);
 
-        System.out.println("Nouvelle mission ! Total : " + missionsRunning.size());
+        System.out.println("New mission ! Total : " + missionsRunning.size());
         returnTotalMissionRunning();
         missionManager.runMission(socketMaster, mission);
     }
 
+    /**
+     * Create a child object of {@link Mission}
+     * @param missionJson {@link Mission} object JSON
+     * @param typeMission The type of the mission object to return, example : {@link ExchangeMission}
+     * @return The mission to do
+     */
     private Mission createMissionObject(String missionJson, Type typeMission) {
         Mission mission = new Gson().fromJson(missionJson, typeMission);
         mission.setId(generadeMissionId());
         return mission;
     }
 
-    private int generadeMissionId() {
-        return ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
-    }
-
+    /**
+     * Send an event to the master to give the new count of missions running
+     */
     private void returnTotalMissionRunning() {
         socketMaster.emit("updateTotalMissionRunning", missionsRunning.size());
     }
 
+    /**
+     * Send an event to the master to give the new count of missions done
+     */
     private void returnTotalMissionDone() {
         socketMaster.emit("updateTotalMissionDone", totalMissionSuccess);
     }
 
+    /**
+     * Send an event to the master to give the new count of missions fail
+     */
     private void returnTotalMissionFail() {
         socketMaster.emit("updateTotalMissionFail", totalMissionFail);
+    }
+
+    /**
+     * Generate a random ID between 100.000 and 999.999
+     */
+    private int generadeMissionId() {
+        return ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
     }
 }

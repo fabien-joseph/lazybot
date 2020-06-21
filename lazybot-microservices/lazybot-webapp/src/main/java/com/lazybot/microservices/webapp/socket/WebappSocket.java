@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.Login;
 import com.lazybot.microservices.commons.model.OrderBot;
-import com.lazybot.microservices.commons.model.mission.ExchangeMission;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.slf4j.Logger;
