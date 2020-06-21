@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * The nbt tag of an {@link Item}. Actually unused
+ */
 @Getter
 @Setter
 @ToString

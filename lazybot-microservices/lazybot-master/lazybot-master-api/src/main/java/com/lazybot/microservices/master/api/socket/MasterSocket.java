@@ -8,12 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import com.lazybot.microservices.commons.manager.ToolsBotManager;
 import com.lazybot.microservices.commons.model.*;
 import com.lazybot.microservices.commons.model.mission.ExchangeMission;
-import com.lazybot.microservices.commons.model.mission.Mission;
-import com.lazybot.microservices.master.business.ConnectManager;
 import com.lazybot.microservices.master.model.BotIdentifier;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,9 +27,8 @@ public class MasterSocket {
     private SocketIOClient socketMap;
     private Socket socketMission;
     private ToolsBotManager toolsBotManager;
-    private final ConnectManager connectManager;
 
-    public MasterSocket(SocketIOServer serverMaster, ConnectManager connectManager) throws URISyntaxException {
+    public MasterSocket(SocketIOServer serverMaster) throws URISyntaxException {
         this.socketWebapp = IO.socket("http://localhost:8090");
         this.socketWebapp.connect();
         this.socketMission = IO.socket("http://localhost:9091");
@@ -74,7 +70,6 @@ public class MasterSocket {
         this.server.addEventListener("updateBot", String.class, this::updateBot);
         this.server.addEventListener("missionDone", String.class, this::missionDone);
         this.server.addEventListener("missionFail", String.class, this::missionFail);
-        this.connectManager = connectManager;
     }
 
     // CONNECTIONS MS - From all

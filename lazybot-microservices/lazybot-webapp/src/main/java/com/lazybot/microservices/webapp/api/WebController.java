@@ -15,16 +15,33 @@ import java.util.Objects;
 
 @Controller
 public class WebController {
+    /**
+     * Dashboard
+     * @param model model of the page
+     * @return return the page
+     */
     @GetMapping("/")
     public String home(Model model) {
         return "dashboard";
     }
 
+    /**
+     * Go to the page panel of a bot
+     * @param model model of the page
+     * @param botUsername username of the bot
+     * @return return the page
+     */
     @GetMapping("/{botUsername}")
     public String bot(Model model, @PathVariable String botUsername) {
         return "botPanel";
     }
 
+    /**
+     * Endpoint to get the texture of an item
+     * @param nameObject name of the item to get the texture
+     * @return return the page
+     * @throws IOException error if there is a problem during get the good texture file
+     */
     @GetMapping("/getMCObject/{nameObject}")
     public @ResponseBody byte[] getBlock(@PathVariable String nameObject) throws IOException {
         SimilaryStringManager ssm = new SimilaryStringManager();

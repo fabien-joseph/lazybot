@@ -6,6 +6,9 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * The inventory of a {@link Bot}
+ */
 @Getter
 @Setter
 @ToString

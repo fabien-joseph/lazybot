@@ -6,6 +6,9 @@ import io.socket.client.Socket;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Manager of the missions
+ */
 public class MissionManager {
 
     public MissionManager() {

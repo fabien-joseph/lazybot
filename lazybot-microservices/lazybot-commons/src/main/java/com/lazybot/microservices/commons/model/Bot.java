@@ -3,6 +3,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * A bot
+ */
 @Getter
 @Setter
 @ToString

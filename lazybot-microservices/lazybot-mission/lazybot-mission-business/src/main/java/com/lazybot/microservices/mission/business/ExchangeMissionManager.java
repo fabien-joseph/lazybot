@@ -47,11 +47,10 @@ public class ExchangeMissionManager extends MissionAbstractManager {
      */
     private void botsJoinEachOthers(ExchangeMission missionObject) {
         if (isBotsHasItems(missionObject.getBot1(), missionObject.getItemsGiveByBot1())) {
-            OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(),
-                    "exchange", missionObject.getStep());
+            OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(), missionObject.getStep());
             super.getMasterSocket().emit("missionStatus", new Gson().toJson(orderSetStatus));
             OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
-                    missionObject.getBot2().getPosition(), "exchange", missionObject.getStep());
+                    missionObject.getBot2().getPosition(), missionObject.getStep());
             System.out.println("Bot 1 rejoint Bot 2");
             super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
         } else {
@@ -65,7 +64,7 @@ public class ExchangeMissionManager extends MissionAbstractManager {
      */
     private void botsLookEachOther(ExchangeMission missionObject) {
         OrderBot<Look> orderLook = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
-                new Look(0, -90), "exchange", missionObject.getStep());
+                new Look(0, -90), missionObject.getStep());
         System.out.println("Bot 1 regarde au sol");
         super.getMasterSocket().emit("look", new Gson().toJson(orderLook));
     }
@@ -78,7 +77,7 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         System.out.println("Bot 1 drop les items" + missionObject.getItemsGiveByBot1());
 
         OrderBot<List<Item>> orderDrop = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
-                missionObject.getItemsGiveByBot1(), "exchange", missionObject.getStep());
+                missionObject.getItemsGiveByBot1(), missionObject.getStep());
         Thread.sleep(200);
 
         super.getMasterSocket().emit("drop", new Gson().toJson(orderDrop));
@@ -92,7 +91,7 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         Position posFarAway = missionObject.getBot2().getPosition();
         posFarAway.setX(posFarAway.getX() + 3);
         OrderBot<Position> orderGoToPos = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
-                posFarAway, "exchange", missionObject.getStep());
+                posFarAway, missionObject.getStep());
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 

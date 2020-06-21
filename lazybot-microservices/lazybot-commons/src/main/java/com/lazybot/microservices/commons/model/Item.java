@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * An item
+ */
 @Getter
 @Setter
 @ToString

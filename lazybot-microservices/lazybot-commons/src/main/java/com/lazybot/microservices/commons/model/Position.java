@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * The position fo a {@link Bot}
+ */
 @Getter
 @Setter
 @ToString
