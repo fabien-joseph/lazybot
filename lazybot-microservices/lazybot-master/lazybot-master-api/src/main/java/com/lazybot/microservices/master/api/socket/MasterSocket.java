@@ -77,85 +77,89 @@ public class MasterSocket {
         this.connectManager = connectManager;
     }
 
-    private void error(SocketIOClient socketIOClient, String error, AckRequest ackRequest) {
-        System.out.println("Error: " + error);
+    // CONNECTIONS MS - From all
+
+    /**
+     * Add the socket client in the list of client connected
+     * @param socketIOClient Socket client
+     * @param id ID unused
+     * @param ackRequest request informations
+     */
+    private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+        this.socketMap = socketIOClient;
     }
 
+    /**
+     * Just an event to test the connection with other MS (for dev)
+     * @param socketIOClient Socket client
+     * @param t String to test
+     * @param ackRequest request informations
+     */
     private void test(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
         System.out.println("Retour de test reçu");
     }
 
-    private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
-        if (toolsBotManager.isBeginningWithWrongChar(botUsername))
-            botUsername = toolsBotManager.correctBotUsername(botUsername);
-        bots.get(botUsername).getSocketIOClient().sendEvent("getUpdateBot");
+    /**
+     * Not implemented !
+     *
+     * An event to signal the error of the MS and the bot
+     * @param socketIOClient Socket client
+     * @param error Error message
+     * @param ackRequest request informations
+     */
+    private void error(SocketIOClient socketIOClient, String error, AckRequest ackRequest) {
+        System.out.println("Error: " + error);
     }
 
-    private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
-        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
+    // ORDERS / REQUEST INFOS FROM BOTS : WEBAPP - MISSION
+
+    /**
+     * An old event now unused to use the chat.
+     * @param socketIOClient Socket client
+     * @param id nothing
+     * @param ackRequest request informations
+     */
+    private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
     }
 
-    private void getMissionCounts(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
-        socketMission.emit("getMissionCounts", new Gson().toJson(bots.keySet()));
+    /**
+     * Transmit a message that will be sent by a robot
+     * @param socketIOClient Socket client
+     * @param orderMessageJson message in JSON
+     * @param ackRequest request informations
+     */
+    private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
+        broadcastOperation("sendMessage", orderMessageJson, String.class);
     }
 
-    private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
-        OrderBot<String> orderBot = new Gson().fromJson(orderJson, OrderBot.class);
-        broadcastOperation("exit", orderJson, String.class);
+    /**
+     * Order bots to go to a position.
+     * @param socketIOClient Socket client
+     * @param orderPositionJson Position where bots will have to go
+     * @param ackRequest request informations
+     */
+    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
+        broadcastOperation("goToPos", orderPositionJson, Position.class);
     }
 
-    private void connectBot(SocketIOClient socketIOClient, String login, AckRequest ackRequest) throws IOException {
-        Login loginBot = new Gson().fromJson(login, Login.class);
-        String command = "node C:/Users/Fabien/IdeaProjects/lazybot/lazybot-robot/robot.js";
-        command += " --username=" + loginBot.getNickname();
-        command += " --password=" + loginBot.getPassword();
-        command += " --server=" + loginBot.getServer();
-        Runtime.getRuntime().exec(command);
+    /**
+     Unused since the Map MS has been abandoned.
+     * Get the map aroung a bot
+     * @param socketIOClient Socket client
+     * @param ray Ray of the map to load
+     * @param ackRequest request informations
+     */
+    private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
+        System.out.println("Rayon = " + ray);
+        server.getBroadcastOperations().sendEvent("getLoadMap", ray);
     }
 
-    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
-        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
-        bots.get(bot.getUsername()).setBot(bot);
-        socketWebapp.emit("updateBotTest", jsonBot);
-    }
-
-    private void missionDone(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
-        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
-        socketMission.emit("missionDone", missionId);
-
-    }
-
-    private void missionFail(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
-        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
-        socketMission.emit("missionFail", missionId);
-    }
-
-    private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
-        bots.remove(botUsername);
-        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
-        System.out.println("Un bot a été déconnecté. Total : " + bots.size());
-    }
-
-    private void missionStatus(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
-        broadcastOperation("missionStatus", orderJson, Integer.class);
-    }
-
-    private void updateTotalMissionDone(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
-        System.out.println("Mission done " + countJson);
-        socketWebapp.emit("updateTotalMissionDone", countJson);
-    }
-
-    private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
-        System.out.println("Mission fail " + countJson);
-        socketWebapp.emit("updateTotalMissionFail", countJson);
-    }
-
-    private void updateTotalMissionRunning(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
-        System.out.println("Mission running " + countJson);
-        socketWebapp.emit("updateTotalMissionRunning", countJson);
-    }
-
-
+    /**
+     * Send to the MS mission the exchange mission to treat it.
+     * @param socketIOClient Socket client
+     * @param jsonExchange Exchange object in JSON
+     * @param ackRequest request informations
+     */
     private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
         ExchangeMission exchange = new Gson().fromJson(jsonExchange, ExchangeMission.class);
         exchange.setBot1(bots.get(exchange.getBot1Username()).getBot());
@@ -164,35 +168,146 @@ public class MasterSocket {
         socketMission.emit("exchange", new Gson().toJson(exchange));
     }
 
-    private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
-        System.out.println("Size = " + map.size());
+    /**
+     * Get the information of a bot.
+     * @param socketIOClient Socket client
+     * @param botUsername the username of the bot to get informations
+     * @param ackRequest request informations
+     */
+    private void getUpdateBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        if (toolsBotManager.isBeginningWithWrongChar(botUsername))
+            botUsername = toolsBotManager.correctBotUsername(botUsername);
+        bots.get(botUsername).getSocketIOClient().sendEvent("getUpdateBot");
     }
 
-    private void loadMap(SocketIOClient socketIOClient, Integer ray, AckRequest ackRequest) {
-        System.out.println("Rayon = " + ray);
-        server.getBroadcastOperations().sendEvent("getLoadMap", ray);
+    /**
+     * Return to the webapp all the username of the bots actually connected.
+     * @param socketIOClient Socket client
+     * @param t an unused parameter
+     * @param ackRequest request informations
+     */
+    private void getAllBotConnected(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
     }
 
-    private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
-        broadcastOperation("goToPos", orderPositionJson, Position.class);
+    /**
+     * Ask to the MS Mission the number of mission running
+     * @param socketIOClient Socket client
+     * @param t unused variable
+     * @param ackRequest request informations
+     */
+    private void getMissionCounts(SocketIOClient socketIOClient, String t, AckRequest ackRequest) {
+        socketMission.emit("getMissionCounts", new Gson().toJson(bots.keySet()));
     }
 
+    /**
+     * Infom the MS Mission that a mission has to be done.
+     * @param socketIOClient Socket client
+     * @param orderMission the order done
+     * @param ackRequest request informations
+     */
+    private void executeMission(SocketIOClient socketIOClient, String orderMission, AckRequest ackRequest) {
+        socketMission.emit("mission", orderMission);
+    }
+
+    /**
+     * Execute command to connect a new Mineflayer robot.
+     * @param socketIOClient Socket client
+     * @param loginJson Login JSON
+     * @param ackRequest request informations
+     */
+    private void connectBot(SocketIOClient socketIOClient, String loginJson, AckRequest ackRequest) throws IOException {
+        Login loginBot = new Gson().fromJson(loginJson, Login.class);
+        String command = "node C:/Users/Fabien/IdeaProjects/lazybot/lazybot-robot/robot.js";
+        command += " --username=" + loginBot.getNickname();
+        command += " --password=" + loginBot.getPassword();
+        command += " --server=" + loginBot.getServer();
+        Runtime.getRuntime().exec(command);
+    }
+    /**
+     * Disconnect bots
+     * @param socketIOClient Socket client
+     * @param orderJson Order JSON to disconnect a bot
+     * @param ackRequest request informations
+     */
+    private void disconnectBot(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
+        OrderBot<String> orderBot = new Gson().fromJson(orderJson, OrderBot.class);
+        broadcastOperation("exit", orderJson, String.class);
+    }
+
+    // FROM MS MISSION
+
+    /**
+     * Ask a robot to look somewhere
+     * @param socketIOClient Socket client
+     * @param orderLookJson position to look JSON
+     * @param ackRequest request informations
+     */
     private void look(SocketIOClient socketIOClient, String orderLookJson, AckRequest ackRequest) {
         broadcastOperation("look", orderLookJson, Position.class);
     }
 
+    /**
+     * Ask robot to drop an item (ONLY ONE ACTUALLY, otherwise the robot would crash)
+     * @param socketIOClient Socket client
+     * @param orderDropJson order JSON to drop item
+     * @param ackRequest request informations
+     */
     private void drop(SocketIOClient socketIOClient, String orderDropJson, AckRequest ackRequest) {
         broadcastOperation("drop", orderDropJson, List.class);
     }
 
-
-    private void sendMessage(SocketIOClient socketIOClient, String orderMessageJson, AckRequest ackRequest) {
-        broadcastOperation("sendMessage", orderMessageJson, String.class);
+    /**
+     * Give to a robot his mission status (the actual ID of the mission he is running)
+     * @param socketIOClient Socket client
+     * @param orderJson mission status
+     * @param ackRequest request informations
+     */
+    private void missionStatus(SocketIOClient socketIOClient, String orderJson, AckRequest ackRequest) {
+        broadcastOperation("missionStatus", orderJson, Integer.class);
     }
 
-    private void chat(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
+    /**
+     * Update the number of missions done (to show in the webapp)
+     * @param socketIOClient Socket client
+     * @param countJson Count of the missions done
+     * @param ackRequest request informations
+     */
+    private void updateTotalMissionDone(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission done " + countJson);
+        socketWebapp.emit("updateTotalMissionDone", countJson);
     }
 
+    /**
+     * Update the number of missions fail (to show in the webapp)
+     * @param socketIOClient Socket client
+     * @param countJson Count of the missions done
+     * @param ackRequest request informations
+     */
+    private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission fail " + countJson);
+        socketWebapp.emit("updateTotalMissionFail", countJson);
+    }
+
+    /**
+     * Update the number of missions running (to show in the webapp)
+     * @param socketIOClient Socket client
+     * @param countJson Count of the missions running
+     * @param ackRequest request informations
+     */
+    private void updateTotalMissionRunning(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
+        System.out.println("Mission running " + countJson);
+        socketWebapp.emit("updateTotalMissionRunning", countJson);
+    }
+
+    // ==== FROM BOT ===
+
+    /**
+     * A robot is connecting to this MS Master. It has to be add to {@link MasterSocket#bots}, which is the list of the robot actually connected
+     * @param socketIOClient Socket client
+     * @param botUsername username of the bot to register
+     * @param ackRequest request informations
+     */
     private void registerBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
         BotIdentifier botIdentifier = new BotIdentifier();
         botIdentifier.setSocketIOClient(socketIOClient);
@@ -203,14 +318,70 @@ public class MasterSocket {
         System.out.println("Nouveau bot connecté, id: " + botUsername + ". Total : " + bots.size());
     }
 
-    private void executeMission(SocketIOClient socketIOClient, String orderMission, AckRequest ackRequest) {
-        socketMission.emit("mission", orderMission);
+    /**
+     * A robot is disconnecting to this MS Master. It has to be removed to {@link MasterSocket#bots}, which is the list of the robot actually connected
+     * @param socketIOClient Socket client
+     * @param botUsername username of the bot to unregister
+     * @param ackRequest request informations
+     */
+    private void unregisterBot(SocketIOClient socketIOClient, String botUsername, AckRequest ackRequest) {
+        bots.remove(botUsername);
+        socketWebapp.emit("allBotConnected", new Gson().toJson(bots.keySet()));
+        System.out.println("Un bot a été déconnecté. Total : " + bots.size());
     }
 
-    private void connectMap(SocketIOClient socketIOClient, String id, AckRequest ackRequest) {
-        this.socketMap = socketIOClient;
+    /**
+     * Unused since the Map MS has been abandoned.
+     * Show the map represented by a list of integer
+     * @param socketIOClient Socket client
+     * @param map Map represented by a list of integer
+     * @param ackRequest request informations
+     */
+    private void returnLoadMap(SocketIOClient socketIOClient, List<Integer> map, AckRequest ackRequest) {
+        System.out.println("Size = " + map.size());
     }
 
+    /**
+     * Update the bot object in {@link MasterSocket#bots}
+     * @param socketIOClient Socket client
+     * @param jsonBot {@link Bot} in JSON
+     * @param ackRequest request informations
+     */
+    private void updateBot(SocketIOClient socketIOClient, String jsonBot, AckRequest ackRequest) {
+        Bot bot = new Gson().fromJson(jsonBot, Bot.class);
+        bots.get(bot.getUsername()).setBot(bot);
+        socketWebapp.emit("updateBotTest", jsonBot);
+    }
+
+    /**
+     * Inform the MS Mission that a mission has been done successfully
+     * @param socketIOClient Socket client
+     * @param jsonMissionId id of the mission
+     * @param ackRequest request informations
+     */
+    private void missionDone(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
+        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
+        socketMission.emit("missionDone", missionId);
+
+    }
+
+    /**
+     * Inform the MS Mission that a mission failed
+     * @param socketIOClient Socket client
+     * @param jsonMissionId id of the mission
+     * @param ackRequest request informations
+     */
+    private void missionFail(SocketIOClient socketIOClient, String jsonMissionId, AckRequest ackRequest) {
+        Integer missionId = new Gson().fromJson(jsonMissionId, Integer.class);
+        socketMission.emit("missionFail", missionId);
+    }
+
+    /**
+     * Send an event robots.
+     * @param event Name of the event to emit to the bot
+     * @param orderJson {@link OrderBot} JSON
+     * @param classOfData The type of data sent
+     */
     private <T> void broadcastOperation(String event, String orderJson, Class<T> classOfData) {
         Type typePosition = new TypeToken<OrderBot<T>>() {
         }.getType();
@@ -233,6 +404,9 @@ public class MasterSocket {
         }
     }
 
+    /**
+     * Generate a random ID between 100.000 and 999.999
+     */
     private int generateId() {
         return ThreadLocalRandom.current().nextInt(100000, 999999 + 1);
 
