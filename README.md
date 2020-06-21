@@ -54,3 +54,6 @@ From the root directory of the project, go in "lazybot-api/lazybot-api-api/targe
 ```
 java -jar lazybot-mission-api-1.7-RELEASE.jar
 ```
+
+## License
+[MIT license](https://github.com/Ronflonflon/lazybot/blob/master/LICENSE.txt)
