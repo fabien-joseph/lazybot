@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>com.lazybot.microservices.mission</groupId>
 		<artifactId>lazybot-mission</artifactId>
-		<version>1.7-SNAPSHOT</version>
+		<version>1.7-RELEASE</version>
 	</parent>
 	<groupId>com.lazybot.microservices.mission.api</groupId>
 	<artifactId>lazybot-mission-api</artifactId>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.7-RELEASE</version>
 	<name>lazybot-mission-api</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -56,12 +56,12 @@
 		<dependency>
 			<groupId>com.lazybot.microservices.mission.model</groupId>
 			<artifactId>lazybot-mission-model</artifactId>
-			<version>1.7-SNAPSHOT</version>
+			<version>1.7-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.lazybot.microservices.mission.business</groupId>
 			<artifactId>lazybot-mission-business</artifactId>
-			<version>1.7-SNAPSHOT</version>
+			<version>1.7-RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

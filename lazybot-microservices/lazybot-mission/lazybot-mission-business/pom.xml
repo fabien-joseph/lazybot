@@ -7,12 +7,12 @@
   <parent>
     <groupId>com.lazybot.microservices.mission</groupId>
     <artifactId>lazybot-mission</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7-RELEASE</version>
   </parent>
 
   <groupId>com.lazybot.microservices.mission.business</groupId>
   <artifactId>lazybot-mission-business</artifactId>
-  <version>1.7-SNAPSHOT</version>
+  <version>1.7-RELEASE</version>
 
   <name>lazybot-mission-business</name>
   <!-- FIXME change it to the project's website -->
@@ -53,7 +53,7 @@
       <dependency>
           <groupId>com.lazybot.microservices.mission.model</groupId>
           <artifactId>lazybot-mission-model</artifactId>
-          <version>1.7-SNAPSHOT</version>
+          <version>1.7-RELEASE</version>
           <scope>compile</scope>
       </dependency>
     <dependency>

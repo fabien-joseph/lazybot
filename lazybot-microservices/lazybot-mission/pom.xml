@@ -5,7 +5,7 @@
     <parent>
         <artifactId>lazybot-microservices</artifactId>
         <groupId>com.lazybot.microservices</groupId>
-        <version>1.7-SNAPSHOT</version>
+        <version>1.7-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <version.lazybot-commons>1.7-SNAPSHOT</version.lazybot-commons>
+        <version.lazybot-commons>1.7-RELEASE</version.lazybot-commons>
     </properties>
 
     <dependencies>
