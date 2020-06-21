@@ -42,15 +42,15 @@ mvn package
 ### Deploy Master MS
 From the root directory of the project, go in "lazybot-master/lazybot-master-api/target" directory, and run :
 ```
-java -jar lazybot-master-api-1.6-RELEASE.jar
+java -jar lazybot-master-api-1.7-SNAPSHOT.jar
 ```
 ### Deploy Webapp MS
 From the root directory of the project, go in "lazybot-webapp/target" directory, and run :
 ```
-java -jar lazybot-webapp-api-1.6-RELEASE.jar
+java -jar lazybot-webapp-api-1.7-SNAPSHOT.jar
 ```
 ### Deploy Mission MS
 From the root directory of the project, go in "lazybot-api/lazybot-api-api/target" directory, and run :
 ```
-java -jar lazybot-mission-api-1.6-RELEASE.jar
+java -jar lazybot-mission-api-1.7-SNAPSHOT.jar
 ```

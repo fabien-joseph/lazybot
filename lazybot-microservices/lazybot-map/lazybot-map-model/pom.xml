@@ -6,7 +6,7 @@
 
   <groupId>com.lazybot.microservices.map.model</groupId>
   <artifactId>lazybot-map-model</artifactId>
-  <version>1.6-SNAPSHOT</version>
+  <version>1.7-SNAPSHOT</version>
 
   <name>lazybot-map-model</name>
   <!-- FIXME change it to the project's website -->
@@ -17,7 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <version.lazybot-commons>1.6-SNAPSHOT</version.lazybot-commons>
+    <version.lazybot-commons>1.7-SNAPSHOT</version.lazybot-commons>
   </properties>
 
   <dependencies>

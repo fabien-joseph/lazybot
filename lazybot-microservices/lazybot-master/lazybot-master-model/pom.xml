@@ -6,7 +6,7 @@
 
   <groupId>com.lazybot.microservices.master.model</groupId>
   <artifactId>lazybot-master-model</artifactId>
-  <version>1.6-SNAPSHOT</version>
+  <version>1.7-SNAPSHOT</version>
 
   <name>lazybot-master-model</name>
   <!-- FIXME change it to the project's website -->
@@ -14,7 +14,7 @@
 
   <parent>
     <groupId>com.lazybot.microservices.master</groupId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <artifactId>lazybot-master</artifactId>
   </parent>
 
