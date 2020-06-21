@@ -32,21 +32,17 @@ Inside it, run :
 mvn package
 ```
 ### Deploy Master MS
-Blablabla
+From the root directory of the project, go in "lazybot-master/lazybot-master-api/target" directory, and run :
 ```
-java blablabla
+java -jar lazybot-master-api-1.6-RELEASE.jar
 ```
 ### Deploy Webapp MS
-Blablabla
+From the root directory of the project, go in "lazybot-webapp/target" directory, and run :
 ```
-java blablabla
+java -jar lazybot-webapp-api-1.6-RELEASE.jar
 ```
 ### Deploy Mission MS
-Blablabla
+From the root directory of the project, go in "lazybot-api/lazybot-api-api/target" directory, and run :
 ```
-java blablabla
+java -jar lazybot-mission-api-1.6-RELEASE.jar
 ```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
