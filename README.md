@@ -8,11 +8,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+What things you need to install the software and how to install them :
 
 ```
 - Java 8
 - Maven
+```
+
+Which ports need to be free :
+```
+- 8080 (webapp web server)
+- 8090 (webapp socket server)
+- 9090 (master socket server)
+- 9091 (mission socket server)
 ```
 
 ### Installing

@@ -62,7 +62,6 @@
             <artifactId>lazybot-master-business</artifactId>
             <version>1.6-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
 
     <build>
