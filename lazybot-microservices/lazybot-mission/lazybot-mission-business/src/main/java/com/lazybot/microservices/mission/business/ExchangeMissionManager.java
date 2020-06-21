@@ -41,6 +41,10 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.setSteps(list);
     }
 
+    /**
+     * The bot who give the item must join the bot who receive.
+     * @param missionObject {@link ExchangeMission} contains all the information to do execute the step
+     */
     private void botsJoinEachOthers(ExchangeMission missionObject) {
         if (isBotsHasItems(missionObject.getBot1(), missionObject.getItemsGiveByBot1())) {
             OrderBot<Integer> orderSetStatus = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(), missionObject.getId(),
@@ -55,6 +59,10 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         }
     }
 
+    /**
+     * The bot who give the item must look the floor (to avoid that he doesn't drop the item too far away of the bot who receive).
+     * @param missionObject {@link ExchangeMission} contains all the information to do execute the step
+     */
     private void botsLookEachOther(ExchangeMission missionObject) {
         OrderBot<Look> orderLook = new OrderBot<>(missionObject.getId(), missionObject.getBot1().getUsername(),
                 new Look(0, -90), "exchange", missionObject.getStep());
@@ -62,6 +70,10 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.getMasterSocket().emit("look", new Gson().toJson(orderLook));
     }
 
+    /**
+     * The bot who give the item must drop them.
+     * @param missionObject {@link ExchangeMission} contains all the information to do execute the step
+     */
     private void botsDropItems(ExchangeMission missionObject) throws InterruptedException {
         System.out.println("Bot 1 drop les items" + missionObject.getItemsGiveByBot1());
 
@@ -72,6 +84,10 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.getMasterSocket().emit("drop", new Gson().toJson(orderDrop));
     }
 
+    /**
+     * The bot who give the item must go away.
+     * @param missionObject {@link ExchangeMission} contains all the information to do execute the step
+     */
     private void botsGoFarAway(ExchangeMission missionObject) {
         Position posFarAway = missionObject.getBot2().getPosition();
         posFarAway.setX(posFarAway.getX() + 3);
@@ -80,6 +96,12 @@ public class ExchangeMissionManager extends MissionAbstractManager {
         super.getMasterSocket().emit("goToPos", new Gson().toJson(orderGoToPos));
     }
 
+    /**
+     * Check if the bot who give the item has it
+     * @param bot {@link Bot}
+     * @param itemsGiveByBot the list of items to give (actually just 1 item max)
+     * @return
+     */
     private boolean isBotsHasItems(Bot bot, List<Item> itemsGiveByBot) {
         int itemsItHas = 0;
 

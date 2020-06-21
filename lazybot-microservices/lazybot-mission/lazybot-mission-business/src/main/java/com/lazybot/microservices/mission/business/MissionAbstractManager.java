@@ -21,8 +21,17 @@ public abstract class MissionAbstractManager {
     private List<Method> steps;
     private List<Method> missionInitializer;
 
+    /**
+     * Initialize the methods of the steps. They have to be added in {@link MissionAbstractManager#steps}
+     * @throws NoSuchMethodException for reflection
+     */
     public abstract void initializeSteps() throws NoSuchMethodException;
 
+    /**
+     * Return the method of the step to execute
+     * @param step number of the step to do
+     * @return {@link Method} the method of object to execute
+     */
     public final Method getStep(int step) {
         return this.getSteps().get(step);
     }
