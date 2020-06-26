@@ -55,5 +55,8 @@ From the root directory of the project, go in "lazybot-api/lazybot-api-api/targe
 java -jar lazybot-mission-api-1.7-RELEASE.jar
 ```
 
+##Documentations
+[Documentation : "Lazybot - Servers communication"](https://github.com/Ronflonflon/lazybot/blob/master/doc/Lazybot%20-%20Servers%20communication.pdf)
+
 ## License
 [MIT license](https://github.com/Ronflonflon/lazybot/blob/master/LICENSE.txt)
