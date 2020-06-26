@@ -46,11 +46,6 @@ public class WebappSocket {
         server.addEventListener("exchange", String.class, this::exchange);
     }
 
-    private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
-        System.out.println("EXCHANGE : " + jsonExchange);
-        socketMaster.emit("exchange", jsonExchange);
-    }
-
     /**
     From master MS, give all the names of the bots connected.
      @param socketIOClient socket client of master MS.
@@ -64,7 +59,7 @@ public class WebappSocket {
     /**
      From master MS. Update the number of missions done
      @param socketIOClient socket client of master MS.
-     @param countJson bot updated.
+     @param countJson mission done count.
     */
     private void updateTotalMissionDone(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
         System.out.println("Mission done : " + countJson);
@@ -141,7 +136,7 @@ public class WebappSocket {
     }
 
     /**
-    From webapp. Ask to master MS all the nicknames of the bots connected
+    From webapp. Ask to master MS to ask to the mission MS all the mission counts.
      @param socketIOClient socket client of master MS.
      @param t useless variable.
      */
@@ -175,5 +170,16 @@ public class WebappSocket {
     */
     private void goToPos(SocketIOClient socketIOClient, String orderPositionJson, AckRequest ackRequest) {
         socketMaster.emit("goToPos", orderPositionJson);
+    }
+
+    /**
+     From webapp. Ask to master MS to order bots to do an exchange mission.
+     @param socketIOClient socket client of master MS.
+     @param jsonExchange exchange information.
+     @return
+     */
+    private void exchange(SocketIOClient socketIOClient, String jsonExchange, AckRequest ackRequest) {
+        System.out.println("EXCHANGE : " + jsonExchange);
+        socketMaster.emit("exchange", jsonExchange);
     }
 }

@@ -196,7 +196,7 @@ public class MasterSocket {
     }
 
     /**
-     * Infom the MS Mission that a mission has to be done.
+     * Inform the MS Mission that a mission has to be done.
      * @param socketIOClient Socket client
      * @param orderMission the order done
      * @param ackRequest request informations
@@ -276,7 +276,7 @@ public class MasterSocket {
     /**
      * Update the number of missions fail (to show in the webapp)
      * @param socketIOClient Socket client
-     * @param countJson Count of the missions done
+     * @param countJson Count of the missions fail
      * @param ackRequest request informations
      */
     private void updateTotalMissionFail(SocketIOClient socketIOClient, String countJson, AckRequest ackRequest) {
